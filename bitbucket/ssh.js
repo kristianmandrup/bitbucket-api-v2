@@ -1,12 +1,3 @@
-/**
- * Copyright 2010 Ajax.org B.V.
- *
- * This product includes software developed by
- * Ajax.org B.V. (http://www.ajax.org/).
- *
- * Author: Fabian Jaokbs <fabian@ajax.org>
- */
-
 var util = require('util');
 var AbstractApi = require("./abstract_api").AbstractApi;
 
@@ -34,7 +25,7 @@ util.inherits(SshApi, AbstractApi);
     this.addKey = function(key, callback) {
         this.$api.post("ssh-keys/", {key: key}, null, callback);
     };
-    
+
     /**
      * Delete a public SSH key on the account
      */
