@@ -175,6 +175,10 @@ var Request = exports.Request = function(options) {
                 headers.Authorization = oauth._buildAuthorizationHeaders(orderedParameters);
                 break;
 
+            case "oauth2":
+                headers.Authorization = 'Bearer ' + this.$options.oauth_access_token;
+                break;
+
             case "token":
                 var auth = this.$options['username'] + "/token:" + this.$options['api_token'];
                 var basic = new Buffer(auth, "ascii").toString("base64");
