@@ -20,7 +20,7 @@ var BitBucket = exports.BitBucket = function(debug, proxy, http) {
      * Use debug mode (prints debug messages)
      */
     this.$debug = debug;
-    
+
     /**
      * Define HTTP proxy in format localhost:3128
      */
@@ -55,7 +55,7 @@ var BitBucket = exports.BitBucket = function(debug, proxy, http) {
         console.log("Deprecated: use 'authenticateToken' instead!");
         return this.authenticateToken(login, token);
     };
-    
+
     /**
      * Authenticate a user for all next requests using an API token
      *
@@ -72,7 +72,7 @@ var BitBucket = exports.BitBucket = function(debug, proxy, http) {
 
         return this;
     };
-    
+
     /**
      * Authenticate a user for all next requests using an API token
      *
@@ -89,11 +89,11 @@ var BitBucket = exports.BitBucket = function(debug, proxy, http) {
 
         return this;
     };
-    
+
     /**
      * Authenticate a user for all next requests using an API token
      *
-     * @param {OAuth} oauth      
+     * @param {OAuth} oauth
      * @param {String} accessToken
      * @return {GitHubApi}        fluent interface
      */
@@ -104,9 +104,24 @@ var BitBucket = exports.BitBucket = function(debug, proxy, http) {
             .setOption('oauth', oauth)
             .setOption('oauth_access_token', accessToken)
             .setOption('oauth_access_token_secret', accessTokenSecret);
-    
+
         return this;
-    };    
+    };
+
+    /**
+     * Authenticate a user for all next requests using an API token
+     *
+     * @param {String} accessToken
+     * @return {GitHubApi}        fluent interface
+     */
+    this.authenticateOAuth2 = function(accessToken)
+    {
+        this.getRequest()
+            .setOption("login_type", "oauth2")
+            .setOption('oauth_access_token', accessToken);
+
+         return this;
+    };
 
     /**
      * Deauthenticate a user for all next requests
@@ -116,7 +131,7 @@ var BitBucket = exports.BitBucket = function(debug, proxy, http) {
     this.deAuthenticate = function() {
         this.getRequest()
             .setOption("login_type", "none");
-            
+
         return this;
     };
 
@@ -131,7 +146,7 @@ var BitBucket = exports.BitBucket = function(debug, proxy, http) {
     this.get = function(route, parameters, requestOptions, callback) {
         return this.getRequest().get(route, parameters || {}, requestOptions, callback);
     };
-    
+
     /**
      * Call any route, DELETE method
      * Ex: api.delete('repos/show/my-username/my-repo')
@@ -211,7 +226,7 @@ var BitBucket = exports.BitBucket = function(debug, proxy, http) {
 
         return this.$apis.repo;
      };
-     
+
     /**
      * Get the ssh API
      *
@@ -225,7 +240,7 @@ var BitBucket = exports.BitBucket = function(debug, proxy, http) {
 
         return this.$apis.ssh;
      };
-     
+
     /**
      * Get the email API
      *
