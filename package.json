@@ -1,21 +1,21 @@
 {
-    "name" : "bitbucket",
-    "version" : "0.0.2",
-    "description" : "Wrapper for the BitBucket API",
-    "author": "Fabian Jakobs <fabian.jakobs@web.de>",
-    "homepage": "http://github.com/ajaxorg/node-bitbucket.git",
+    "name" : "bitbucket-v2",
+    "version" : "0.0.1",
+    "description" : "Wrapper for the BitBucket API v2",
+    "author": "Jordan Wallet <jjwallet@gmail.com>",
+    "homepage": "https://github.com/Mr-Wallet/node-bitbucket-v2.git",
     "main" : "./bitbucket",
     "repository" : {
         "type" : "git",
         "url" : "http://github.com/ajaxorg/node-bitbucket.git"
     },
-    "engine" : ["node >=0.4.0"],
+    "engine" : ["node >=5.5.0"],
     "dependencies": {
-        "asyncjs": ">=0.0.5",
-        "oauth": ">=0.9.0"
+        "asyncjs": ">=1.5.2",
+        "oauth": ">=0.9.14"
     },
     "licenses": [{
         "type": "The MIT License",
-        "url": "http://www.opensource.org/licenses/mit-license.php"}
-    ]    
+        "url": "http://www.opensource.org/licenses/mit-license.php"
+    }]
 }

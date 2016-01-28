@@ -1,6 +1,10 @@
 The MIT License
 
-Copyright (c) 2010 ajax.org B.V (Fabian Jakobs)
+Portions of this project are copyright (c) 2010 Ajax.org B.V.
+(Fabian Jakobs <fabian.jakobs@web.de>) as part of the project node-bitbucket
+(http://github.com/ajaxorg/node-bitbucket.git).
+
+Other portions written by Jordan Wallet et al are Copyright 2016 Axosoft LLC.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
