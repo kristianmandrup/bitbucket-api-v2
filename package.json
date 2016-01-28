@@ -1,6 +1,6 @@
 {
     "name" : "bitbucket-v2",
-    "version" : "0.0.1",
+    "version" : "0.0.2",
     "description" : "Wrapper for the BitBucket API v2",
     "author": "Jordan Wallet <jjwallet@gmail.com>",
     "homepage": "https://github.com/Mr-Wallet/node-bitbucket-v2.git",
@@ -11,8 +11,8 @@
     },
     "engine" : ["node >=5.5.0"],
     "dependencies": {
-        "asyncjs": ">=1.5.2",
-        "oauth": ">=0.9.14"
+        "asyncjs": "~0.0.10",
+        "oauth": "~0.9.14"
     },
     "licenses": [{
         "type": "The MIT License",

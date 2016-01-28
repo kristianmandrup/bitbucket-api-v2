@@ -23,10 +23,10 @@ var Request = exports.Request = function(options) {
 
     this.$defaults = {
         protocol    : 'https',
-        path        : '/1.0',
+        path        : '/2.0',
         hostname    : "api.bitbucket.org",
         format      : 'json',
-        user_agent  : 'js-bitbucket-api (http://github.com/ajaxorg/node-bitbucket)',
+        user_agent  : 'js-bitbucket-api-v2 (http://github.com/Mr-Wallet/node-bitbucket-v2)',
         http_port   : 443,
         timeout     : 20,
         login_type  : "none",
@@ -153,7 +153,7 @@ var Request = exports.Request = function(options) {
         var getQuery = querystring.stringify(getParams);
         var postQuery = querystring.stringify(postParams);
         this.$debug("get: "+ getQuery + " post " + postQuery);
-        
+
         var path = this.$options.path + "/" + apiPath.replace(/\/*$/, "");
         if (getQuery)
             path += "?" + getQuery;
@@ -169,28 +169,28 @@ var Request = exports.Request = function(options) {
                     this.$options.oauth_access_token,
                     this.$options.oauth_access_token_secret,
                     httpMethod,
-                    "https://api.bitbucket.org" + path, 
+                    "https://api.bitbucket.org" + path,
                     postParams || {}
                 );
                 headers.Authorization = oauth._buildAuthorizationHeaders(orderedParameters);
                 break;
-                
+
             case "token":
                 var auth = this.$options['username'] + "/token:" + this.$options['api_token'];
                 var basic = new Buffer(auth, "ascii").toString("base64");
                 headers.Authorization = "Basic " + basic;
                 break;
-                
+
             case "basic":
                 var auth = this.$options['username'] + ":" + this.$options['password'];
                 var basic = new Buffer(auth, "ascii").toString("base64");
                 headers.Authorization = "Basic " + basic;
                 break;
-                
+
             default:
                 // none
         }
-        
+
         var getOptions = {
             host: host,
             post: port,
@@ -210,7 +210,7 @@ var Request = exports.Request = function(options) {
             response.addListener('end', function () {
                 var msg;
                 body = body.join("");
-                
+
                 if (response.statusCode > 204) {
                     if (response.headers["content-type"].indexOf("application/json") === 0) {
                         msg = JSON.parse(body);
@@ -222,28 +222,28 @@ var Request = exports.Request = function(options) {
                 }
                 if (response.statusCode == 204)
                     body = "{}";
-                    
+
                 done(null, body);
             });
-            
+
             response.addListener("error", function(e) {
                 done(e);
             });
-    
+
             response.addListener("timeout", function() {
                 done(new Error("Request timed out"));
             });
         });
-        
+
         request.on("error", function(e) {
             done(e);
         });
 
         if (httpMethod == "POST")
             request.write(postQuery);
-            
+
         request.end();
-        
+
         var called = false;
         function done(err, body) {
             if (called)
