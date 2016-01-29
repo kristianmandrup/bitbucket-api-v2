@@ -1,4 +1,5 @@
 const querystring = require('querystring');
+const https = require('https');
 const url = require('url');
 
 /**
@@ -23,14 +24,13 @@ const Request = exports.Request = function Request(options) {
     api_token: null,
     oauth_access_token: null,
     proxy_host: null,
-    proxy_port: null,
-    debug: false
+    proxy_port: null
   };
 
   this.configure = function configure(options = {}) {
     this.$options = {};
     for (let key in this.$defaults) {
-      this.$options[key] = options[key] !== undefined ? options[key]: this.$defaults[key];
+      this.$options[key] = options[key] !== undefined ? options[key] : this.$defaults[key];
     }
 
     return this;
@@ -44,8 +44,7 @@ const Request = exports.Request = function Request(options) {
    *
    * @return {Request} The current object instance
    */
-  this.setOption = function setOption(name, value)
-  {
+  this.setOption = function setOption(name, value) {
     this.$options[name] = value;
     return this;
   };
@@ -126,31 +125,9 @@ const Request = exports.Request = function Request(options) {
       'Host': 'api.bitbucket.org',
       'User-Agent': 'NodeJS HTTP Client',
       'Content-Length': '0',
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Bearer ' + this.$options.oauth_access_token
     };
-
-    switch (this.$options.login_type) {
-      case 'oauth2':
-        headers.Authorization = 'Bearer ' + this.$options.oauth_access_token;
-        break;
-
-      case 'token': {
-        const auth = this.$options.username + '/token:' + this.$options.api_token;
-        const basic = new Buffer(auth, 'ascii').toString('base64');
-        headers.Authorization = 'Basic ' + basic;
-        break;
-      }
-
-      case 'basic': {
-        const auth = this.$options.username + ':' + this.$options.password;
-        const basic = new Buffer(auth, 'ascii').toString('base64');
-        headers.Authorization = 'Basic ' + basic;
-        break;
-      }
-
-      default:
-          // none
-    }
 
     const parsedUrl = url.parse(prebuiltURL);
 
@@ -162,8 +139,6 @@ const Request = exports.Request = function Request(options) {
       post: port
     };
 
-    this.$debug('send prebuilt request: ' + prebuiltURL);
-
     let called = false;
     function done(err, body) {
       if (called) {
@@ -174,7 +149,7 @@ const Request = exports.Request = function Request(options) {
       callback(err, body);
     }
 
-    const request = require(this.$options.protocol).request(getOptions, (response) => {
+    const request = https.request(getOptions, (response) => {
       response.setEncoding('utf8');
 
       const body = [];
@@ -226,64 +201,30 @@ const Request = exports.Request = function Request(options) {
    */
   this.doSend = function doSend(apiPath, parameters, httpMethod, callback) {
     httpMethod = httpMethod.toUpperCase();
-    let host = this.$options.proxy_host ? this.$options.proxy_host: this.$options.hostname;
-    let port = this.$options.proxy_host ? this.$options.proxy_port || 3128: this.$options.http_port || 443;
+    const host = this.$options.proxy_host ? this.$options.proxy_host: this.$options.hostname;
+    const port = this.$options.proxy_host ? this.$options.proxy_port || 3128: this.$options.http_port || 443;
 
-    let headers = {
-      'Host':'api.bitbucket.org',
+    const headers = {
+      'Host': 'api.bitbucket.org',
       'User-Agent': 'NodeJS HTTP Client',
       'Content-Length': '0',
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Bearer ' + this.$options.oauth_access_token
     };
-    let getParams  = httpMethod != 'POST' ? parameters: {};
-    let postParams = httpMethod == 'POST' ? parameters: {};
+    const getParams = httpMethod !== 'POST' ? parameters : {};
+    const postParams = httpMethod === 'POST' ? parameters : {};
 
 
-    let getQuery = querystring.stringify(getParams);
-    let postQuery = querystring.stringify(postParams);
-    this.$debug('get: '+ getQuery + ' post ' + postQuery);
+    const getQuery = querystring.stringify(getParams);
+    const postQuery = querystring.stringify(postParams);
 
     let path = this.$options.path + '/' + apiPath.replace(/\/*$/, '');
-    if (getQuery)
+    if (getQuery) {
       path += '?' + getQuery;
+    }
 
-    if (postQuery)
+    if (postQuery) {
       headers['Content-Length'] = postQuery.length;
-
-    switch(this.$options.login_type) {
-      case 'oauth':
-        // TODO this should use oauth.authHeader once they add the missing argument
-        let oauth = this.$options.oauth;
-        let orderedParameters = oauth._prepareParameters(
-          this.$options.oauth_access_token,
-          this.$options.oauth_access_token_secret,
-          httpMethod,
-          'https://api.bitbucket.org' + path,
-          postParams || {}
-        );
-        headers.Authorization = oauth._buildAuthorizationHeaders(orderedParameters);
-        break;
-
-      case 'oauth2':
-        headers.Authorization = 'Bearer ' + this.$options.oauth_access_token;
-        break;
-
-      case 'token': {
-        const auth = this.$options.username + '/token:' + this.$options.api_token;
-        const basic = new Buffer(auth, 'ascii').toString('base64');
-        headers.Authorization = 'Basic ' + basic;
-        break;
-      }
-
-      case 'basic': {
-        const auth = this.$options.username + ':' + this.$options.password;
-        const basic = new Buffer(auth, 'ascii').toString('base64');
-        headers.Authorization = 'Basic ' + basic;
-        break;
-      }
-
-      default:
-        // none
     }
 
     const getOptions = {
@@ -304,8 +245,7 @@ const Request = exports.Request = function Request(options) {
       callback(err, body);
     }
 
-    this.$debug('send ' + httpMethod + ' request: ' + path);
-    const request = require(this.$options.protocol).request(getOptions, (response) => {
+    const request = https.request(getOptions, (response) => {
       response.setEncoding('utf8');
 
       let body = [];
@@ -354,23 +294,15 @@ const Request = exports.Request = function Request(options) {
     request.end();
   };
 
-    /**
-     * Get a JSON response and transform to JSON
-     */
-    this.decodeResponse = function decodeResponse(response)
-    {
-      if (this.$options.format === 'text') {
-        return response;
-      }
-      else if (this.$options.format === 'json') {
-        return JSON.parse(response);
-      }
-    };
-
-  this.$debug = function $debug(msg) {
-    if (this.$options.debug) {
-      console.log(msg);
+  /**
+   * Get a JSON response and transform to JSON
+   */
+  this.decodeResponse = function decodeResponse(response) {
+    if (this.$options.format === 'text') {
+      return response;
+    }
+    else if (this.$options.format === 'json') {
+      return JSON.parse(response);
     }
   };
-
 }).call(Request.prototype);
