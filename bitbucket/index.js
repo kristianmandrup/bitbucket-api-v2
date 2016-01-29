@@ -209,13 +209,13 @@ var BitBucket = exports.BitBucket = function(debug, proxy, http) {
      *
      * @return {RepoApi}  the repo API
      */
-    this.getRepoApi = function()
+    this.getRepositoriesAPI = function()
     {
-        if(!this.$apis.repo) {
-            this.$apis.repo = new (require("./repo").RepoApi)(this);
+        if(!this.$apis.repositories) {
+            this.$apis.repositories = new (require("./repositories").RepositoriesAPI)(this);
         }
 
-        return this.$apis.repo;
+        return this.$apis.repositories;
      };
 
     /**

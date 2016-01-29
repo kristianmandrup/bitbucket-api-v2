@@ -1,11 +1,11 @@
 var util = require('util');
 var AbstractApi = require("./abstract_api").AbstractApi;
 
-var RepoApi = exports.RepoApi = function(api) {
+var RepositoriesApi = exports.RepositoriesApi = function(api) {
     this.$api = api;
 };
 
-util.inherits(RepoApi, AbstractApi);
+util.inherits(RepositoriesApi, AbstractApi);
 
 (function() {
 
@@ -24,20 +24,20 @@ util.inherits(RepoApi, AbstractApi);
 //        );
 //    };
 //
-    /**
-    * Get extended information about a repository by its username and repo name
-    *
-    * @param {String}  username         the user who owns the repo
-    * @param {String}  repo             the name of the repo
-    */
-    this.show = function(username, repo, callback)
-    {
-        this.$api.get(
-            'repositories/' + encodeURI(username) + "/" + encodeURI(repo),
-            null, null,
-            callback
-        );
-    };
+    // /**
+    // * Get extended information about a repository by its username and repo name
+    // *
+    // * @param {String}  username         the user who owns the repo
+    // * @param {String}  repo             the name of the repo
+    // */
+    // this.show = function(username, repo, callback)
+    // {
+    //     this.$api.get(
+    //         'repositories/' + encodeURI(username) + "/" + encodeURI(repo),
+    //         null, null,
+    //         callback
+    //     );
+    // };
 
     /**
      * Get the repositories of a user
@@ -47,12 +47,30 @@ util.inherits(RepoApi, AbstractApi);
      */
     this.getUserRepos = function(username, callback)
     {
-        this.$api.get(
-            'users/' + encodeURI(username),
-            null, null,
-            this.$createListener(callback, "repositories")
-        );
+      this.$api.get(
+          'repositories/' + encodeURI(username),
+          null, null,
+          this.$createListener(callback, 'getUserRepos')
+      );
     };
+    this.getUserRepos.hasNextPage() = (function() {
+      return !!this.$nextPageURLs['getUserRepos']
+    }).bind(this);
+    this.getUserRepos.hasPreviousPage() = (function() {
+      return !!this.$previousPageURLs['getUserRepos']
+    }).bind(this);
+    this.getUserRepos.getNextPage(callback) = (function() {
+      this.$api.doPrebuiltSend(
+          this.$nextPageURLs['getUserRepos'],
+          this.$createListener(callback, 'getUserRepos')
+      );
+    }).bind(this);
+    this.getUserRepos.getPreviousPage(callback) = (function() {
+      this.$api.doPrebuiltSend(
+          this.$previousPageURLs['getUserRepos'],
+          this.$createListener(callback, 'getUserRepos')
+      );
+    }).bind(this);
 
 //    /**
 //     * Get the tags of a repository
@@ -158,4 +176,4 @@ util.inherits(RepoApi, AbstractApi);
 //        );
 //    };
 
-}).call(RepoApi.prototype);
+}).call(RepositoriesApi.prototype);

@@ -1,17 +1,26 @@
 var AbstractApi = exports.AbstractApi = function(api) {
     this.$api = api;
+    this.$nextPageURLs = {};
+    this.$previousPageURLs = {};
 };
 
 (function() {
 
-    this.$createListener = function(callback, key) {
+    this.$createListener = function(callback, methodName) {
         return function(err, response) {
             if (err) {
-                callback && callback(err);
+                if (callback) {
+                  callback(err);
+                }
                 return;
             }
 
-            callback && callback(err, key ? response[key] : response);
+            this.$nextPageURLs[methodName] = response.next;
+            this.$previousPageURLs[methodName] = response.previous;
+
+            if (callback) {
+              callback(err, response);
+            }
         };
     };
 

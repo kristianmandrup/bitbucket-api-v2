@@ -118,6 +118,105 @@ var Request = exports.Request = function(options) {
         });
     };
 
+
+
+    /**
+     * Send a request to the server using a URL received from the API directly, receive a response
+     *
+     * @param {String}   $prebuiltURL       Request URL given by a previous API call
+     */
+    this.doPrebuiltSend = function(prebuiltURL, callback)
+    {
+        var host = this.$options.proxy_host ? this.$options.proxy_host : this.$options.hostname;
+        var port = this.$options.proxy_host ? this.$options.proxy_port || 3128 : this.$options.http_port || 443;
+
+        var headers = {
+            'Host':'api.bitbucket.org',
+            "User-Agent": "NodeJS HTTP Client",
+            "Content-Length": "0",
+            "Content-Type": "application/x-www-form-urlencoded"
+        };
+
+        switch(this.$options.login_type) {
+            case "oauth2":
+                headers.Authorization = 'Bearer ' + this.$options.oauth_access_token;
+                break;
+
+            case "token":
+                var auth = this.$options['username'] + "/token:" + this.$options['api_token'];
+                var basic = new Buffer(auth, "ascii").toString("base64");
+                headers.Authorization = "Basic " + basic;
+                break;
+
+            case "basic":
+                var auth = this.$options['username'] + ":" + this.$options['password'];
+                var basic = new Buffer(auth, "ascii").toString("base64");
+                headers.Authorization = "Basic " + basic;
+                break;
+
+            default:
+                // none
+        }
+
+        var getOptions = {
+            host: host,
+            post: port,
+            url: prebuiltURL,
+            headers: headers
+        };
+
+        this.$debug('send prebuilt request: ' + prebuiltURL);
+        var request = require(this.$options.protocol).request(getOptions, function(response) {
+            response.setEncoding('utf8');
+
+            var body = [];
+            response.addListener('data', function (chunk) {
+                body.push(chunk);
+            });
+            response.addListener('end', function () {
+                var msg;
+                body = body.join("");
+
+                if (response.statusCode > 204) {
+                    if (response.headers["content-type"].indexOf("application/json") === 0) {
+                        msg = JSON.parse(body);
+                    } else {
+                        msg = body;
+                    }
+                    done({status: response.statusCode, msg: msg});
+                    return;
+                }
+                if (response.statusCode == 204)
+                    body = "{}";
+
+                done(null, body);
+            });
+
+            response.addListener("error", function(e) {
+                done(e);
+            });
+
+            response.addListener("timeout", function() {
+                done(new Error("Request timed out"));
+            });
+        });
+
+        request.on("error", function(e) {
+            done(e);
+        });
+
+        request.end();
+
+        var called = false;
+        function done(err, body) {
+            if (called)
+                return;
+
+            called = true;
+            callback(err, body);
+        }
+    };
+
     /**
      * Send a request to the server, receive a response
      *
