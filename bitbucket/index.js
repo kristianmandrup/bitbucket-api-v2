@@ -158,7 +158,7 @@ const BitBucket = exports.BitBucket = function BitBucket(debug, proxy, http) {
     return this.request;
   };
 
-  this.repositories = new (require('./repositories').RepositoriesAPI)(this);
+  this.repositories = new (require('./repositories'))(this);
 
   /**
    * Check for whether we can iterate to another page using this.getNextPage(response).

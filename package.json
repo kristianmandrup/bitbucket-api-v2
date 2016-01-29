@@ -7,12 +7,12 @@
     "main" : "dist/index.js",
     "scripts": {
       "compile": "babel --presets es2015 -d ./dist ./bitbucket",
-      "lint": "eslint bitbucket/abstract_api.js bitbucket/index.js bitbucket/repositories.js --quiet",
+      "lint": "eslint ./bitbucket --quiet",
       "prepublish": "npm run compile"
     },
     "repository" : {
         "type" : "git",
-        "url" : "http://github.com/ajaxorg/node-bitbucket.git"
+        "url" : "http://github.com/Mr-Wallet/node-bitbucket-v2.git"
     },
     "engine" : ["node >=5.5.0"],
     "dependencies": {
