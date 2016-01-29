@@ -1,12 +1,12 @@
-var http = require("http");
-var util = require('util');
-var querystring = require("querystring");
-var crypto = require("crypto");
+let http = require('http');
+let util = require('util');
+let querystring = require('querystring');
+let crypto = require('crypto');
 
 /**
  * Performs requests on GitHub API.
  */
-var Request = exports.Request = function(options) {
+let Request = exports.Request = function(options) {
     this.configure(options);
 };
 
@@ -15,12 +15,12 @@ var Request = exports.Request = function(options) {
     this.$defaults = {
         protocol    : 'https',
         path        : '/2.0',
-        hostname    : "api.bitbucket.org",
+        hostname    : 'api.bitbucket.org',
         format      : 'json',
         user_agent  : 'js-bitbucket-api-v2 (http://github.com/Mr-Wallet/node-bitbucket-v2)',
         http_port   : 443,
         timeout     : 20,
-        login_type  : "none",
+        login_type  : 'none',
         username    : null,
         password    : null,
         api_token   : null,
@@ -34,7 +34,7 @@ var Request = exports.Request = function(options) {
     {
         options = options || {};
         this.$options = {};
-        for (var key in this.$defaults) {
+        for (let key in this.$defaults) {
             this.$options[key] = options[key] !== undefined ? options[key] : this.$defaults[key];
         }
 
@@ -95,14 +95,14 @@ var Request = exports.Request = function(options) {
      */
     this.send = function(apiPath, parameters, httpMethod, options, callback)
     {
-        httpMethod = httpMethod || "GET";
+        httpMethod = httpMethod || 'GET';
         if(options)
         {
-            var initialOptions = this.$options;
+            let initialOptions = this.$options;
             this.configure(options);
         }
 
-        var self = this;
+        let self = this;
         this.doSend(apiPath, parameters, httpMethod, function(err, response) {
             if (err) {
                 callback && callback(err);
@@ -127,38 +127,38 @@ var Request = exports.Request = function(options) {
      */
     this.doPrebuiltSend = function(prebuiltURL, callback)
     {
-        var host = this.$options.proxy_host ? this.$options.proxy_host : this.$options.hostname;
-        var port = this.$options.proxy_host ? this.$options.proxy_port || 3128 : this.$options.http_port || 443;
+        let host = this.$options.proxy_host ? this.$options.proxy_host : this.$options.hostname;
+        let port = this.$options.proxy_host ? this.$options.proxy_port || 3128 : this.$options.http_port || 443;
 
-        var headers = {
+        let headers = {
             'Host':'api.bitbucket.org',
-            "User-Agent": "NodeJS HTTP Client",
-            "Content-Length": "0",
-            "Content-Type": "application/x-www-form-urlencoded"
+            'User-Agent': 'NodeJS HTTP Client',
+            'Content-Length': '0',
+            'Content-Type': 'application/x-www-form-urlencoded'
         };
 
         switch(this.$options.login_type) {
-            case "oauth2":
+            case 'oauth2':
                 headers.Authorization = 'Bearer ' + this.$options.oauth_access_token;
                 break;
 
-            case "token":
-                var auth = this.$options['username'] + "/token:" + this.$options['api_token'];
-                var basic = new Buffer(auth, "ascii").toString("base64");
-                headers.Authorization = "Basic " + basic;
+            case 'token':
+                let auth = this.$options['username'] + '/token:' + this.$options['api_token'];
+                let basic = new Buffer(auth, 'ascii').toString('base64');
+                headers.Authorization = 'Basic ' + basic;
                 break;
 
-            case "basic":
-                var auth = this.$options['username'] + ":" + this.$options['password'];
-                var basic = new Buffer(auth, "ascii").toString("base64");
-                headers.Authorization = "Basic " + basic;
+            case 'basic':
+                let auth = this.$options['username'] + ':' + this.$options['password'];
+                let basic = new Buffer(auth, 'ascii').toString('base64');
+                headers.Authorization = 'Basic ' + basic;
                 break;
 
             default:
                 // none
         }
 
-        var getOptions = {
+        let getOptions = {
             host: host,
             post: port,
             url: prebuiltURL,
@@ -166,19 +166,19 @@ var Request = exports.Request = function(options) {
         };
 
         this.$debug('send prebuilt request: ' + prebuiltURL);
-        var request = require(this.$options.protocol).request(getOptions, function(response) {
+        let request = require(this.$options.protocol).request(getOptions, function(response) {
             response.setEncoding('utf8');
 
-            var body = [];
+            let body = [];
             response.addListener('data', function (chunk) {
                 body.push(chunk);
             });
             response.addListener('end', function () {
-                var msg;
-                body = body.join("");
+                let msg;
+                body = body.join('');
 
                 if (response.statusCode > 204) {
-                    if (response.headers["content-type"].indexOf("application/json") === 0) {
+                    if (response.headers['content-type'].indexOf('application/json') === 0) {
                         msg = JSON.parse(body);
                     } else {
                         msg = body;
@@ -187,27 +187,27 @@ var Request = exports.Request = function(options) {
                     return;
                 }
                 if (response.statusCode == 204)
-                    body = "{}";
+                    body = '{}';
 
                 done(null, body);
             });
 
-            response.addListener("error", function(e) {
+            response.addListener('error', function(e) {
                 done(e);
             });
 
-            response.addListener("timeout", function() {
-                done(new Error("Request timed out"));
+            response.addListener('timeout', function() {
+                done(new Error('Request timed out'));
             });
         });
 
-        request.on("error", function(e) {
+        request.on('error', function(e) {
             done(e);
         });
 
         request.end();
 
-        var called = false;
+        let called = false;
         function done(err, body) {
             if (called)
                 return;
@@ -227,65 +227,65 @@ var Request = exports.Request = function(options) {
     this.doSend = function(apiPath, parameters, httpMethod, callback)
     {
         httpMethod = httpMethod.toUpperCase();
-        var host = this.$options.proxy_host ? this.$options.proxy_host : this.$options.hostname;
-        var port = this.$options.proxy_host ? this.$options.proxy_port || 3128 : this.$options.http_port || 443;
+        let host = this.$options.proxy_host ? this.$options.proxy_host : this.$options.hostname;
+        let port = this.$options.proxy_host ? this.$options.proxy_port || 3128 : this.$options.http_port || 443;
 
-        var headers = {
+        let headers = {
             'Host':'api.bitbucket.org',
-            "User-Agent": "NodeJS HTTP Client",
-            "Content-Length": "0",
-            "Content-Type": "application/x-www-form-urlencoded"
+            'User-Agent': 'NodeJS HTTP Client',
+            'Content-Length': '0',
+            'Content-Type': 'application/x-www-form-urlencoded'
         };
-        var getParams  = httpMethod != "POST" ? parameters : {};
-        var postParams = httpMethod == "POST" ? parameters : {};
+        let getParams  = httpMethod != 'POST' ? parameters : {};
+        let postParams = httpMethod == 'POST' ? parameters : {};
 
 
-        var getQuery = querystring.stringify(getParams);
-        var postQuery = querystring.stringify(postParams);
-        this.$debug("get: "+ getQuery + " post " + postQuery);
+        let getQuery = querystring.stringify(getParams);
+        let postQuery = querystring.stringify(postParams);
+        this.$debug('get: '+ getQuery + ' post ' + postQuery);
 
-        var path = this.$options.path + "/" + apiPath.replace(/\/*$/, "");
+        let path = this.$options.path + '/' + apiPath.replace(/\/*$/, '');
         if (getQuery)
-            path += "?" + getQuery;
+            path += '?' + getQuery;
 
         if (postQuery)
-            headers["Content-Length"] = postQuery.length;
+            headers['Content-Length'] = postQuery.length;
 
         switch(this.$options.login_type) {
-            case "oauth":
+            case 'oauth':
                 // TODO this should use oauth.authHeader once they add the missing argument
-                var oauth = this.$options.oauth;
-                var orderedParameters= oauth._prepareParameters(
+                let oauth = this.$options.oauth;
+                let orderedParameters= oauth._prepareParameters(
                     this.$options.oauth_access_token,
                     this.$options.oauth_access_token_secret,
                     httpMethod,
-                    "https://api.bitbucket.org" + path,
+                    'https://api.bitbucket.org' + path,
                     postParams || {}
                 );
                 headers.Authorization = oauth._buildAuthorizationHeaders(orderedParameters);
                 break;
 
-            case "oauth2":
+            case 'oauth2':
                 headers.Authorization = 'Bearer ' + this.$options.oauth_access_token;
                 break;
 
-            case "token":
-                var auth = this.$options['username'] + "/token:" + this.$options['api_token'];
-                var basic = new Buffer(auth, "ascii").toString("base64");
-                headers.Authorization = "Basic " + basic;
+            case 'token':
+                let auth = this.$options['username'] + '/token:' + this.$options['api_token'];
+                let basic = new Buffer(auth, 'ascii').toString('base64');
+                headers.Authorization = 'Basic ' + basic;
                 break;
 
-            case "basic":
-                var auth = this.$options['username'] + ":" + this.$options['password'];
-                var basic = new Buffer(auth, "ascii").toString("base64");
-                headers.Authorization = "Basic " + basic;
+            case 'basic':
+                let auth = this.$options['username'] + ':' + this.$options['password'];
+                let basic = new Buffer(auth, 'ascii').toString('base64');
+                headers.Authorization = 'Basic ' + basic;
                 break;
 
             default:
                 // none
         }
 
-        var getOptions = {
+        let getOptions = {
             host: host,
             post: port,
             path: path,
@@ -294,19 +294,19 @@ var Request = exports.Request = function(options) {
         };
 
         this.$debug('send ' + httpMethod + ' request: ' + path);
-        var request = require(this.$options.protocol).request(getOptions, function(response) {
+        let request = require(this.$options.protocol).request(getOptions, function(response) {
             response.setEncoding('utf8');
 
-            var body = [];
+            let body = [];
             response.addListener('data', function (chunk) {
                 body.push(chunk);
             });
             response.addListener('end', function () {
-                var msg;
-                body = body.join("");
+                let msg;
+                body = body.join('');
 
                 if (response.statusCode > 204) {
-                    if (response.headers["content-type"].indexOf("application/json") === 0) {
+                    if (response.headers['content-type'].indexOf('application/json') === 0) {
                         msg = JSON.parse(body);
                     } else {
                         msg = body;
@@ -315,30 +315,30 @@ var Request = exports.Request = function(options) {
                     return;
                 }
                 if (response.statusCode == 204)
-                    body = "{}";
+                    body = '{}';
 
                 done(null, body);
             });
 
-            response.addListener("error", function(e) {
+            response.addListener('error', function(e) {
                 done(e);
             });
 
-            response.addListener("timeout", function() {
-                done(new Error("Request timed out"));
+            response.addListener('timeout', function() {
+                done(new Error('Request timed out'));
             });
         });
 
-        request.on("error", function(e) {
+        request.on('error', function(e) {
             done(e);
         });
 
-        if (httpMethod == "POST")
+        if (httpMethod == 'POST')
             request.write(postQuery);
 
         request.end();
 
-        var called = false;
+        let called = false;
         function done(err, body) {
             if (called)
                 return;
@@ -353,10 +353,10 @@ var Request = exports.Request = function(options) {
      */
     this.decodeResponse = function(response)
     {
-        if(this.$options.format === "text") {
+        if(this.$options.format === 'text') {
             return response;
         }
-        else if(this.$options.format === "json") {
+        else if(this.$options.format === 'json') {
             return JSON.parse(response);
         }
     };

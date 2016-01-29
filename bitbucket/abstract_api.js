@@ -1,27 +1,22 @@
-var AbstractApi = exports.AbstractApi = function(api) {
+class AbstractApi {
+  constructor(api) {
     this.$api = api;
-    this.$nextPageURLs = {};
-    this.$previousPageURLs = {};
-};
+  }
 
-(function() {
+  $createListener(callback) {
+    return function callbackRunner(err, response) {
+      if (err) {
+        if (callback) {
+          callback(err);
+        }
+        return;
+      }
 
-    this.$createListener = function(callback, methodName) {
-        return function(err, response) {
-            if (err) {
-                if (callback) {
-                  callback(err);
-                }
-                return;
-            }
-
-            this.$nextPageURLs[methodName] = response.next;
-            this.$previousPageURLs[methodName] = response.previous;
-
-            if (callback) {
-              callback(err, response);
-            }
-        };
+      if (callback) {
+        callback(err, response);
+      }
     };
+  }
+}
 
-}).call(AbstractApi.prototype);
+module.exports = AbstractApi;

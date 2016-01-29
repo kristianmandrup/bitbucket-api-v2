@@ -1,10 +1,10 @@
-var util = require('util');
-var AbstractApi = require("./abstract_api").AbstractApi;
+let util = require('util');
+let AbstractApi = require('./abstract_api').AbstractApi;
 
 /**
  * API wrapper for http://confluence.atlassian.com/display/BBDEV/SSH+Keys
  */
-var SshApi = exports.SshApi = function(api) {
+let SshApi = exports.SshApi = function(api) {
     this.$api = api;
 };
 
@@ -16,21 +16,21 @@ util.inherits(SshApi, AbstractApi);
      * List all public SSH keys on the account
      */
     this.getKeys = function(callback) {
-        this.$api.get("ssh-keys/", null, null, callback);
+        this.$api.get('ssh-keys/', null, null, callback);
     };
 
     /**
      * Add a public SSH key on the account
      */
     this.addKey = function(key, callback) {
-        this.$api.post("ssh-keys/", {key: key}, null, callback);
+        this.$api.post('ssh-keys/', {key: key}, null, callback);
     };
 
     /**
      * Delete a public SSH key on the account
      */
     this.deleteKey = function(pk, callback) {
-        this.$api["delete"]("ssh-keys/" + pk, null, null, callback);
+        this.$api['delete']('ssh-keys/' + pk, null, null, callback);
     };
 
 }).call(SshApi.prototype);
