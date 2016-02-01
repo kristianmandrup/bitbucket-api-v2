@@ -19,6 +19,7 @@ class Bitbucket {
     this.request = new Request({ 'proxy_host': this.$proxy_host, 'proxy_port': this.$proxy_port });
 
     this.repositories = new (require('./repositories'))(this);
+    this.user = new (require('./user'))(this);
   }
 
 /**
