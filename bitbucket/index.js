@@ -119,6 +119,10 @@ authenticateOAuth2(accessToken) {
    * @param {callback} The callback to run when the response comes back.
    */
   getNextPage(response, callback) {
+    if (!this.hasNextPage(response)) {
+      throw new Error('getNextPage: argument has no next page url. Call hasNextPage first to guard this method call.');
+    }
+
     this.request.doPrebuiltSend(response.next, callback);
   }
 
@@ -131,6 +135,10 @@ authenticateOAuth2(accessToken) {
    * @param {callback} The callback to run when the response comes back.
    */
   getPreviousPage(response, callback) {
+    if (!this.hasPreviousPage(response)) {
+      throw new Error('getPreviousPage: argument has no next page url. Call hasPreviousPage first to guard this method call.');
+    }
+
     this.request.doPrebuiltSend(response.previous, callback);
   }
 }
