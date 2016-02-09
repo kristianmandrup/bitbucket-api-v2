@@ -25,6 +25,39 @@ class RepositoriesApi extends AbstractApi {
   }
 
   /**
+   * Get the pull requests for a single repo
+   *
+   * @param {String} repo owner
+   * @param {String} slug (name) of the repo.
+   * @param {$api.constants.pullRequest.states or Array thereof} The PR state. If invalid or undefined, defaults to OPEN
+   */
+  getPullRequests(username, repoSlug, state, callback) {
+    const { constants } = this.$api;
+    let stateArray = state;
+    if (!stateArray) {
+      stateArray = [constants.pullRequest.states.OPEN];
+    }
+    else if (!_.isArray(stateArray)) {
+      stateArray = [stateArray];
+    }
+
+    const hasInvalidState = _.find(state, (stateElement) => !_.contains(constants.pullRequest.states, stateElement));
+    if (hasInvalidState) {
+      stateArray = [constants.pullRequest.states.OPEN];
+    }
+
+    const apiParameters = {
+      state: stateArray.join(',')
+    };
+
+    this.$api.get(
+      'repositories/' + encodeURI(username) + '/' + encodeURI(repoSlug) + '/pullrequests',
+      apiParameters, null,
+      this.$createListener(callback)
+    );
+  }
+
+  /**
    * Get the repositories of a user
    *
    * @param {String}  username

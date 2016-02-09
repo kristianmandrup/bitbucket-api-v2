@@ -18,6 +18,16 @@ class Bitbucket {
 
     this.request = new Request({ 'proxy_host': this.$proxy_host, 'proxy_port': this.$proxy_port });
 
+    this.constants = {
+      pullRequest: {
+        states: {
+          DECLINED: 'DECLINED',
+          MERGED: 'MERGED',
+          OPEN: 'OPEN'
+        }
+      }
+    };
+
     this.repositories = new (require('./repositories'))(this);
     this.user = new (require('./user'))(this);
   }
