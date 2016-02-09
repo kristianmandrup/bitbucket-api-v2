@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const AbstractApi = require('./abstract_api');
 
 /**
@@ -87,7 +89,7 @@ class RepositoriesApi extends AbstractApi {
    * @param {Object} API response
    */
   getParentFromResponse(response, callback) {
-    const prebuiltURL = response && response.parent && response.parent.links && response.parent.links.self && response.parent.links.self.href;
+    const prebuiltURL = _.get(response, 'parent.links.self.href');
 
     if (!prebuiltURL) {
       throw new Error('getForksFromResponse: argument has no \'parent\' info. Call hasParent first to guard this method call.');
