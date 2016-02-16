@@ -29,7 +29,7 @@ const Request = exports.Request = function Request(options) {
 
   this.configure = function configure(options = {}) {
     this.$options = {};
-    for (let key in this.$defaults) {
+    for (const key in this.$defaults) {
       this.$options[key] = options[key] !== undefined ? options[key] : this.$defaults[key];
     }
 
@@ -56,8 +56,8 @@ const Request = exports.Request = function Request(options) {
   *
   * @return mixed  The option value
   */
-  this.getOption = function getOption(name, defaultValue) {
-    defaultValue = defaultValue === undefined ? null: defaultValue;
+  this.getOption = function getOption(name, _defaultValue) {
+    const defaultValue = _defaultValue === undefined ? null : _defaultValue;
     return this.$options[name] ? this.$options[name] : defaultValue;
   };
 
@@ -93,7 +93,7 @@ const Request = exports.Request = function Request(options) {
       this.configure(options);
     }
 
-    this.doSend(apiPath, parameters, httpMethod, (err, response) => {
+    this.doSend(apiPath, parameters, httpMethod, (err, _response) => {
       if (err) {
         if (callback) {
           callback(err);
@@ -101,7 +101,7 @@ const Request = exports.Request = function Request(options) {
         return;
       }
 
-      response = this.decodeResponse(response);
+      const response = this.decodeResponse(_response);
 
       if (initialOptions) {
         this.options = initialOptions;
@@ -113,11 +113,11 @@ const Request = exports.Request = function Request(options) {
   };
 
 
-    /**
-     * Send a request to the server using a URL received from the API directly, receive a response
-     *
-     * @param {String}   $prebuiltURL       Request URL given by a previous API call
-     */
+  /**
+   * Send a request to the server using a URL received from the API directly, receive a response
+   *
+   * @param {String}   $prebuiltURL       Request URL given by a previous API call
+   */
   this.doPrebuiltSend = function doPrebuiltSend(prebuiltURL, callback) {
     const port = this.$options.proxy_host ? this.$options.proxy_port || 3128 : this.$options.http_port || 443;
 
@@ -199,10 +199,10 @@ const Request = exports.Request = function Request(options) {
    * @param {Object}    $parameters    Parameters
    * @param {String}   $httpMethod    HTTP method to use
    */
-  this.doSend = function doSend(apiPath, parameters, httpMethod, callback) {
-    httpMethod = httpMethod.toUpperCase();
-    const host = this.$options.proxy_host ? this.$options.proxy_host: this.$options.hostname;
-    const port = this.$options.proxy_host ? this.$options.proxy_port || 3128: this.$options.http_port || 443;
+  this.doSend = function doSend(apiPath, parameters, _httpMethod, callback) {
+    const httpMethod = _httpMethod.toUpperCase();
+    const host = this.$options.proxy_host ? this.$options.proxy_host : this.$options.hostname;
+    const port = this.$options.proxy_host ? this.$options.proxy_port || 3128 : this.$options.http_port || 443;
 
     const headers = {
       'Host': 'api.bitbucket.org',
