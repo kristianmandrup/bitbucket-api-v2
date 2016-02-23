@@ -1,6 +1,6 @@
 {
   "name": "bitbucket-v2",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Wrapper for the BitBucket API v2",
   "author": "Jordan Wallet <jjwallet@gmail.com>",
   "homepage": "https://github.com/Mr-Wallet/node-bitbucket-v2.git",

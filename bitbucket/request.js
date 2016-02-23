@@ -211,20 +211,17 @@ const Request = exports.Request = function Request(options) {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': 'Bearer ' + this.$options.oauth_access_token
     };
-    const getParams = httpMethod !== 'POST' ? parameters : {};
-    const postParams = httpMethod === 'POST' ? parameters : {};
 
-
-    const getQuery = querystring.stringify(getParams);
-    const postQuery = querystring.stringify(postParams);
-
+    let query;
     let path = this.$options.path + '/' + apiPath.replace(/\/*$/, '');
-    if (getQuery) {
-      path += '?' + getQuery;
+    if (httpMethod === 'POST') {
+      query = JSON.stringify(parameters);
+      headers['Content-Type'] = 'application/json';
+      headers['Content-Length'] = query.length;
     }
-
-    if (postQuery) {
-      headers['Content-Length'] = postQuery.length;
+    else {
+      query = querystring.stringify(parameters);
+      path += '?' + query;
     }
 
     const getOptions = {
@@ -287,7 +284,7 @@ const Request = exports.Request = function Request(options) {
     });
 
     if (httpMethod === 'POST') {
-      request.write(postQuery);
+      request.write(query);
     }
 
 

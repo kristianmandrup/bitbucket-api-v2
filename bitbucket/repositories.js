@@ -11,6 +11,23 @@ class RepositoriesApi extends AbstractApi {
   }
 
   /**
+   * Create a new pull request
+   *
+   * @param {String} repo owner
+   * @param {String} slug (name) of the repo.
+   * @param {Object} pullRequest The PR POST body as specified by Bitbucket's API documentation
+   */
+  createPullRequest(username, repoSlug, pullRequest, callback) {
+    this.$api.post(
+      // This may be the only API call in the entire Bitbucket specs that has a / at the end.
+      // It probably doesn't matter, but the docs will be strictly followed just in case.
+      'repositories/' + encodeURI(username) + '/' + encodeURI(repoSlug) + '/pullrequests/',
+      pullRequest, null,
+      this.$createListener(callback)
+    );
+  }
+
+  /**
    * Get the info for a single repo
    *
    * @param {String} repo owner
@@ -19,6 +36,21 @@ class RepositoriesApi extends AbstractApi {
   get(username, repoSlug, callback) {
     this.$api.get(
       'repositories/' + encodeURI(username) + '/' + encodeURI(repoSlug),
+      null, null,
+      this.$createListener(callback)
+    );
+  }
+
+  /**
+   * Get the branch info for a single repo
+   *
+   * @param {String} repo owner
+   * @param {String} slug (name) of the repo.
+   */
+   //TODO confirm this works
+  getBranches(username, repoSlug, callback) {
+    this.$api.get(
+      'repositories/' + encodeURI(username) + '/' + encodeURI(repoSlug) + '/refs/branches',
       null, null,
       this.$createListener(callback)
     );
