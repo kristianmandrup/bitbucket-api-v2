@@ -47,10 +47,23 @@ class RepositoriesApi extends AbstractApi {
    * @param {String} repo owner
    * @param {String} slug (name) of the repo.
    */
-   //TODO confirm this works
   getBranches(username, repoSlug, callback) {
     this.$api.get(
       'repositories/' + encodeURI(username) + '/' + encodeURI(repoSlug) + '/refs/branches',
+      null, null,
+      this.$createListener(callback)
+    );
+  }
+
+  /**
+   * Get a single commit
+   * @param {String} repo owner
+   * @param {String} slug (name) of the repo.
+   * @param {String} the sha of the commit
+   */
+  getCommit(username, repoSlug, sha, callback) {
+    this.$api.get(
+      'repositories/' + encodeURI(username) + '/' + encodeURI(repoSlug) + '/commit/' + sha,
       null, null,
       this.$createListener(callback)
     );
