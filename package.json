@@ -19,8 +19,9 @@
   ],
   "dependencies": {
     "asyncjs": "~0.0.10",
-    "lodash": "^3.10.1",
-    "oauth": "~0.9.14"
+    "lodash": "^4.6.1",
+    "oauth": "~0.9.14",
+    "xhr": "^2.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.2.0",

@@ -86,7 +86,7 @@ class RepositoriesApi extends AbstractApi {
       stateArray = [stateArray];
     }
 
-    const hasInvalidState = _.find(state, (stateElement) => !_.contains(constants.pullRequest.states, stateElement));
+    const hasInvalidState = _.find(state, (stateElement) => !_.includes(constants.pullRequest.states, stateElement));
     if (hasInvalidState) {
       stateArray = [constants.pullRequest.states.OPEN];
     }

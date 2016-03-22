@@ -7,7 +7,7 @@ const Request = require('./request').Request;
  */
 
 class Bitbucket {
-  constructor(proxy) {
+  constructor({ proxy, useXhr }) {
     /**
      * Define HTTP proxy in format localhost:3128
      */
@@ -16,7 +16,7 @@ class Bitbucket {
       this.$proxy_port = proxy.split(':')[1];
     }
 
-    this.request = new Request({ 'proxy_host': this.$proxy_host, 'proxy_port': this.$proxy_port });
+    this.request = new Request({ 'proxy_host': this.$proxy_host, 'proxy_port': this.$proxy_port, 'use_xhr': useXhr });
 
     this.constants = {
       pullRequest: {
