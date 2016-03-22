@@ -1,7 +1,8 @@
-const querystring = require('querystring');
+const _ = require('lodash');
 const https = require('https');
-const xhr = require('xhr');
+const querystring = require('querystring');
 const url = require('url');
+const xhr = require('xhr');
 
 /**
  * Performs requests on GitHub API.
@@ -30,11 +31,7 @@ const Request = exports.Request = function Request(options) {
   };
 
   this.configure = function configure(options = {}) {
-    this.$options = {};
-    for (const key in this.$defaults) {
-      this.$options[key] = options[key] !== undefined ? options[key] : this.$defaults[key];
-    }
-
+    this.$options = _.defaults({}, options, this.$defaults);
     return this;
   };
 
@@ -103,11 +100,10 @@ const Request = exports.Request = function Request(options) {
         return;
       }
 
-      //const response = this.decodeResponse(_response);
-      const response = _response;
+      const response = this.$options.use_xhr ? _response : this.decodeResponse(_response);
 
       if (initialOptions) {
-        this.options = initialOptions;
+        this.$options = initialOptions;
       }
       if (callback) {
         callback(null, response);
@@ -122,15 +118,25 @@ const Request = exports.Request = function Request(options) {
    * @param {String}   $prebuiltURL       Request URL given by a previous API call
    */
   this.doPrebuiltSend = function doPrebuiltSend(prebuiltURL, callback) {
-    const port = this.$options.proxy_host ? this.$options.proxy_port || 3128 : this.$options.http_port || 443;
+    const {
+      http_port: httpPort,
+      oauth_access_token: oauthAccessToken,
+      proxy_host: proxyHost,
+      proxy_port: proxyPort,
+      use_xhr: useXhr
+    } = this.$options;
+    const port = !useXhr && proxyHost ? proxyPort || 3128 : httpPort || 443;
 
     const headers = {
-      //'Host': 'api.bitbucket.org',
-      //'User-Agent': 'NodeJS HTTP Client',
-      //'Content-Length': '0',
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Bearer ' + this.$options.oauth_access_token
+      'Authorization': 'Bearer ' + oauthAccessToken
     };
+
+    if (!useXhr) {
+      headers['Host'] = 'api.bitbucket.org'; // eslint-disable-line dot-notation
+      headers['User-Agent'] = 'NodeJS HTTP Client';
+      headers['Content-Length'] = '0';
+    }
 
     const parsedUrl = url.parse(prebuiltURL);
 
@@ -152,64 +158,67 @@ const Request = exports.Request = function Request(options) {
       callback(err, body);
     }
 
+    if (useXhr) {
+      xhr({ url: prebuiltURL, responseType: 'json', timeout: this.$options.timeout * 1000 }, (error, response) => {
+        if (error) {
+          done(error);
+          return;
+        }
+        let msg = response.body;
+        if (response.statusCode > 204) {
+          done({ status: response.statusCode, msg });
+          return;
+        }
+        if (response.statusCode === 204) {
+          msg = {};
+        }
+        done(null, msg);
+      });
 
-    xhr({ url: prebuiltURL, responseType: 'json', timeout: this.$options.timeout * 1000 }, (error, response) => {
-      if (error) {
-        done(error);
-        return;
-      }
-      let msg = response.body;
-      if (response.statusCode > 204) {
-        done({ status: response.statusCode, msg });
-        return;
-      }
-      if (response.statusCode === 204) {
-        msg = {};
-      }
-      done(null, msg);
+      return;
+    }
+
+    const request = https.request(getOptions, (response) => {
+      response.setEncoding('utf8');
+
+      const body = [];
+      response.addListener('data', (chunk) => {
+        body.push(chunk);
+      });
+      response.addListener('end', () => {
+        let msg = body.join('');
+
+        if (response.statusCode > 204) {
+          if (response.headers['content-type'].includes('application/json')) {
+            msg = JSON.parse(body);
+          }
+          else {
+            msg = body;
+          }
+
+          done({ status: response.statusCode, msg });
+          return;
+        }
+        if (response.statusCode === 204) {
+          msg = '{}';
+        }
+        done(null, this.decodeResponse(msg));
+      });
+
+      response.addListener('error', (e) => {
+        done(e);
+      });
+
+      response.addListener('timeout', () => {
+        done(new Error('Request timed out'));
+      });
     });
 
-    // const request = https.request(getOptions, (response) => {
-    //   response.setEncoding('utf8');
-    //
-    //   const body = [];
-    //   response.addListener('data', (chunk) => {
-    //     body.push(chunk);
-    //   });
-    //   response.addListener('end', () => {
-    //     let msg = body.join('');
-    //
-    //     if (response.statusCode > 204) {
-    //       if (response.headers['content-type'].includes('application/json')) {
-    //         msg = JSON.parse(body);
-    //       }
-    //       else {
-    //         msg = body;
-    //       }
-    //
-    //       done({ status: response.statusCode, msg });
-    //       return;
-    //     }
-    //     if (response.statusCode === 204) {
-    //       msg = '{}';
-    //     }
-    //     done(null, this.decodeResponse(msg));
-    //   });
-    //
-    //   response.addListener('error', (e) => {
-    //     done(e);
-    //   });
-    //
-    //   response.addListener('timeout', () => {
-    //     done(new Error('Request timed out'));
-    //   });
-    // });
-    //
-    // request.on('error', (e) => {
-    //   done(e);
-    // });
-    //
-    // request.end();
+    request.on('error', (e) => {
+      done(e);
+    });
+
+    request.end();
   };
 
   /**
@@ -221,25 +230,36 @@ const Request = exports.Request = function Request(options) {
    */
   this.doSend = function doSend(apiPath, parameters, _httpMethod, callback) {
     const httpMethod = _httpMethod.toUpperCase();
-    //const host = this.$options.proxy_host ? this.$options.proxy_host : this.$options.hostname;
-    //const port = this.$options.proxy_host ? this.$options.proxy_port || 3128 : this.$options.http_port || 443;
-    const host = this.$options.hostname;
-    const port = this.$options.http_port || 443;
+    const {
+      hostname,
+      http_port: httpPort,
+      oauth_access_token: oauthAccessToken,
+      proxy_host: proxyHost,
+      proxy_port: proxyPort,
+      use_xhr: useXhr
+    } = this.$options;
+    const host = !useXhr && proxyHost ? proxyHost : hostname;
+    const port = !useXhr && proxyHost ? proxyPort || 3128 : httpPort || 443;
 
     const headers = {
-      //'Host': 'api.bitbucket.org',
-      //'User-Agent': 'NodeJS HTTP Client',
-      //'Content-Length': '0',
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Bearer ' + this.$options.oauth_access_token
+      'Authorization': 'Bearer ' + oauthAccessToken
     };
+
+    if (!useXhr) {
+      headers['Host'] = 'api.bitbucket.org'; // eslint-disable-line dot-notation
+      headers['User-Agent'] = 'NodeJS HTTP Client';
+      headers['Content-Length'] = '0';
+    }
 
     let query;
     let path = this.$options.path + '/' + apiPath.replace(/\/*$/, '');
     if (httpMethod === 'POST') {
       query = JSON.stringify(parameters);
-      //headers['Content-Type'] = 'application/json';
-      //headers['Content-Length'] = query.length;
+      if (!useXhr) {
+        headers['Content-Type'] = 'application/json';
+        headers['Content-Length'] = query.length;
+      }
     }
     else {
       query = querystring.stringify(parameters);
@@ -264,75 +284,78 @@ const Request = exports.Request = function Request(options) {
       callback(err, body);
     }
 
-    const xhrOptions = { method: httpMethod, headers, url: `https://${host}${path}`, responseType: 'json', timeout: this.$options.timeout * 1000 };
-    if (httpMethod === 'POST') {
-      xhrOptions.json = parameters;
+    if (useXhr) {
+      const xhrOptions = { method: httpMethod, headers, url: `https://${host}${path}`, responseType: 'json', timeout: this.$options.timeout * 1000 };
+      if (httpMethod === 'POST') {
+        xhrOptions.json = parameters;
+      }
+      xhr(xhrOptions, (error, response) => {
+        if (error) {
+          done(error);
+          return;
+        }
+        let msg = response.body;
+
+        if (response.statusCode > 204) {
+          done({ status: response.statusCode, msg });
+          return;
+        }
+        if (response.statusCode === 204) {
+          msg = {};
+        }
+
+        done(null, msg);
+      });
+
+      return;
     }
-    xhr(xhrOptions, (error, response) => {
-      if (error) {
-        done(error);
-        return;
-      }
-      let msg = response.body;
 
-      if (response.statusCode > 204) {
-        done({ status: response.statusCode, msg });
-        return;
-      }
-      if (response.statusCode === 204) {
-        msg = {};
-      }
+    const request = https.request(getOptions, (response) => {
+      response.setEncoding('utf8');
 
-      done(null, msg);
+      let body = [];
+      response.addListener('data', (chunk) => {
+        body.push(chunk);
+      });
+      response.addListener('end', () => {
+        let msg;
+        body = body.join('');
+
+        if (response.statusCode > 204) {
+          if (response.headers['content-type'].includes('application/json')) {
+            msg = JSON.parse(body);
+          }
+          else {
+            msg = body;
+          }
+          done({ status: response.statusCode, msg });
+          return;
+        }
+        if (response.statusCode === 204) {
+          body = '{}';
+        }
+
+        done(null, body);
+      });
+
+      response.addListener('error', (e) => {
+        done(e);
+      });
+
+      response.addListener('timeout', () => {
+        done(new Error('Request timed out'));
+      });
     });
 
-    // const request = https.request(getOptions, (response) => {
-    //   response.setEncoding('utf8');
-    //
-    //   let body = [];
-    //   response.addListener('data', (chunk) => {
-    //     body.push(chunk);
-    //   });
-    //   response.addListener('end', () => {
-    //     let msg;
-    //     body = body.join('');
-    //
-    //     if (response.statusCode > 204) {
-    //       if (response.headers['content-type'].includes('application/json')) {
-    //         msg = JSON.parse(body);
-    //       }
-    //       else {
-    //         msg = body;
-    //       }
-    //       done({ status: response.statusCode, msg });
-    //       return;
-    //     }
-    //     if (response.statusCode === 204) {
-    //       body = '{}';
-    //     }
-    //
-    //     done(null, body);
-    //   });
-    //
-    //   response.addListener('error', (e) => {
-    //     done(e);
-    //   });
-    //
-    //   response.addListener('timeout', () => {
-    //     done(new Error('Request timed out'));
-    //   });
-    // });
-    //
-    // request.on('error', (e) => {
-    //   done(e);
-    // });
-    //
-    // if (httpMethod === 'POST') {
-    //   request.write(query);
-    // }
-    //
-    //
-    // request.end();
+    request.on('error', (e) => {
+      done(e);
+    });
+
+    if (httpMethod === 'POST') {
+      request.write(query);
+    }
+
+    request.end();
   };
 
   /**

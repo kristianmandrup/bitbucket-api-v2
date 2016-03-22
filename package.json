@@ -30,10 +30,5 @@
     "eslint-config-airbnb": "^2.0.0",
     "eslint-plugin-react": "^3.11.2"
   },
-  "licenses": [
-    {
-      "type": "The MIT License",
-      "url": "http://www.opensource.org/licenses/mit-license.php"
-    }
-  ]
+  "license": "MIT"
 }
