@@ -29,6 +29,7 @@ class Bitbucket {
     };
 
     this.repositories = new (require('./repositories'))(this);
+    this.teams = new (require('./teams'))(this);
     this.user = new (require('./user'))(this);
   }
 
