@@ -10,6 +10,14 @@ class RepositoriesApi extends AbstractApi {
     super(api);
   }
 
+  create(username, repoSlug, repo, callback) {
+    this.$api.post(
+      'repositories/' + encodeURI(username) + '/' + encodeURI(repoSlug),
+      repo, null,
+      this.$createListener(callback)
+    );
+  }
+
   /**
    * Create a new pull request
    *
