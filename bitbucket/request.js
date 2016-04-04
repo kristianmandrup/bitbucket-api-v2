@@ -168,8 +168,8 @@ const Request = exports.Request = function Request(options) {
     let path = this.$options.path + '/' + apiPath.replace(/\/*$/, '');
     if (method === 'POST') {
       query = JSON.stringify(parameters);
+      headers['Content-Type'] = 'application/json';
       if (!this.$options.use_xhr) {
-        headers['Content-Type'] = 'application/json';
         headers['Content-Length'] = query.length;
       }
     }
