@@ -132,6 +132,7 @@ const Request = exports.Request = function Request(options) {
 
     if (this.$options.use_xhr) {
       const xhrOptions = {
+        headers,
         url: prebuiltURL,
         responseType: 'json',
         timeout: this.$options.timeout * 1000
