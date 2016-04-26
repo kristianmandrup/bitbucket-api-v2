@@ -4,13 +4,35 @@ const AbstractApi = require('./abstract_api');
 
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/repositories-endpoint-423626330.html
+ *           https://confluence.atlassian.com/bitbucket/repository-resource-423626331.html
  */
 class RepositoriesApi extends AbstractApi {
   constructor(api) {
     super(api);
   }
 
-  create(username, repoSlug, repo, callback) {
+  /**
+   * Create a new repository
+   * @param {String} repo owner
+   * @param {String} name of the repo. This is not a slug (may include special characters)
+   * @param {Object} repo repo metadata as specified by Bitbucket's API documentation.
+   *                           NOTE Unlike the normal API, Including an explicit name property in repo is REQUIRED!!
+   *                           Due to limitations in the API, the slug is derived from the repo name within this method.
+   */
+  create(username, repo, callback) {
+    if (!repo || !_.isBoolean(repo.is_private) || !_.isString(repo.name)) {
+      throw new Error('Repo must be initialized with a booelan privacy setting and a string name');
+    }
+
+    // The official API error is that slugs must be alphanumeric with underscore, dot, and dash, lowercase, and
+    // no whitespace. Most things convert to dashes with Atlassian's secret converter but apostophes just disappear
+    // (here I've assumed quotes are the same).
+    // There are additional constraints not provided in the error message nor documented anywhere that can only be
+    // found by trial and error. Among these are: no consecutive dashes except in some weird trivial edge classnames
+    // (i.e. all dashes, which we won't worry about), no ending in a dash, and very likely no starting in a dash.
+    const repoSlug = repo.name.replace(/['"]/g, '').replace(/\W/g, '-')
+      .replace(/--+/g, '-').replace(/^-/, '').replace(/-$/, '').toLowerCase();
+
     this.$api.post(
       'repositories/' + encodeURI(username) + '/' + encodeURI(repoSlug),
       repo, null,
