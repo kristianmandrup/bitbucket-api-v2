@@ -1,24 +1,24 @@
+const _ = require('lodash');
+
 const AbstractApi = require('./abstract_api');
 
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/teams-endpoint-423626335.html
  */
-class TeamsApi extends AbstractApi {
-  constructor(api) {
-    super(api);
-  }
+module.exports = function TeamsApi(api) {
+  const result = AbstractApi(api);
 
-  /**
-   * Get the teams for the authenticated user
-   */
-  get(role = 'member', callback) {
-    this.$api.get(
-      `teams`,
-      { role },
-      null,
-      this.$createListener(callback)
-    );
-  }
-}
-
-module.exports = TeamsApi;
+  return _.assign(result, {
+    /**
+     * Get the teams for the authenticated user
+     */
+    get(role = 'member', callback) {
+      api.get(
+        'teams',
+        { role },
+        null,
+        result.$createListener(callback)
+      );
+    }
+  });
+};

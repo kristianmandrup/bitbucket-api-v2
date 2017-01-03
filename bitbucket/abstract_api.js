@@ -1,22 +1,20 @@
-class AbstractApi {
-  constructor(api) {
-    this.$api = api;
-  }
+module.exports = function AbstractApi($api) {
+  return {
+    $api,
 
-  $createListener(callback) {
-    return function callbackRunner(err, response) {
-      if (err) {
-        if (callback) {
-          callback(err);
+    $createListener(callback) {
+      return function callbackRunner(err, response) {
+        if (err) {
+          if (callback) {
+            callback(err);
+          }
+          return;
         }
-        return;
-      }
 
-      if (callback) {
-        callback(err, response);
-      }
-    };
-  }
-}
-
-module.exports = AbstractApi;
+        if (callback) {
+          callback(err, response);
+        }
+      };
+    }
+  };
+};

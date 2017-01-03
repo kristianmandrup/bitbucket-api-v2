@@ -1,23 +1,23 @@
+const _ = require('lodash');
+
 const AbstractApi = require('./abstract_api');
 
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/user-endpoint-2-0-744527199.html
  */
-class UserApi extends AbstractApi {
-  constructor(api) {
-    super(api);
-  }
+module.exports = function UserApi(api) {
+  const result = AbstractApi(api);
 
-  /**
-   * Get the info for the authenticated user
-   */
-  get(callback) {
-    this.$api.get(
-      'user',
-      null, null,
-      this.$createListener(callback)
-    );
-  }
-}
-
-module.exports = UserApi;
+  return _.assign(result, {
+    /**
+     * Get the info for the authenticated user
+     */
+    get(callback) {
+      api.get(
+        'user',
+        null, null,
+        result.$createListener(callback)
+      );
+    }
+  });
+};
