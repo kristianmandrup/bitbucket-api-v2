@@ -1,21 +1,19 @@
 {
   "name": "bitbucket-v2",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Wrapper for the BitBucket API v2",
   "author": "Jordan Wallet <jjwallet@gmail.com>",
   "homepage": "https://github.com/Mr-Wallet/node-bitbucket-v2.git",
-  "main": "dist/index.js",
+  "main": "bitbucket/index.js",
   "scripts": {
-    "compile": "babel --presets es2015 -d ./dist ./bitbucket",
-    "lint": "eslint ./bitbucket --quiet",
-    "prepublish": "npm run compile"
+    "lint": "eslint ./bitbucket --quiet"
   },
   "repository": {
     "type": "git",
     "url": "http://github.com/Mr-Wallet/node-bitbucket-v2.git"
   },
   "engine": [
-    "node >=5.5.0"
+    "node >=6.2.1"
   ],
   "dependencies": {
     "asyncjs": "~0.0.10",
@@ -25,10 +23,11 @@
   },
   "devDependencies": {
     "babel-cli": "^6.2.0",
-    "babel-preset-es2015": "^6.1.18",
-    "eslint": "^1.10.3",
-    "eslint-config-airbnb": "^2.0.0",
-    "eslint-plugin-react": "^3.11.2"
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.1.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.8.0"
   },
   "license": "MIT"
 }
