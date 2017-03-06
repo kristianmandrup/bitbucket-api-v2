@@ -122,9 +122,9 @@ module.exports = function Request(_options) {
       if ($options.use_xhr) {
         const xhrOptions = {
           headers,
-          url: prebuiltURL,
-          responseType: 'json',
-          timeout: $options.timeout * 1000
+          json: true,
+          timeout: $options.timeout * 1000,
+          url: prebuiltURL
         };
 
         result.sendXhrRequest(xhrOptions, done);
@@ -180,11 +180,11 @@ module.exports = function Request(_options) {
 
       if (options.use_xhr) {
         const xhrOptions = {
-          method,
           headers,
-          url: `https://${hostname}${path}`,
-          responseType: 'json',
-          timeout: options.timeout * 1000
+          json: true,
+          method,
+          timeout: options.timeout * 1000,
+          url: `https://${hostname}${path}`
         };
         if (method === 'POST') {
           xhrOptions.json = parameters;

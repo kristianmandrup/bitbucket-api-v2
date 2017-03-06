@@ -1,6 +1,6 @@
 {
   "name": "bitbucket-v2",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Wrapper for the BitBucket API v2, the version required to use OAuth2. Includes support for XHR requests.",
   "author": "Jordan Wallet <jjwallet@gmail.com>",
   "homepage": "https://github.com/Mr-Wallet/node-bitbucket-v2.git",
