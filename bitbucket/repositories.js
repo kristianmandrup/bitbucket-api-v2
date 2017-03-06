@@ -54,9 +54,7 @@ module.exports = function RepositoriesApi(api) {
      */
     createPullRequest(username, repoSlug, pullRequest, callback) {
       api.post(
-        // This may be the only API call in the entire Bitbucket specs that has a / at the end.
-        // It probably doesn't matter, but the docs will be strictly followed just in case.
-        `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}/pullRequests/`,
+        `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}/pullrequests`,
         pullRequest, null,
         result.$createListener(callback)
       );
@@ -130,7 +128,7 @@ module.exports = function RepositoriesApi(api) {
       };
 
       api.get(
-        `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}/pullRequests/`,
+        `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}/pullrequests`,
         apiParameters, null,
         result.$createListener(callback)
       );
