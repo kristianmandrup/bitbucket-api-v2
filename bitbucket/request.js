@@ -47,12 +47,12 @@ module.exports = function Request(_options) {
     },
 
     /**
-      * Get an option value.
-      *
-      * @param  string $name The option name
-      *
-      * @return mixed  The option value
-      */
+     * Get an option value.
+     *
+     * @param  string $name The option name
+     *
+     * @return mixed  The option value
+     */
     getOption(name, _defaultValue) {
       const defaultValue = _defaultValue === undefined ? null : _defaultValue;
       return $options[name] ? $options[name] : defaultValue;
@@ -107,9 +107,13 @@ module.exports = function Request(_options) {
      * @param {String}   $prebuiltURL       Request URL given by a previous API call
      */
     doPrebuiltSend(prebuiltURL, callback) {
-      const { headers, port } = result.prepRequest($options);
+      const {
+        headers,
+        port
+      } = result.prepRequest($options);
 
       let called = false;
+
       function done(err, body) {
         if (called) {
           return;
@@ -131,7 +135,10 @@ module.exports = function Request(_options) {
         return;
       }
 
-      const { hostname, path } = url.parse(prebuiltURL);
+      const {
+        hostname,
+        path
+      } = url.parse(prebuiltURL);
       const httpsOptions = {
         headers,
         hostname,
@@ -152,7 +159,11 @@ module.exports = function Request(_options) {
      */
     doSend(apiPath, parameters, _httpMethod, options, callback) {
       const method = _httpMethod.toUpperCase();
-      const { headers, hostname, port } = result.prepRequest(options);
+      const {
+        headers,
+        hostname,
+        port
+      } = result.prepRequest(options);
 
       let query;
       let path = options.path + '/' + apiPath.replace(/\/*$/, ''); // eslint-disable-line prefer-template
@@ -162,13 +173,13 @@ module.exports = function Request(_options) {
         if (!options.use_xhr) {
           headers['Content-Length'] = query.length;
         }
-      }
-      else {
+      } else {
         query = querystring.stringify(parameters);
         path += `?${query}`;
       }
 
       let called = false;
+
       function done(err, body) {
         if (called) {
           return;
@@ -209,7 +220,7 @@ module.exports = function Request(_options) {
      * Get a JSON response and transform to JSON
      */
     decodeResponse(response) {
-      if ($options.format === 'json') {
+      if ($options.format === 'json' && typeof response == 'string') {
         return JSON.parse(response);
       }
 
@@ -236,10 +247,14 @@ module.exports = function Request(_options) {
       if (!useXhr) {
         headers['Host'] = 'api.bitbucket.org'; // eslint-disable-line dot-notation
         headers['User-Agent'] = 'NodeJS HTTP Client';
-        headers['Content-Lengthf'] = '0';
+        headers['Content-Length'] = '0';
       }
 
-      return { headers, hostname, port };
+      return {
+        headers,
+        hostname,
+        port
+      };
     },
 
     sendHttpsRequest(httpsOptions, query, done) {
@@ -257,13 +272,15 @@ module.exports = function Request(_options) {
             if (response.headers['content-type'].includes('application/json')) {
               msg = JSON.parse(msg);
             }
-            done({ status: response.statusCode, msg });
+            done({
+              status: response.statusCode,
+              msg
+            });
             return;
           }
           if (response.statusCode === 204) {
             msg = {};
-          }
-          else {
+          } else {
             msg = result.decodeResponse(msg);
           }
 
@@ -299,7 +316,10 @@ module.exports = function Request(_options) {
         let msg = response.body;
 
         if (response.statusCode > 204) {
-          done({ status: response.statusCode, msg });
+          done({
+            status: response.statusCode,
+            msg
+          });
           return;
         }
         if (response.statusCode === 204) {
