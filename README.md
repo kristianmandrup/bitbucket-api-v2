@@ -26,6 +26,13 @@ bitbucketApi.user.get((response) => {
 });
 ```
 
+## Architecture
+
+Uses [xhr](https://www.npmjs.com/package/xhr) to submit Ajax requests to the server.
+Could be nice to switch to [xhr2](https://www.npmjs.com/package/xhr2) or a higher level, more feature rich API!
+
+Each resource uses `Request` to perform the actual server requests.
+
 ## Request
 
 - `setOption(name, value)`
@@ -42,12 +49,42 @@ bitbucketApi.user.get((response) => {
 
 ## User
 
+See [user API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/user)
+
 - `get(callback)`
+
+## Users
+
+See [users API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/users)
+
+TODO
 
 ## Repositories
 
+Would be nice with a more "fluent" api so we can avoid having to use the form: `username, repoSlug` for each request
+
+Would like to see:
+
+```js
+let project = repositories.forProject(username, repo)
+await project.create()
+await project.commit(files)
+```
+
+See [repositories API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories)
+
+POST (create)
+
 - `create(username, repo, callback)`
+
+### On existing repositiory
+
+See [repo (slug) API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D)
+
 - `createPullRequest(username, repoSlug, pullRequest, callback)`
+
+GET (get)
+
 - `get(username, repoSlug, callback)`
 - `getBranches(username, repoSlug, callback)`
 - `getCommit(username, repoSlug, sha, callback)`
@@ -58,9 +95,78 @@ bitbucketApi.user.get((response) => {
 - `getForksFromResponse(response, callback)`
 - `getParentFromResponse(response, callback)`
 
+POST
+
+- `commit(username, repoSlug, files, callback)`
+
+### Commits
+
+To post a new commit:
+
+API is now available [as noted here](https://community.atlassian.com/t5/Bitbucket-questions/Do-you-having-an-API-to-push-the-content-to-BitBucket-Repo/qaq-p/15318#M17395
+)
+
+See [repo slug POST](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src#post) for details
+
+#### multipart/form-data
+
+Use `multipart/form-data` when we need to upload a file:
+
+```html
+<form action="/update" method="post" encrypt="multipart/form-data>
+  <input type="text" name="username" />
+  <input type="file" name="avatar" />
+  <button type="submit" />
+</form>
+```
+
+Current implementation in repositories:
+
+```js
+commit(username, repoSlug, files, callback) {
+  const uri = buildUri(username, repoSlug);
+  api.post(
+    uri,
+    files, {
+      contentType: 'multipart/form-data'
+    },
+    result.$createListener(callback)
+  );
+},
+```
+
+Note that we are sending the files as the data argument and passing `contentType: 'multipart/form-data'` in options to force override of default `content-type` set to `'application/json'` for `send`.
+
+#### application/x-www-form-urlencoded
+
+It is also possible to upload new files using a simple `application/x-www-form-urlencoded` POST. This can be convenient when uploading pure text files:
+
+```txt
+$ curl https://api.bitbucket.org/2.0/repositories/atlassian/bbql/src/ \
+  --data-urlencode "/path/to/me.txt=Lorem ipsum." \
+  --data-urlencode "message=Initial commit" \
+  --data-urlencode "author=Erik van Zijst <erik.van.zijst@gmail.com>"
+```
+
+There could be a field name clash if a client were to upload a file named "message", as this filename clashes with the meta data property for the commit message. To avoid this and to upload files whose names clash with the meta data properties, use a leading slash for the files, e.g. `curl --data-urlencode "/message=file contents"`.
+
 ## Teams
 
+See [teams API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams)
+
 - `get(role = 'member', callback)`
+
+## Hook events
+
+See [hook events API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/hook_events)
+
+## Snippets
+
+See [snippets API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/snippets)
+
+## Addon
+
+See [addon API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/addon)
 
 ## Promise support async/await
 

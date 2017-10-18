@@ -173,7 +173,7 @@ module.exports = function Request(_options) {
       let path = options.path + '/' + apiPath.replace(/\/*$/, ''); // eslint-disable-line prefer-template
       if (method === 'POST') {
         query = JSON.stringify(parameters);
-        headers['Content-Type'] = 'application/json';
+        headers['Content-Type'] = options.contentType || 'application/json';
         if (!options.use_xhr) {
           headers['Content-Length'] = query.length;
         }
@@ -269,11 +269,16 @@ module.exports = function Request(_options) {
         response.addListener('data', (chunk) => {
           body.push(chunk);
         });
+
+        function isJsonResponse() {
+          return response.headers['content-type'].includes('application/json');
+        }
+
         response.addListener('end', () => {
           let msg = body.join('');
 
           if (response.statusCode > 204) {
-            if (response.headers['content-type'].includes('application/json')) {
+            if (isJsonResponse()) {
               msg = JSON.parse(msg);
             }
             done({

@@ -13,6 +13,11 @@ const constants = require('./constants');
 module.exports = function RepositoriesApi(api, opts = {}) {
   const result = AbstractApi(api, opts = {});
 
+  function buildUri(username, repoSlug, action) {
+    const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`;
+    return action ? [baseUri, action].join('/') : baseUri;
+  }
+
   const localApi = {
     name: 'Repositories',
     /**
@@ -42,8 +47,9 @@ module.exports = function RepositoriesApi(api, opts = {}) {
         .replace(/-$/, '')
         .toLowerCase();
 
+      const uri = buildUri(username, repoSlug);
       api.post(
-        `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`,
+        uri,
         repo, null,
         result.$createListener(callback)
       );
@@ -57,8 +63,9 @@ module.exports = function RepositoriesApi(api, opts = {}) {
      * @param {Object} pullRequest The PR POST body as specified by Bitbucket's API documentation
      */
     createPullRequest(username, repoSlug, pullRequest, callback) {
+      const uri = buildUri(username, repoSlug, `/pullrequests`);
       api.post(
-        `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}/pullrequests`,
+        uri,
         pullRequest, null,
         result.$createListener(callback)
       );
@@ -71,9 +78,27 @@ module.exports = function RepositoriesApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     get(username, repoSlug, callback) {
+      const uri = buildUri(username, repoSlug)
       api.get(
-        `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`,
+        uri,
         null, null,
+        result.$createListener(callback)
+      );
+    },
+
+    /**
+     * Get the info for a single repo
+     *
+     * @param {String} repo owner
+     * @param {String} slug (name) of the repo.
+     */
+    commit(username, repoSlug, files, callback) {
+      const uri = buildUri(username, repoSlug);
+      api.post(
+        uri,
+        files, {
+          contentType: 'multipart/form-data'
+        },
         result.$createListener(callback)
       );
     },
@@ -85,8 +110,9 @@ module.exports = function RepositoriesApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     getBranches(username, repoSlug, callback) {
+      const uri = buildUri(username, repoSlug, '/refs/branches');
       api.get(
-        `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}/refs/branches`,
+        uri,
         null, null,
         result.$createListener(callback)
       );
@@ -99,8 +125,9 @@ module.exports = function RepositoriesApi(api, opts = {}) {
      * @param {String} the sha of the commit
      */
     getCommit(username, repoSlug, sha, callback) {
+      const uri = buildUri(username, repoSlug, `/commit/${sha}`)
       api.get(
-        `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}/commit/${sha}`,
+        uri,
         null, null,
         result.$createListener(callback)
       );
