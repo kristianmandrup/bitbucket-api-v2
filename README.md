@@ -156,11 +156,24 @@ Repository commit:
 
 ### Pull requests
 
-TODO
+- `getAll(username, repoSlug, callback)`
+- `create(username, repoSlug, pullRequest, callback)`
+- `allActivity(username, repoSlug, callback)`
+- `getActivity(username, repoSlug, pr_id, callback)`
+- `approve(username, repoSlug, pr_id, callback)`
+- `disApprove(username, repoSlug, pr_id, callback)`
+- `getComments(username, repoSlug, pr_id, callback)`
+- `getComment(username, repoSlug, pr_id, comment_id, callback)`
+- `getCommits(username, repoSlug, pr_id, callback)`
+- `decline(username, repoSlug, pr_id, callback)`
+- `getDiff(username, repoSlug, pr_id, callback)`
+- `merge(username, repoSlug, pr_id, callback)`
+- `patch(username, repoSlug, pr_id, callback)`
+- `statuses(username, repoSlug, pr_id, callback)`
 
 ### Refs
 
-TODO
+- `getAll(username, repoSlug, callback)`
 
 ## Teams
 

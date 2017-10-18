@@ -7,11 +7,20 @@ const fluid = require('../fluid');
 const AbstractApi = require('../abstract_api');
 const constants = require('../constants');
 
+const Commit = require('./commit');
+const Commits = require('./commits');
+const Components = require('./components');
+const Issues = require('./components');
+const Milestones = require('./milestones');
+const Pipelines = require('./pipelines');
+const PullRequests = require('./pull-requests');
+const Refs = require('./refs');
+
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/repositories-endpoint-423626330.html
  *           https://confluence.atlassian.com/bitbucket/repository-resource-423626331.html
  */
-module.exports = function RepositoriesApi(api, opts = {}) {
+function RepositoriesApi(api, opts = {}) {
   const result = AbstractApi(api, opts);
 
   function buildUri(username, repoSlug, action) {
@@ -277,4 +286,16 @@ module.exports = function RepositoriesApi(api, opts = {}) {
 
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
+};
+
+module.exports = {
+  Repositories: RepositoriesApi,
+  Commit,
+  Commits,
+  Components,
+  Issues,
+  Milestones,
+  Pipelines,
+  PullRequests,
+  Refs
 };
