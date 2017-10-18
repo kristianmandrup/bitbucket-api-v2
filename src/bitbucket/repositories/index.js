@@ -1,31 +1,36 @@
-const _ = require('lodash');
+const _ = require('lodash')
 const {
   createPromisedApi
-} = require('../promised');
+} = require('../promised')
 
-const fluid = require('../fluid');
-const AbstractApi = require('../abstract_api');
-const constants = require('../constants');
+const fluid = require('../fluid')
+const AbstractApi = require('../abstract_api')
+const constants = require('../constants')
 
-const Commit = require('./commit');
-const Commits = require('./commits');
-const Components = require('./components');
-const Issues = require('./components');
-const Milestones = require('./milestones');
-const Pipelines = require('./pipelines');
-const PullRequests = require('./pull-requests');
-const Refs = require('./refs');
+const Commit = require('./commit')
+const Commits = require('./commits')
+const Components = require('./components')
+const Issues = require('./components')
+const Milestones = require('./milestones')
+const Pipelines = require('./pipelines')
+const PullRequests = require('./pull-requests')
+const Refs = require('./refs')
+const Versions = require('./versions')
+const Hooks = require('./hooks')
+const Forks = require('./forks')
+const Downloads = require('./downloads')
+const PipelinesConfig = require('./pipelines-config')
 
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/repositories-endpoint-423626330.html
  *           https://confluence.atlassian.com/bitbucket/repository-resource-423626331.html
  */
 function RepositoriesApi(api, opts = {}) {
-  const result = AbstractApi(api, opts);
+  const result = AbstractApi(api, opts)
 
   function buildUri(username, repoSlug, action) {
-    const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`;
-    return action ? [baseUri, action].join('/') : baseUri;
+    const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`
+    return action ? [baseUri, action].join('/') : baseUri
   }
 
   const localApi = {
@@ -40,7 +45,7 @@ function RepositoriesApi(api, opts = {}) {
      */
     create(username, repo, callback) {
       if (!repo || !_.isBoolean(repo.is_private) || !_.isString(repo.name)) {
-        throw new Error('Repo must be initialized with a booelan privacy setting and a string name');
+        throw new Error('Repo must be initialized with a booelan privacy setting and a string name')
       }
 
       // The official API error is that slugs must be alphanumeric with underscore, dot, and dash, lowercase, and
@@ -55,14 +60,14 @@ function RepositoriesApi(api, opts = {}) {
         .replace(/--+/g, '-')
         .replace(/^-/, '')
         .replace(/-$/, '')
-        .toLowerCase();
+        .toLowerCase()
 
-      const uri = buildUri(username, repoSlug);
+      const uri = buildUri(username, repoSlug)
       api.post(
         uri,
         repo, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -73,12 +78,12 @@ function RepositoriesApi(api, opts = {}) {
      * @param {Object} pullRequest The PR POST body as specified by Bitbucket's API documentation
      */
     createPullRequest(username, repoSlug, pullRequest, callback) {
-      const uri = buildUri(username, repoSlug, `/pullrequests`);
+      const uri = buildUri(username, repoSlug, `/pullrequests`)
       api.post(
         uri,
         pullRequest, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -93,7 +98,7 @@ function RepositoriesApi(api, opts = {}) {
         uri,
         null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -112,19 +117,19 @@ function RepositoriesApi(api, opts = {}) {
      * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src#post
      */
     commit(username, repoSlug, params, options, callback) {
-      const uri = buildUri(username, repoSlug, '/src');
+      const uri = buildUri(username, repoSlug, '/src')
       if (typeof options === 'function') {
-        callback = options;
-        options = null;
+        callback = options
+        options = null
       }
       const defaultOpts = {
         contentType: 'multipart/form-data'
-      };
+      }
       api.post(
         uri,
         params, options || defaultOpts,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -134,12 +139,12 @@ function RepositoriesApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     getBranches(username, repoSlug, callback) {
-      const uri = buildUri(username, repoSlug, '/refs/branches');
+      const uri = buildUri(username, repoSlug, 'refs/branches')
       api.get(
         uri,
         null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -151,12 +156,12 @@ function RepositoriesApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Brevision%7D
      */
     getCommit(username, repoSlug, revision, callback) {
-      const uri = buildUri(username, repoSlug, `/commit/${revision}`);
+      const uri = buildUri(username, repoSlug, `commit/${revision}`)
       api.get(
         uri,
         null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -167,27 +172,29 @@ function RepositoriesApi(api, opts = {}) {
      * @param {constants.pullRequest.states or Array thereof} The PR state. If invalid or undefined, defaults to OPEN
      */
     getPullRequests(username, repoSlug, state, callback) {
-      let stateArray = state;
+      let stateArray = state
       if (!stateArray) {
-        stateArray = [constants.pullRequest.states.OPEN];
-      } else if (!_.isArray(stateArray)) {
-        stateArray = [stateArray];
+        stateArray = [constants.pullRequest.states.OPEN]
+      }
+ else if (!_.isArray(stateArray)) {
+        stateArray = [stateArray]
       }
 
-      const hasInvalidState = _.find(state, (stateElement) => !_.includes(constants.pullRequest.states, stateElement));
+      const hasInvalidState = _.find(state, stateElement => !_.includes(constants.pullRequest.states, stateElement))
       if (hasInvalidState) {
-        stateArray = [constants.pullRequest.states.OPEN];
+        stateArray = [constants.pullRequest.states.OPEN]
       }
 
       const apiParameters = {
         state: stateArray.join(',')
-      };
+      }
 
+      const uri = buildUri(username, repoSlug, 'pullrequests')
       api.get(
-        `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}/pullrequests`,
+        uri,
         apiParameters, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -196,11 +203,12 @@ function RepositoriesApi(api, opts = {}) {
      * @param {String}  username
      */
     getByUser(username, callback) {
+      const uri = `repositories/${encodeURI(username)}`
       api.get(
-        `repositories/${encodeURI(username)}`,
+        uri,
         null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -209,11 +217,12 @@ function RepositoriesApi(api, opts = {}) {
      * @param {String}  teamname
      */
     getByTeam(teamname, callback) {
+      const uri = `repositories/${encodeURI(teamname)}`
       api.get(
-        `repositories/${encodeURI(teamname)}`,
+        uri,
         null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -223,11 +232,12 @@ function RepositoriesApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     getForks(username, repoSlug, callback) {
+      const uri = buildUri(username, repoSlug, 'forks')
       api.get(
-        `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}/forks`,
+        uri,
         null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -236,16 +246,16 @@ function RepositoriesApi(api, opts = {}) {
      * @param {Object} API response
      */
     getForksFromResponse(response, callback) {
-      const prebuiltURL = response && response.links && response.links.forks && response.links.forks.href;
+      const prebuiltURL = response && response.links && response.links.forks && response.links.forks.href
 
       if (!prebuiltURL) {
-        throw new Error('getForksFromResponse: argument has no \'forks\' url.');
+        throw new Error('getForksFromResponse: argument has no \'forks\' url.')
       }
 
       api.request.doPrebuiltSend(
         prebuiltURL,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -255,18 +265,18 @@ function RepositoriesApi(api, opts = {}) {
      * @param {Object} API response
      */
     getParentFromResponse(response, callback) {
-      const prebuiltURL = _.get(response, 'parent.links.self.href');
+      const prebuiltURL = _.get(response, 'parent.links.self.href')
 
       if (!prebuiltURL) {
         throw new Error(
           'getForksFromResponse: argument has no \'parent\' info. Call hasParent first to guard this method call.'
-        );
+        )
       }
 
       api.request.doPrebuiltSend(
         prebuiltURL,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -276,14 +286,13 @@ function RepositoriesApi(api, opts = {}) {
      * @return {boolean} true if the argument has an associated "parent" (i.e. the response is a fork), false otherwise.
      */
     hasParent(response) {
-      return !!response.parent;
+      return !!response.parent
     }
-  };
+  }
 
   // return fluid api
   // experimental
   localApi.forProject = fluid(localApi, 2)
-
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
 };
@@ -297,5 +306,10 @@ module.exports = {
   Milestones,
   Pipelines,
   PullRequests,
-  Refs
-};
+  Refs,
+  Versions,
+  Hooks,
+  PipelinesConfig,
+  Forks,
+  Downloads
+}

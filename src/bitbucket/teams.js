@@ -1,15 +1,15 @@
-const _ = require('lodash');
+const _ = require('lodash')
 const {
   createPromisedApi
 } = require('./promised')
 
-const AbstractApi = require('./abstract_api');
+const AbstractApi = require('./abstract_api')
 
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/teams-endpoint-423626335.html
  */
 module.exports = function TeamsApi(api, opts = {}) {
-  const result = AbstractApi(api, opts = {});
+  const result = AbstractApi(api, opts = {})
 
   let localApi = {
     name: 'Teams',
@@ -23,10 +23,10 @@ module.exports = function TeamsApi(api, opts = {}) {
         },
         null,
         result.$createListener(callback)
-      );
+      )
     }
-  };
+  }
 
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
-};
+}

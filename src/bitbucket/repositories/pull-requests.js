@@ -1,20 +1,21 @@
-const _ = require('lodash');
+const _ = require('lodash')
 const {
   createPromisedApi
-} = require('../promised');
+} = require('../promised')
 
-const AbstractApi = require('../abstract_api');
+const fluid = require('../fluid')
+const AbstractApi = require('../abstract_api')
 
 /**
  * API doc: https://developer.atlassian.com/bitbucket/api/2/reference/
  * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit
  */
 module.exports = function PullRequestsApi(api, opts = {}) {
-  const result = AbstractApi(api, opts);
+  const result = AbstractApi(api, opts)
 
   function buildUri(username, repoSlug, action) {
-    const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`;
-    return action ? [baseUri, action].join('/') : baseUri;
+    const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`
+    return action ? [baseUri, action].join('/') : baseUri
   }
 
   const localApi = {
@@ -25,15 +26,16 @@ module.exports = function PullRequestsApi(api, opts = {}) {
      * @param {String} repo owner
      * @param {String} slug (name) of the repo
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests
      */
     getAll(username, repoSlug, callback) {
-      const uri = buildUri(username, repoSlug, 'pullrequests');
+      const uri = buildUri(username, repoSlug, 'pullrequests')
       api.get(
         uri,
         null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -43,20 +45,21 @@ module.exports = function PullRequestsApi(api, opts = {}) {
      * @param {String} slug (name) of the repo
      * @param {String} pullRequest description
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests
      *
      * data object:
      *  _body:	The new pull request.
      */
     create(username, repoSlug, pullRequest, callback) {
-      const uri = buildUri(username, repoSlug, 'pullrequests');
+      const uri = buildUri(username, repoSlug, 'pullrequests')
       const data = {
         _body: pullRequest
-      };
+      }
       api.post(
         uri, data, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -65,14 +68,15 @@ module.exports = function PullRequestsApi(api, opts = {}) {
      * @param {String} repo owner
      * @param {String} slug (name) of the repo
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests
      */
     allActivity(username, repoSlug, callback) {
-      const uri = buildUri(username, repoSlug, 'pullrequests/activity');
+      const uri = buildUri(username, repoSlug, 'pullrequests/activity')
       api.get(
         uri, null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -82,14 +86,15 @@ module.exports = function PullRequestsApi(api, opts = {}) {
      * @param {String} slug (name) of the repo
      * @param {String} PR id
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/activity
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/activity
      */
     getActivity(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/activity`);
+      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/activity`)
       api.get(
         uri, null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -99,14 +104,15 @@ module.exports = function PullRequestsApi(api, opts = {}) {
      * @param {String} slug (name) of the repo
      * @param {String} PR id
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve
      */
     approve(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/approve`);
+      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/approve`)
       api.post(
         uri, null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -116,14 +122,15 @@ module.exports = function PullRequestsApi(api, opts = {}) {
      * @param {String} slug (name) of the repo
      * @param {String} PR id
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     disApprove(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/approve`);
+      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/approve`)
       api.delete(
         uri, null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -133,14 +140,15 @@ module.exports = function PullRequestsApi(api, opts = {}) {
      * @param {String} slug (name) of the repo
      * @param {String} PR id
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     getComments(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/comments`);
+      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/comments`)
       api.get(
         uri, null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -151,14 +159,15 @@ module.exports = function PullRequestsApi(api, opts = {}) {
      * @param {String} PR id
      * @param {String} comment id
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     getComment(username, repoSlug, pr_id, comment_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/comments/${comment_id}`);
+      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/comments/${comment_id}`)
       api.get(
         uri, null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
 
@@ -169,14 +178,15 @@ module.exports = function PullRequestsApi(api, opts = {}) {
      * @param {String} slug (name) of the repo
      * @param {String} PR id
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     getCommits(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/commits`);
+      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/commits`)
       api.get(
         uri, null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -186,14 +196,15 @@ module.exports = function PullRequestsApi(api, opts = {}) {
      * @param {String} slug (name) of the repo
      * @param {String} PR id
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     decline(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/decline`);
+      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/decline`)
       api.post(
         uri, null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -203,14 +214,15 @@ module.exports = function PullRequestsApi(api, opts = {}) {
      * @param {String} slug (name) of the repo
      * @param {String} PR id
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     getDiff(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/diff`);
+      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/diff`)
       api.get(
         uri, null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -220,14 +232,15 @@ module.exports = function PullRequestsApi(api, opts = {}) {
      * @param {String} slug (name) of the repo
      * @param {String} PR id
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     merge(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/merge`);
+      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/merge`)
       api.post(
         uri, null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -237,14 +250,15 @@ module.exports = function PullRequestsApi(api, opts = {}) {
      * @param {String} slug (name) of the repo
      * @param {String} PR id
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     patch(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/patch`);
+      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/patch`)
       api.post(
         uri, null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -254,17 +268,19 @@ module.exports = function PullRequestsApi(api, opts = {}) {
      * @param {String} slug (name) of the repo
      * @param {String} PR id
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     statuses(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/statuses`);
+      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/statuses`)
       api.get(
         uri, null, null,
         result.$createListener(callback)
-      );
-    },
-  };
+      )
+    }
+  }
 
-  localApi.promised = createPromisedApi(localApi, opts);
-  return _.assign(result, localApi);
-};
+  localApi.forProject = fluid(localApi, 2)
+  localApi.promised = createPromisedApi(localApi, opts)
+  return _.assign(result, localApi)
+}

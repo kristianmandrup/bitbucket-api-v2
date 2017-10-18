@@ -8,6 +8,12 @@
 
 Check out [bitbucket-server-nodejs](https://github.com/sternba/bitbucket-server-nodejs)
 
+## Status
+
+WIP: Loads of API additions. Almost complete!
+
+Still untested. Please take it for a spin or help add tests for the test suite
+
 ## Usage
 
 Authentication via [Bitbucket OAuth2](https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication)
@@ -32,6 +38,43 @@ Uses [xhr](https://www.npmjs.com/package/xhr) to submit Ajax requests to the ser
 Could be nice to switch to [xhr2](https://www.npmjs.com/package/xhr2) or a higher level, more feature rich API!
 
 Each resource uses `Request` to perform the actual server requests.
+
+### Main api objects
+
+- `request` (for making generic API requests)
+- `repositories`
+- `teams`
+- `user`
+
+Actions on a user repository
+
+- `commit`
+- `commits`
+- `components`
+- `issues`
+- `milestones`
+- `pipelines`
+- `pullRequests`
+- `refs`
+- `versions`
+- `hooks`
+- `pipelinesConfig`
+- `forks`
+- `downloads`
+
+### API usage
+
+Callback API:
+
+```js
+api.commit.approve(username, repoSlug, node, callback)
+```
+
+Promise API
+
+```js
+let result = await api.commit.promised.approve(username, repoSlug, node)
+```
 
 ## Request
 
@@ -172,6 +215,37 @@ Repository commit:
 - `statuses(username, repoSlug, pr_id, callback)`
 
 ### Refs
+
+- `getAll(username, repoSlug, callback)`
+
+### Hooks
+
+- `getAll(username, repoSlug, callback)`
+- `create(username, repoSlug, callback)`
+
+### Versions
+
+- `getAll(username, repoSlug, callback)`
+- `get(username, repoSlug, version_id, callback)`
+
+### Downloads
+
+- `getAll(username, repoSlug, callback)`
+- `upload(username, repoSlug, file, callback)`
+
+### Pipelines Config
+
+- `get(username, repoSlug, callback)`
+- `update(username, repoSlug, config, callback)`
+- `nextBuildNumber(username, repoSlug, number, callback)`
+- `getSchedules(username, repoSlug, callback)`
+- `createSchedule(username, repoSlug, schedule, callback)`
+- `getSchedule(username, repoSlug, scheduleId, callback)`
+- `getScheduleExecutions(username, repoSlug, scheduleId, callback)`
+- `updateSchedule(username, repoSlug, scheduleId, callback)`
+- `deleteSchedule(username, repoSlug, scheduleId, callback)`
+
+### Forks
 
 - `getAll(username, repoSlug, callback)`
 

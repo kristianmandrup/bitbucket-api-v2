@@ -1,6 +1,6 @@
 import test from 'ava'
 
-test('Repositories: create', t => {
+test('Commit: create', t => {
   t.fail('todo')
 })
 

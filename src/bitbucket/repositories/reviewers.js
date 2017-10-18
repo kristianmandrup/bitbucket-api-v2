@@ -9,7 +9,7 @@ const AbstractApi = require('../abstract_api')
  * API doc: https://developer.atlassian.com/bitbucket/api/2/reference/
  * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit
  */
-module.exports = function ComponentsApi(api, opts = {}) {
+module.exports = function ReviewersApi(api, opts = {}) {
   const result = AbstractApi(api, opts)
 
   function buildUri(username, repoSlug, action) {
@@ -20,7 +20,7 @@ module.exports = function ComponentsApi(api, opts = {}) {
   const localApi = {
 
     /**
-     * Returns the components that have been defined in the issue tracker.
+     * get all reviewers
      *
      * @param {String} repo owner
      * @param {String} slug (name) of the repo
@@ -28,7 +28,7 @@ module.exports = function ComponentsApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits
      */
     getAll(username, repoSlug, callback) {
-      const uri = buildUri(username, repoSlug, 'components')
+      const uri = buildUri(username, repoSlug, 'default-reviewers')
       api.get(
         uri,
         null, null,
