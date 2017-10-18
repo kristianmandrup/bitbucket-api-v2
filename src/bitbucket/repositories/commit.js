@@ -1,21 +1,21 @@
-const _ = require('lodash');
+const _ = require('lodash')
 const {
   createPromisedApi
-} = require('../promised');
+} = require('../promised')
 
-const fluid = require('../fluid');
-const AbstractApi = require('../abstract_api');
+const fluid = require('../fluid')
+const AbstractApi = require('../abstract_api')
 
 /**
  * API doc: https://developer.atlassian.com/bitbucket/api/2/reference/
  * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit
  */
 module.exports = function CommitApi(api, opts = {}) {
-  const result = AbstractApi(api, opts);
+  const result = AbstractApi(api, opts)
 
   function buildUri(username, repoSlug, action) {
-    const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}/commit/{node}`;
-    return action ? [baseUri, action].join('/') : baseUri;
+    const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}/commit/{node}`
+    return action ? [baseUri, action].join('/') : baseUri
   }
 
   const localApi = {
@@ -29,12 +29,12 @@ module.exports = function CommitApi(api, opts = {}) {
      * See: /repositories/{username}/{repo_slug}/commit/{node}/approve
      */
     approve(username, repoSlug, node, callback) {
-      const uri = buildUri(username, repoSlug, node, 'approve');
+      const uri = buildUri(username, repoSlug, node, 'approve')
       api.post(
         uri,
         null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -47,12 +47,12 @@ module.exports = function CommitApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/approve#delete
      */
     disApprove(username, repoSlug, node, callback) {
-      const uri = buildUri(username, repoSlug, node, 'approve');
+      const uri = buildUri(username, repoSlug, node, 'approve')
       api.delete(
         uri,
         null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -65,12 +65,12 @@ module.exports = function CommitApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses
      */
     getBuildStatuses(username, repoSlug, node, callback) {
-      const uri = buildUri(username, repoSlug, node, 'statuses');
+      const uri = buildUri(username, repoSlug, node, 'statuses')
       api.get(
         uri,
         null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -83,12 +83,12 @@ module.exports = function CommitApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses/build
      */
     createBuild(username, repoSlug, node, callback) {
-      const uri = buildUri(username, repoSlug, node, 'statuses/build');
+      const uri = buildUri(username, repoSlug, node, 'statuses/build')
       api.post(
         uri,
         null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -99,15 +99,16 @@ module.exports = function CommitApi(api, opts = {}) {
      * @param {String} node (sha1) of the commit
      * @param {String} key  (unique key)
      *
-     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses/build/%7Bkey%7D
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
+     * repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses/build/%7Bkey%7D
      */
     getBuildStatus(username, repoSlug, node, key, callback) {
-      const uri = buildUri(username, repoSlug, node, `statuses/build/${key}`);
+      const uri = buildUri(username, repoSlug, node, `statuses/build/${key}`)
       api.get(
         uri,
         null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -119,12 +120,12 @@ module.exports = function CommitApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bsha%7D
      */
     getComments(username, repoSlug, sha, callback) {
-      const uri = buildUri(username, repoSlug, `commit/${sha}/comments`);
+      const uri = buildUri(username, repoSlug, `commit/${sha}/comments`)
       api.get(
         uri,
         null, null,
         result.$createListener(callback)
-      );
+      )
     },
 
     /**
@@ -136,17 +137,18 @@ module.exports = function CommitApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bsha%7D
      */
     getComment(username, repoSlug, sha, commentId, callback) {
-      const uri = buildUri(username, repoSlug, `commit/${sha}/comments/${commentId}`);
+      const uri = buildUri(username, repoSlug, `commit/${sha}/comments/${commentId}`)
       api.get(
         uri,
         null, null,
         result.$createListener(callback)
-      );
+      )
     }
-  };
+  }
 
-  localApi.forNode = fluid(localApi, 3);
-  localApi.forComment = fluid(localApi, 4);
-  localApi.promised = createPromisedApi(localApi, opts);
-  return _.assign(result, localApi);
-};
+  localApi.forProject = fluid(localApi, 2)
+  localApi.forNode = fluid(localApi, 3)
+  localApi.forComment = fluid(localApi, 4)
+  localApi.promised = createPromisedApi(localApi, opts)
+  return _.assign(result, localApi)
+}

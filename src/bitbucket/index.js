@@ -1,4 +1,4 @@
-const Constants = require('./constants');
+const Constants = require('./constants')
 const {
   Repositories,
   Commit,
@@ -8,11 +8,16 @@ const {
   Milestones,
   Pipelines,
   PullRequests,
-  Refs
-} = require('./repositories');
-const Request = require('./request');
-const Teams = require('./teams');
-const User = require('./user');
+  Refs,
+  Versions,
+  Hooks,
+  PipelinesConfig,
+  Forks,
+  Downloads
+} = require('./repositories')
+const Request = require('./request')
+const Teams = require('./teams')
+const User = require('./user')
 
 /**
  * Simple JavaScript Bitbucket API v2
@@ -33,28 +38,33 @@ function Bitbucket(opts = {}) {
   /**
    * Define HTTP proxy in format localhost:3128
    */
-  let $proxy_host;
-  let $proxy_port;
+  let $proxy_host
+  let $proxy_port
   if (proxy) {
-    $proxy_host = proxy.split(':')[0];
-    $proxy_port = proxy.split(':')[1];
+    $proxy_host = proxy.split(':')[0]
+    $proxy_port = proxy.split(':')[1]
   }
 
   const apiModel = {
     $proxy_host,
     $proxy_port,
     constants: Constants
-  };
+  }
 
-  apiModel.repositories = new Repositories(apiModel, opts);
-  apiModel.commit = new Commit(apiModel, opts);
-  apiModel.commits = new Commits(apiModel, opts);
-  apiModel.components = new Components(apiModel, opts);
-  apiModel.issues = new Issues(apiModel, opts);
-  apiModel.milestones = new Milestones(apiModel, opts);
-  apiModel.pipelines = new Pipelines(apiModel, opts);
-  apiModel.pullRequests = new PullRequests(apiModel, opts);
-  apiModel.refs = new Refs(apiModel, opts);
+  apiModel.repositories = new Repositories(apiModel, opts)
+  apiModel.commit = new Commit(apiModel, opts)
+  apiModel.commits = new Commits(apiModel, opts)
+  apiModel.components = new Components(apiModel, opts)
+  apiModel.issues = new Issues(apiModel, opts)
+  apiModel.milestones = new Milestones(apiModel, opts)
+  apiModel.pipelines = new Pipelines(apiModel, opts)
+  apiModel.pullRequests = new PullRequests(apiModel, opts)
+  apiModel.refs = new Refs(apiModel, opts)
+  apiModel.versions = new Versions(apiModel, opts)
+  apiModel.hooks = new Hooks(apiModel, opts)
+  apiModel.pipelinesConfig = new PipelinesConfig(apiModel, opts)
+  apiModel.forks = new Forks(apiModel, opts)
+  apiModel.downloads = new Downloads(apiModel, opts)
 
   let reqOpts = Object.assign({
     proxy_host: $proxy_host,
@@ -62,9 +72,9 @@ function Bitbucket(opts = {}) {
     use_xhr: useXhr
   }, opts)
 
-  apiModel.request = new Request(reqOpts);
-  apiModel.teams = new Teams(apiModel, opts);
-  apiModel.user = new User(apiModel, opts);
+  apiModel.request = new Request(reqOpts)
+  apiModel.teams = new Teams(apiModel, opts)
+  apiModel.user = new User(apiModel, opts)
 
   /**
    * Authenticate a user for all next requests using an API token
@@ -72,13 +82,13 @@ function Bitbucket(opts = {}) {
    * @param {String} accessToken
    * @return {BitbucketApi}        fluent interface
    */
-  apiModel.authenticateOAuth2 = (accessToken) => {
+  apiModel.authenticateOAuth2 = accessToken => {
     apiModel.request
       .setOption('login_type', 'oauth2')
-      .setOption('oauth_access_token', accessToken);
+      .setOption('oauth_access_token', accessToken)
 
-    return apiModel;
-  };
+    return apiModel
+  }
 
   /**
    * Deauthenticate a user for all next requests
@@ -87,10 +97,10 @@ function Bitbucket(opts = {}) {
    */
   apiModel.deAuthenticate = () => {
     apiModel.request
-      .setOption('login_type', 'none');
+      .setOption('login_type', 'none')
 
-    return apiModel;
-  };
+    return apiModel
+  }
 
   /**
    * Call any route, GET method
@@ -101,7 +111,7 @@ function Bitbucket(opts = {}) {
    * @param {Object}  requestOptions   reconfigure the request
    */
   apiModel.get = (route, parameters, requestOptions, callback) =>
-    apiModel.request.get(route, parameters || {}, requestOptions, callback);
+    apiModel.request.get(route, parameters || {}, requestOptions, callback)
 
   /**
    * Call any route, DELETE method
@@ -112,7 +122,7 @@ function Bitbucket(opts = {}) {
    * @param {Object}  requestOptions   reconfigure the request
    */
   apiModel.delete = (route, parameters, requestOptions, callback) =>
-    apiModel.request.send(route, parameters, 'DELETE', requestOptions, callback);
+    apiModel.request.send(route, parameters, 'DELETE', requestOptions, callback)
 
   /**
    * Call any route, POST method
@@ -123,21 +133,21 @@ function Bitbucket(opts = {}) {
    * @param {Object}  requestOptions   reconfigure the request
    */
   apiModel.post = (route, parameters, requestOptions, callback) =>
-    apiModel.request.post(route, parameters || {}, requestOptions, callback);
+    apiModel.request.post(route, parameters || {}, requestOptions, callback)
 
   /**
    * Check for whether we can iterate to another page using this.getNextPage(response).
    * @param {response} A response that was received from the API.
    * @return {boolean} true if the response indicates more pages are available, false otherwise.
    */
-  apiModel.hasNextPage = (response) => !!response.next;
+  apiModel.hasNextPage = response => !!response.next
 
   /**
    * Check for whether we can iterate to another page using this.getPreviousPage(response).
    * @param {response} A response that was received from the API.
    * @return {boolean} true if the response indicates a previous pages is available, false otherwise.
    */
-  apiModel.hasPreviousPage = (response) => !!response.previous;
+  apiModel.hasPreviousPage = response => !!response.previous
 
   /**
    * Takes a response and a callback and makes an API request for the response's next page. When the next page
@@ -151,11 +161,11 @@ function Bitbucket(opts = {}) {
     if (!apiModel.hasNextPage(response)) {
       throw new Error(
         'getNextPage: argument has no next page url. Call hasNextPage first to guard this method call.'
-      );
+      )
     }
 
-    apiModel.request.doPrebuiltSend(response.next, callback);
-  };
+    apiModel.request.doPrebuiltSend(response.next, callback)
+  }
 
   /**
    * Takes a response and a callback and makes an API request for the response's previous page. When the previous page
@@ -169,13 +179,13 @@ function Bitbucket(opts = {}) {
     if (!apiModel.hasPreviousPage(response)) {
       throw new Error(
         'getPreviousPage: argument has no next page url. Call hasPreviousPage first to guard this method call.'
-      );
+      )
     }
 
-    apiModel.request.doPrebuiltSend(response.previous, callback);
-  };
+    apiModel.request.doPrebuiltSend(response.previous, callback)
+  }
 
-  return apiModel;
+  return apiModel
 };
 
 module.exports = {

@@ -6,15 +6,15 @@ module.exports = function AbstractApi($api, opts = {}) {
       return function callbackRunner(err, response) {
         if (err) {
           if (callback) {
-            callback(err);
+            callback(err)
           }
-          return;
+          return
         }
 
         if (callback) {
-          callback(err, response);
+          callback(err, response)
         }
-      };
+      }
     }
-  };
-};
+  }
+}
