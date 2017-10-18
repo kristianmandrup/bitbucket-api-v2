@@ -7,39 +7,26 @@ function createApi(opts = {}) {
   return createBitbucketAPI()
 }
 
-// FIX: use request or xhr2
-const xhr = require('xhr')
-
-const verbs = [
-  'get',
-  'post',
-  'delete',
-  'update'
-]
-
-function prepareTest(test) {
-  let $get, $post, user, repo
+function prepareTest(test, handle, methods) {
+  let $stubs
   test.before(t => {
     user = 'kmandrup'
     repo = 'my-repo'
-    verbs.map(verb => {
-      $stubs[name] = sinon.stub(xhr, verb)
+    methods.map(method => {
+      $stubs[name] = sinon.stub(handle, method)
     })
   })
 
   test.after(t => {
-    $get.restore()
-    $post.restore()
+    methods.map(method => {
+      $stubs[name].restore()
+    })
   })
-  return {
-    $get,
-    $post,
-    user,
-    repo
-  }
+  return $stubs
 }
 
 module.exports = {
+  $api: createApi(),
   createApi,
   prepareTest
 }

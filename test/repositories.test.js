@@ -3,21 +3,14 @@ import {
   Repositories
 } from './imports'
 import {
+  $api,
+  // createApi,
   prepareTest
 } from './prepare'
-import {
-  createApi
-} from './prepare'
 
-const {
-  $get,
-  $post,
-  user,
-  repo
-} = prepareTest()
-
-const $api = createApi()
 const api = $api.repositories.promised
+let methods = []
+let $stubs = prepareTest(test, api, methods)
 
 function isFun(t, x) {
   t.is(typeof x, 'function')

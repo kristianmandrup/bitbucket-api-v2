@@ -22,19 +22,22 @@ import {
   Commit
 } from './imports'
 
-let {
-  $get,
-  $post,
-  user,
-  repo
-} = prepareTest()
+import {
+  $api,
+  // createApi,
+  prepareTest
+} from './prepare'
+
+const api = $api.commit.promised
+let methods = ['approve']
+let $stubs = prepareTest(test, api, methods)
 
 test('Commit: approve', async t => {
   const expected = require('./mocks/commit.json')
   const node = '123'
-  $stubs.post.returns(Promise.resolve(expected))
+  $stubs.approve.returns(Promise.resolve(expected))
 
-  let result = await api.commit.approve(user, repo, node)
+  let result = await api.approve(user, repo, node)
   t.truthy(result)
 })
 ```
