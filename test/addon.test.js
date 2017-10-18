@@ -1,5 +1,7 @@
-import test from 'ava'
-import Addon from '../src/addon'
+import {
+  test,
+  Addon
+} from './imports'
 
 test('Addon: create', t => {
   t.truthy(Addon)
