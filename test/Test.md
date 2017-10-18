@@ -8,6 +8,8 @@ Sample tests from [bitbucket-server-nodejs](https://github.com/sternba/bitbucket
 
 Also, perhaps use [sinon](http://sinonjs.org/) to simulate successful authentication, responses etc.
 
+See [Sinon Getting Started](http://sinonjs.org/#get-started) for a usage guide.
+
 ## Writing tests
 
 Test should be written in the following fashion, using Sinon to stub the responses made by supertest `get`, `post` and other core methods, by using mock responses to simulate the server.
