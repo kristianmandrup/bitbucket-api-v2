@@ -1,8 +1,22 @@
-import test from 'ava'
-import Forks from '../../src/repositories/forks'
+import {
+  test,
+  Forks
+} from './imports'
 
-test('Forks: create', t => {
-  t.truthy(Forks)
+import {
+  $api,
+  prepareTest
+} from '../prepare'
+
+const api = $api.forks.promised
+let methods = ['getAll']
+let $stubs = prepareTest(test, api, methods)
+
+test('Downloads: getAll', async t => {
+  const expected = require('./mocks/forks.json')
+  const node = '123'
+  $stubs.getAll.returns(Promise.resolve(expected))
+
+  let result = await api.getAll(user, repo, node)
+  t.truthy(result)
 })
-
-// more tests ...
