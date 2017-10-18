@@ -1,11 +1,13 @@
 import {
   test,
-  sinon,
-  request,
   Commit
 } from './imports'
 
-let {
+import {
+  prepareTest
+} from '../prepare'
+
+const {
   $get,
   $post,
   user,
