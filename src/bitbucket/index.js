@@ -1,9 +1,16 @@
 const Constants = require('./constants');
-const Repositories = require('./repositories');
+const {
+  Repositories,
+  Commit,
+  Commits,
+  Components,
+  Issues,
+  Milestones,
+  Pipelines
+} = require('./repositories');
 const Request = require('./request');
 const Teams = require('./teams');
 const User = require('./user');
-
 
 /**
  * Simple JavaScript Bitbucket API v2
@@ -37,7 +44,13 @@ function Bitbucket(opts = {}) {
     constants: Constants
   };
 
-  apiModel.repositories = Repositories(apiModel, opts);
+  apiModel.repositories = new Repositories(apiModel, opts);
+  apiModel.commit = new Commit(apiModel, opts);
+  apiModel.commits = new Commits(apiModel, opts);
+  apiModel.components = new Components(apiModel, opts);
+  apiModel.issues = new Issues(apiModel, opts);
+  apiModel.milestones = new Milestones(apiModel, opts);
+  apiModel.pipelines = new Pipelines(apiModel, opts);
 
   let reqOpts = Object.assign({
     proxy_host: $proxy_host,
@@ -45,9 +58,9 @@ function Bitbucket(opts = {}) {
     use_xhr: useXhr
   }, opts)
 
-  apiModel.request = Request(reqOpts);
-  apiModel.teams = Teams(apiModel, opts);
-  apiModel.user = User(apiModel, opts);
+  apiModel.request = new Request(reqOpts);
+  apiModel.teams = new Teams(apiModel, opts);
+  apiModel.user = new User(apiModel, opts);
 
   /**
    * Authenticate a user for all next requests using an API token

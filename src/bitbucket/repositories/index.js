@@ -1,17 +1,18 @@
 const _ = require('lodash');
 const {
   createPromisedApi
-} = require('./promised')
+} = require('../promised');
 
-const AbstractApi = require('./abstract_api');
-const constants = require('./constants');
+const fluid = require('../fluid');
+const AbstractApi = require('../abstract_api');
+const constants = require('../constants');
 
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/repositories-endpoint-423626330.html
  *           https://confluence.atlassian.com/bitbucket/repository-resource-423626331.html
  */
 module.exports = function RepositoriesApi(api, opts = {}) {
-  const result = AbstractApi(api, opts = {});
+  const result = AbstractApi(api, opts);
 
   function buildUri(username, repoSlug, action) {
     const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`;
@@ -97,9 +98,12 @@ module.exports = function RepositoriesApi(api, opts = {}) {
      * File content can be either textual/binary (for multipart/form-data)
      * or a path to a file on disk
      * Can also be called: commit(username, repoSlug, files, callback)
+     *
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/
+     * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src#post
      */
     commit(username, repoSlug, params, options, callback) {
-      const uri = buildUri(username, repoSlug);
+      const uri = buildUri(username, repoSlug, '/src');
       if (typeof options === 'function') {
         callback = options;
         options = null;
@@ -133,10 +137,12 @@ module.exports = function RepositoriesApi(api, opts = {}) {
      * Get a single commit
      * @param {String} repo owner
      * @param {String} slug (name) of the repo.
-     * @param {String} the sha of the commit
+     * @param {String} revision of the commit
+     *
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Brevision%7D
      */
-    getCommit(username, repoSlug, sha, callback) {
-      const uri = buildUri(username, repoSlug, `/commit/${sha}`)
+    getCommit(username, repoSlug, revision, callback) {
+      const uri = buildUri(username, repoSlug, `/commit/${revision}`);
       api.get(
         uri,
         null, null,
@@ -267,16 +273,7 @@ module.exports = function RepositoriesApi(api, opts = {}) {
 
   // return fluid api
   // experimental
-  localApi.forProject = (username, repo) => {
-    return localApi.reduce((acc, name) => {
-      if (typeof apiMethod !== 'function') return acc;
-      acc[name] = () => {
-        var args = [].slice.call(arguments)
-        return localApi.create(username, repo, ...args);
-      };
-    })
-  };
-
+  localApi.forProject = fluid(localApi, 2)
 
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)

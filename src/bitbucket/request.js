@@ -78,6 +78,14 @@ module.exports = function Request(_options) {
       return result.send(apiPath, parameters, 'POST', options, callback);
     },
 
+    delete(apiPath, parameters, options, callback) {
+      return result.send(apiPath, parameters, 'DELETE', options, callback);
+    },
+
+    update(apiPath, parameters, options, callback) {
+      return result.send(apiPath, parameters, 'UPDATE', options, callback);
+    },
+
     /**
      * Send a request to the server, receive a response,
      * decode the response and returns an associative array
