@@ -4,29 +4,27 @@ import {
 } from './imports'
 
 import {
+  $api,
   prepareTest
 } from '../prepare'
 
-const {
-  $get,
-  $post,
-  user,
-  repo
-} = prepareTest()
+const api = $api.commit.promised
+let methods = ['approve', 'disApprove']
+let $stubs = prepareTest(test, api, methods)
 
 test('Commit: approve', async t => {
   const expected = require('./mocks/commit.json')
   const node = '123'
-  $stubs.post.returns(Promise.resolve(expected))
+  $stubs.approve.returns(Promise.resolve(expected))
 
-  let result = await api.commit.approve(user, repo, node)
+  let result = await api.approve(user, repo, node)
   t.truthy(result)
 })
 
 test('Commit: disApprove', async t => {
   const expected = require('./mocks/commit.json')
   const node = '123'
-  $stubs.delete.returns(Promise.resolve(expected))
+  $stubs.disApprove.returns(Promise.resolve(expected))
 
   let result = await api.commit.disApprove(user, repo, node)
   t.truthy(result)

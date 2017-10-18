@@ -11,7 +11,7 @@ const {
   $post,
   user,
   repo
-} = prepareTest()
+} = prepareTest(test, addon, ['get'])
 
 test('Addon: create', t => {
   t.truthy(Addon)
