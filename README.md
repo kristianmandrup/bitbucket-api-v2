@@ -61,15 +61,17 @@ TODO
 
 ## Repositories
 
-Would be nice with a more "fluent" api so we can avoid having to use the form: `username, repoSlug` for each request
+Would be nice with a more "fluent" api so we can avoid having to use the form: `username, repoSlug` for each repository request
 
 Would like to see:
 
 ```js
 let project = repositories.forProject(username, repo)
 await project.create()
-await project.commit(files)
+await project.commit(commit)
 ```
+
+`forProject` now has experimental support ;)
 
 See [repositories API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories)
 
@@ -98,12 +100,11 @@ GET (get)
 POST
 
 - `commit(username, repoSlug, files, callback)`
+- `commit(username, repoSlug, files, options, callback)`
 
 ### Commits
 
-To post a new commit:
-
-API is now available [as noted here](https://community.atlassian.com/t5/Bitbucket-questions/Do-you-having-an-API-to-push-the-content-to-BitBucket-Repo/qaq-p/15318#M17395
+Commit API is now available [as noted here](https://community.atlassian.com/t5/Bitbucket-questions/Do-you-having-an-API-to-push-the-content-to-BitBucket-Repo/qaq-p/15318#M17395
 )
 
 See [repo slug POST](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src#post) for details
@@ -123,19 +124,55 @@ Use `multipart/form-data` when we need to upload a file:
 Current implementation in repositories:
 
 ```js
-commit(username, repoSlug, files, callback) {
+/**
+ * Commit files to a user repo
+ *
+ * @param {String} repo owner
+ * @param {String} slug (name) of the repo.
+ * @param {Object} files to commit, each key is file
+ * @param {Object} options to control request send such as the contentType
+ *
+ * File content can be either textual/binary (for multipart/form-data)
+ * or a path to a file on disk
+ * Can also be called: commit(username, repoSlug, files, callback)
+ */
+commit(username, repoSlug, params, options, callback) {
   const uri = buildUri(username, repoSlug);
+  if (typeof options === 'function') {
+    callback = options;
+    options = null;
+  }
   api.post(
     uri,
-    files, {
+    params, options || {
       contentType: 'multipart/form-data'
     },
     result.$createListener(callback)
   );
-},
+}
 ```
 
-Note that we are sending the files as the data argument and passing `contentType: 'multipart/form-data'` in options to force override of default `content-type` set to `'application/json'` for `send`.
+Note that we are sending the files as the data argument and passing `contentType: 'multipart/form-data'` in options to force override of default `content-type` normally set to `application/json` for `Request.send`.
+
+### Commit example
+
+```js
+let commit = {
+  message: 'nice refactoring',
+  author: 'Erik van Zijst <erik.van.zijst@gmail.com>',
+  branch: 'develop',
+  files: {
+    'docs/hello.txt': 'hello sweet world',
+    'docs/bye.txt': 'Goodbye cruel world',
+    'Readme.txt': '# Intro'
+  }
+}
+let project = repositories.forProject(username, repo)
+await project.create()
+await project.commit(commit)
+```
+
+Note: Has not yet been tested!
 
 #### application/x-www-form-urlencoded
 
@@ -147,6 +184,8 @@ $ curl https://api.bitbucket.org/2.0/repositories/atlassian/bbql/src/ \
   --data-urlencode "message=Initial commit" \
   --data-urlencode "author=Erik van Zijst <erik.van.zijst@gmail.com>"
 ```
+
+### Conflicting meta data
 
 There could be a field name clash if a client were to upload a file named "message", as this filename clashes with the meta data property for the commit message. To avoid this and to upload files whose names clash with the meta data properties, use a leading slash for the files, e.g. `curl --data-urlencode "/message=file contents"`.
 
