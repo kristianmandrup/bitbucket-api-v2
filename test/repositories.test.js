@@ -1,12 +1,15 @@
-import test from 'ava';
-import request from 'supertest';
+import test from 'ava'
+import request from 'supertest'
+import {
+  Repositories
+} from '../src/repositories'
 
 test('Repositories: create', t => {
-  request
-    .get('/hello')
-    .expect(200);
+  t.truthy(Repositories)
 
-  t.fail('todo');
-});
+  // request
+  //   .get('/hello')
+  //   .expect(200)
+})
 
 // more tests ...

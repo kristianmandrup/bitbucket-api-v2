@@ -1,7 +1,8 @@
 import test from 'ava'
+import Commit from '../../src/repositories/commit'
 
 test('Commit: create', t => {
-  t.fail('todo')
+  t.truthy(Commit)
 })
 
 // more tests ...
