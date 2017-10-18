@@ -1,0 +1,24 @@
+{
+  "size": 1,
+  "limit": 25,
+  "isLastPage": true,
+  "values": [
+    {
+      "name": "name",
+      "emailAddress": "email@domain.ca",
+      "id": 1234,
+      "displayName": "Fist Last",
+      "active": true,
+      "slug": "user-slug",
+      "type": "NORMAL",
+      "links": {
+        "self": [
+          {
+            "href": "https://localhost/users/user-slug"
+          }
+        ]
+      }
+    }
+  ],
+  "start": 0
+}

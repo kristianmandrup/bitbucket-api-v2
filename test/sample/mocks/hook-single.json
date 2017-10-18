@@ -1,0 +1,12 @@
+{
+    "details": {
+        "key": "com.atlassian.stash.plugin.example:example-repository-hook",
+        "name": "Example repository hook",
+        "type": "PRE_RECEIVE",
+        "description": "An example description for an example hook.",
+        "version": "1.2.4",
+        "configFormKey": null
+    },
+    "enabled": true,
+    "configured": true
+}

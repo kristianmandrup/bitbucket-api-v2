@@ -1,0 +1,45 @@
+{
+  "size": 5,
+  "limit": 25,
+  "isLastPage": true,
+  "values": [
+    {
+      "id": "refs/tags/release-0.1.0",
+      "displayId": "release-0.1.0",
+      "type": "TAG",
+      "latestCommit": "abc",
+      "latestChangeset": "def",
+      "hash": "abc"
+    },
+    {
+      "id": "refs/tags/release-0.1.1",
+      "displayId": "release-0.1.1",
+      "type": "TAG",
+      "latestCommit": "abc",
+      "latestChangeset": "def",
+      "hash": "abc"
+    },{
+      "id": "refs/tags/release-0.1.2",
+      "displayId": "release-0.1.2",
+      "type": "TAG",
+      "latestCommit": "abc",
+      "latestChangeset": "def",
+      "hash": "abc"
+    },{
+      "id": "refs/tags/release-0.2.0",
+      "displayId": "release-0.2.0",
+      "type": "TAG",
+      "latestCommit": "abc",
+      "latestChangeset": "def",
+      "hash": "abc"
+    },{
+      "id": "refs/tags/release-0.2.1",
+      "displayId": "release-0.2.1",
+      "type": "TAG",
+      "latestCommit": "abc",
+      "latestChangeset": "def",
+      "hash": "abc"
+    }
+  ],
+  "start": 0
+}

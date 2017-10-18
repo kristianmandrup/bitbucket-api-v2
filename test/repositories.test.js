@@ -3,6 +3,12 @@ import request from 'supertest'
 import {
   Repositories
 } from '../src/repositories'
+import prepareApi from './prepare-api'
+
+let api
+test.before(t => {
+  api = prepareApi()
+})
 
 test('Repositories: create', t => {
   t.truthy(Repositories)

@@ -23,7 +23,6 @@
   },
   "devDependencies": {
     "ava": "^0.22.0",
-    "eslint": "^4.9.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -33,10 +32,12 @@
     "babel-register": "^6.26.0",
     "babili": "^0.1.4",
     "babili-webpack-plugin": "^0.1.2",
+    "eslint": "^4.9.0",
     "nyc": "^11.2.1",
+    "sinon": "^4.0.1",
+    "supertest": "^3.0.0",
     "webpack": "^3.8.1",
-    "webpack-merge": "^4.1.0",
-    "supertest": "^3.0.0"
+    "webpack-merge": "^4.1.0"
   },
   "ava": {
     "files": [
