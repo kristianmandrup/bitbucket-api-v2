@@ -1,8 +1,31 @@
-import test from 'ava'
-import Commit from '../../src/repositories/commit'
+import {
+  test,
+  sinon,
+  request,
+  Commit
+} from './imports'
 
-test('Commit: create', t => {
-  t.truthy(Commit)
+let {
+  $get,
+  $post,
+  user,
+  repo
+} = prepareTest()
+
+test('Commit: approve', async t => {
+  const expected = require('./mocks/commit.json')
+  const node = '123'
+  $stubs.post.returns(Promise.resolve(expected))
+
+  let result = await api.commit.approve(user, repo, node)
+  t.truthy(result)
 })
 
-// more tests ...
+test('Commit: disApprove', async t => {
+  const expected = require('./mocks/commit.json')
+  const node = '123'
+  $stubs.delete.returns(Promise.resolve(expected))
+
+  let result = await api.commit.disApprove(user, repo, node)
+  t.truthy(result)
+})

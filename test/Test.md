@@ -6,5 +6,33 @@ The test are written using [ava]() and [supertest]()
 
 Sample tests from [bitbucket-server-nodejs](https://github.com/sternba/bitbucket-server-nodejs) can be found in `test/sample` and used for refeence and inspiration to set up the basic test infrastructure, for mocks etc.
 
-Also, perhaps use [sinon]() to simulate successful authentication, responses etc.
+Also, perhaps use [sinon](http://sinonjs.org/) to simulate successful authentication, responses etc.
 
+## Writing tests
+
+Test should be written in the following fashion, using Sinon to stub the responses made by supertest `get`, `post` and other core methods, by using mock responses to simulate the server.
+
+```js
+import {
+  test,
+  sinon,
+  request,
+  Commit
+} from './imports'
+
+let {
+  $get,
+  $post,
+  user,
+  repo
+} = prepareTest()
+
+test('Commit: approve', async t => {
+  const expected = require('./mocks/commit.json')
+  const node = '123'
+  $stubs.post.returns(Promise.resolve(expected))
+
+  let result = await api.commit.approve(user, repo, node)
+  t.truthy(result)
+})
+```

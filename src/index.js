@@ -188,7 +188,20 @@ function Bitbucket(opts = {}) {
   return apiModel
 };
 
+import Addon from './addon'
+import Users from './users'
+import HookEvents from './hook-events'
+import Snippets from './snippets'
+
 module.exports = {
   Bitbucket,
-  createBitBucketAPI
+  createBitBucketAPI,
+  Repositories,
+  User,
+  Users,
+  Team,
+  Addon,
+  HookEvents,
+  Snippets,
+  Request
 }
