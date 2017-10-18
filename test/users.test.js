@@ -1,7 +1,8 @@
-import test from 'ava';
+import test from 'ava'
+import Users from '../src/user'
 
 test('Users: create', t => {
-  t.fail('todo')
-});
+  t.truthy(Users)
+})
 
 // more tests ...

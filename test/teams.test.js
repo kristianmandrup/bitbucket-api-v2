@@ -1,7 +1,8 @@
 import test from 'ava'
+import Teams from '../src/teams'
 
 test('Teams: create', t => {
-  t.fail('todo')
+  t.truthy(Teams)
 })
 
 // more tests ...

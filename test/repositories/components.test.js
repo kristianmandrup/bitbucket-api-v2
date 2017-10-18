@@ -1,7 +1,8 @@
 import test from 'ava'
+import Components from '../../src/repositories/components'
 
 test('Components: create', t => {
-  t.fail('todo')
+  t.truthy(Components)
 })
 
 // more tests ...

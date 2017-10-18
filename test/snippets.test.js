@@ -1,7 +1,9 @@
 import test from 'ava'
+import request from 'supertest'
+import Snippets from '../src/hook-events'
 
 test('Snippets: create', t => {
-  t.fail('todo')
+  t.truthy(Snippets)
 })
 
 // more tests ...

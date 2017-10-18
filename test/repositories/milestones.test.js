@@ -1,7 +1,8 @@
 import test from 'ava'
+import Milestones from '../../src/repositories/milestones'
 
 test('Milestones: create', t => {
-  t.fail('todo')
+  t.truthy(Milestones)
 })
 
 // more tests ...

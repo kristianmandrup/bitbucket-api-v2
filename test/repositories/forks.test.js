@@ -1,7 +1,8 @@
 import test from 'ava'
+import Forks from '../../src/repositories/forks'
 
 test('Forks: create', t => {
-  t.fail('todo')
+  t.truthy(Forks)
 })
 
 // more tests ...

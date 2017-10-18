@@ -1,7 +1,8 @@
 import test from 'ava'
+import Refs from '../../src/repositories/refs'
 
 test('Refs: create', t => {
-  t.fail('todo')
+  t.truthy(Refs)
 })
 
 // more tests ...
