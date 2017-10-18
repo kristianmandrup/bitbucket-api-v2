@@ -6,7 +6,9 @@ const {
   Components,
   Issues,
   Milestones,
-  Pipelines
+  Pipelines,
+  PullRequests,
+  Refs
 } = require('./repositories');
 const Request = require('./request');
 const Teams = require('./teams');
@@ -51,6 +53,8 @@ function Bitbucket(opts = {}) {
   apiModel.issues = new Issues(apiModel, opts);
   apiModel.milestones = new Milestones(apiModel, opts);
   apiModel.pipelines = new Pipelines(apiModel, opts);
+  apiModel.pullRequests = new PullRequests(apiModel, opts);
+  apiModel.refs = new Refs(apiModel, opts);
 
   let reqOpts = Object.assign({
     proxy_host: $proxy_host,
