@@ -13,7 +13,7 @@ Check out [bitbucket-server-nodejs](https://github.com/sternba/bitbucket-server-
 Authentication via [Bitbucket OAuth2](https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication)
 
 ```js
-const { createBitbucketAPI } = require('node-bitbucket-v2')
+const { createBitbucketAPI } = require('bitbucket-v2')
 const bitbucketApi = createBitbucketAPI(); //or: createBitbucketAPI({useXhr: true})
 bitbucketApi.authenticateOAuth2(someAccessToken);
 ```
