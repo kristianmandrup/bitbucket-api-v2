@@ -87,18 +87,29 @@ module.exports = function RepositoriesApi(api, opts = {}) {
     },
 
     /**
-     * Get the info for a single repo
+     * Commit files to a user repo
      *
      * @param {String} repo owner
      * @param {String} slug (name) of the repo.
+     * @param {Object} params including files to commit
+     * @param {Object} to control request send such as the contentType
+     *
+     * File content can be either textual/binary (for multipart/form-data)
+     * or a path to a file on disk
+     * Can also be called: commit(username, repoSlug, files, callback)
      */
-    commit(username, repoSlug, files, callback) {
+    commit(username, repoSlug, params, options, callback) {
       const uri = buildUri(username, repoSlug);
+      if (typeof options === 'function') {
+        callback = options;
+        options = null;
+      }
+      const defaultOpts = {
+        contentType: 'multipart/form-data'
+      };
       api.post(
         uri,
-        files, {
-          contentType: 'multipart/form-data'
-        },
+        params, options || defaultOpts,
         result.$createListener(callback)
       );
     },
@@ -253,6 +264,19 @@ module.exports = function RepositoriesApi(api, opts = {}) {
       return !!response.parent;
     }
   };
+
+  // return fluid api
+  // experimental
+  localApi.forProject = (username, repo) => {
+    return localApi.reduce((acc, name) => {
+      if (typeof apiMethod !== 'function') return acc;
+      acc[name] = () => {
+        var args = [].slice.call(arguments)
+        return localApi.create(username, repo, ...args);
+      };
+    })
+  };
+
 
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
