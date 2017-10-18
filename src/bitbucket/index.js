@@ -11,7 +11,16 @@ const User = require('./user');
  * Based on the PHP GitHub API project http://github.com/ornicar/php-github-api
  */
 
-module.exports = function Bitbucket({ proxy, useXhr }) {
+function createBitBucketAPI(opts = {}) {
+  return new Bitbucket(opts)
+}
+
+function Bitbucket(opts = {}) {
+  let {
+    proxy,
+    useXhr
+  } = opts
+
   /**
    * Define HTTP proxy in format localhost:3128
    */
@@ -28,10 +37,17 @@ module.exports = function Bitbucket({ proxy, useXhr }) {
     constants: Constants
   };
 
-  apiModel.repositories = Repositories(apiModel);
-  apiModel.request = Request({ proxy_host: $proxy_host, proxy_port: $proxy_port, use_xhr: useXhr });
-  apiModel.teams = Teams(apiModel);
-  apiModel.user = User(apiModel);
+  apiModel.repositories = Repositories(apiModel, opts);
+
+  let reqOpts = Object.assign({
+    proxy_host: $proxy_host,
+    proxy_port: $proxy_port,
+    use_xhr: useXhr
+  }, opts)
+
+  apiModel.request = Request(reqOpts);
+  apiModel.teams = Teams(apiModel, opts);
+  apiModel.user = User(apiModel, opts);
 
   /**
    * Authenticate a user for all next requests using an API token
@@ -54,7 +70,7 @@ module.exports = function Bitbucket({ proxy, useXhr }) {
    */
   apiModel.deAuthenticate = () => {
     apiModel.request
-        .setOption('login_type', 'none');
+      .setOption('login_type', 'none');
 
     return apiModel;
   };
@@ -144,3 +160,8 @@ module.exports = function Bitbucket({ proxy, useXhr }) {
 
   return apiModel;
 };
+
+module.exports = {
+  Bitbucket,
+  createBitBucketAPI
+}

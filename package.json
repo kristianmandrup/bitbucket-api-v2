@@ -4,9 +4,10 @@
   "description": "Wrapper for the BitBucket API v2, the version required to use OAuth2. Includes support for XHR requests.",
   "author": "Jordan Wallet <jjwallet@gmail.com>",
   "homepage": "https://github.com/Mr-Wallet/node-bitbucket-v2.git",
-  "main": "bitbucket/index.js",
+  "main": "src/bitbucket/index.js",
   "scripts": {
-    "lint": "eslint ./bitbucket --quiet"
+    "lint": "eslint ./bitbucket --quiet",
+    "test": "ava"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
     "xhr": "^2.2.0"
   },
   "devDependencies": {
+    "ava": "^0.22.0",
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.1.0",

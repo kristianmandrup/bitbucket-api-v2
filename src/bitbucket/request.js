@@ -3,6 +3,9 @@ const https = require('https');
 const querystring = require('querystring');
 const url = require('url');
 const xhr = require('xhr');
+const {
+  createPromisedApi
+} = require('./promised')
 
 /**
  * Performs requests on GitHub API.
@@ -32,7 +35,8 @@ module.exports = function Request(_options) {
     $options
   };
 
-  return _.assign(result, {
+  let localApi = {
+    name: 'Request',
     /**
      * Change an option value.
      *
@@ -329,5 +333,8 @@ module.exports = function Request(_options) {
         done(null, msg);
       });
     }
-  });
+  };
+
+  localApi.promised = createPromisedApi(localApi, $options)
+  return _.assign(result, localApi)
 };

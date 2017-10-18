@@ -1,14 +1,18 @@
 const _ = require('lodash');
+const {
+  createPromisedApi
+} = require('./promised')
 
 const AbstractApi = require('./abstract_api');
 
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/user-endpoint-2-0-744527199.html
  */
-module.exports = function UserApi(api) {
-  const result = AbstractApi(api);
+module.exports = function UserApi(api, opts = {}) {
+  const result = AbstractApi(api, opts = {});
 
-  return _.assign(result, {
+  const localApi = {
+    name: 'User',
     /**
      * Get the info for the authenticated user
      */
@@ -19,5 +23,8 @@ module.exports = function UserApi(api) {
         result.$createListener(callback)
       );
     }
-  });
+  };
+
+  localApi.promised = createPromisedApi(localApi, opts)
+  return _.assign(result, localApi)
 };

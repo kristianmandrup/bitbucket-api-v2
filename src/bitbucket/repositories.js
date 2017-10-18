@@ -1,4 +1,7 @@
 const _ = require('lodash');
+const {
+  createPromisedApi
+} = require('./promised')
 
 const AbstractApi = require('./abstract_api');
 const constants = require('./constants');
@@ -7,10 +10,11 @@ const constants = require('./constants');
  * API docs: https://confluence.atlassian.com/bitbucket/repositories-endpoint-423626330.html
  *           https://confluence.atlassian.com/bitbucket/repository-resource-423626331.html
  */
-module.exports = function RepositoriesApi(api) {
-  const result = AbstractApi(api);
+module.exports = function RepositoriesApi(api, opts = {}) {
+  const result = AbstractApi(api, opts = {});
 
-  return _.assign(result, {
+  const localApi = {
+    name: 'Repositories',
     /**
      * Create a new repository
      * @param {String} repo owner
@@ -113,8 +117,7 @@ module.exports = function RepositoriesApi(api) {
       let stateArray = state;
       if (!stateArray) {
         stateArray = [constants.pullRequest.states.OPEN];
-      }
-      else if (!_.isArray(stateArray)) {
+      } else if (!_.isArray(stateArray)) {
         stateArray = [stateArray];
       }
 
@@ -222,5 +225,8 @@ module.exports = function RepositoriesApi(api) {
     hasParent(response) {
       return !!response.parent;
     }
-  });
+  };
+
+  localApi.promised = createPromisedApi(localApi, opts)
+  return _.assign(result, localApi)
 };
