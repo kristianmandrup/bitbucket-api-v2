@@ -24,10 +24,34 @@
   "devDependencies": {
     "ava": "^0.22.0",
     "eslint": "^4.9.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2017": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "babili": "^0.1.4",
+    "babili-webpack-plugin": "^0.1.2",
+    "nyc": "^11.2.1",
+    "webpack": "^3.8.1",
+    "webpack-merge": "^4.1.0",
     "supertest": "^3.0.0"
+  },
+  "ava": {
+    "files": [
+      "test/**/*.js"
+    ],
+    "concurrency": 1,
+    "failFast": true,
+    "failWithoutAssertions": false,
+    "tap": true,
+    "powerAssert": false,
+    "require": [
+      "babel-register",
+      "babel-polyfill"
+    ],
+    "babel": "inherit"
   },
   "license": "MIT"
 }
