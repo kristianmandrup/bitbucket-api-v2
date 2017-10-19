@@ -7,40 +7,20 @@ const {
   createPromisedApi
 } = require('./promised')
 
+const {
+  defaults,
+  switchEachFunctionContext
+} = require('./util')
+
 /**
  * Performs requests on GitHub API.
  */
 module.exports = function XhrAdapter(_options) {
-  const $defaults = {
-    protocol: 'https',
-    path: '/2.0',
-    hostname: 'api.bitbucket.org',
-    format: 'json',
-    user_agent: 'js-bitbucket-api-v2 (http://github.com/Mr-Wallet/node-bitbucket-v2)',
-    http_port: 443,
-    timeout: 20,
-    login_type: 'none',
-    username: null,
-    password: null,
-    api_token: null,
-    oauth_access_token: null,
-    proxy_host: null,
-    proxy_port: null,
-    use_xhr: false
-  }
+  const $defaults = defaults
   const $options = _.defaults({}, _options, $defaults)
 
   opts.requestApi = opts.requestApi || {}
-  let context = this
-
-  // Note: we could (potentially) use this override mechanism on the other APIs as well
-  // change context (this) of each function passed in requestApi
-  // as if these functions were defined here and have access to the vars in this scope ;)
-  const customApiMethods = Object.keys(opts.requestApi)
-  const customRequestApi = customApiMethods.reduce((acc, key) => {
-    acc[key] = acc[key].bind(context)
-    return acc
-  }, {})
+  let customRequestApi = switchEachFunctionContext(opts.requestApi, this)
 
   const result = {
     $defaults,
