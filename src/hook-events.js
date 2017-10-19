@@ -32,6 +32,22 @@ module.exports = function HookEventsApi(api, opts = {}) {
         null,
         result.$createListener(callback)
       )
+    },
+
+    /**
+     * Returns a paginated list of all valid webhook events for the specified entity.
+     * This is public data that does not require any scopes or authentication.
+     *
+     * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/hook_events/%7Bsubject_type%7D
+     */
+    forSubject(subjectType, callback) {
+      const uri = `hook_events/${subjectType}`
+      api.get(
+        uri,
+        null,
+        null,
+        result.$createListener(callback)
+      )
     }
   }
 

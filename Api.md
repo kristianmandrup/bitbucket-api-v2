@@ -228,6 +228,7 @@ See [teams API](https://developer.atlassian.com/bitbucket/api/2/reference/resour
 See [hook events API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/hook_events)
 
 - `get(callback)`
+- `forSubject(subjectType, callback)`
 
 ## Snippets
 
