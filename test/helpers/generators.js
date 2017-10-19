@@ -17,11 +17,11 @@ async function execute(config = {}) {
 function prepareStub(stubs, config = {}) {
   let {
     expect,
-    requestType
+    requestType,
+    methodName
   } = config
 
-  let httpVerb = requestType
-  sinon.stub(stubs[httpVerb], expect)
+  let httpVerb = requestType || guessRequestType(methodName) || 'get'
 }
 
 // sample compare function factory
