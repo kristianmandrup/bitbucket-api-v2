@@ -5,7 +5,9 @@ const exprMap = {
     /^add/
   ],
   update: [
-    /^update/
+    /^update/,
+    /^prove/, //approve
+    /^vote/,
   ],
   delete: [
     /^delete/,
