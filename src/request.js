@@ -30,12 +30,24 @@ module.exports = function Request(_options) {
   }
   const $options = _.defaults({}, _options, $defaults)
 
+  opts.requestApi = opts.requestApi || {}
+  let context = this
+
+  // Note: we could (potentially) use this override mechanism on the other APIs as well
+  // change context (this) of each function passed in requestApi
+  // as if these functions were defined here and have access to the vars in this scope ;)
+  const customApiMethods = Object.keys(opts.requestApi)
+  const customRequestApi = customApiMethods.reduce((acc, key) => {
+    acc[key] = acc[key].bind(context)
+    return acc
+  }, {})
+
   const result = {
     $defaults,
     $options
   }
 
-  let localApi = {
+  let localApi = _.assign({
     name: 'Request',
     /**
      * Change an option value.
@@ -390,7 +402,7 @@ module.exports = function Request(_options) {
         done(null, msg)
       })
     }
-  }
+  }, customRequestApi)
 
   localApi.promised = createPromisedApi(localApi, $options)
   return _.assign(result, localApi)
