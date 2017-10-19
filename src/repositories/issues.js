@@ -304,6 +304,7 @@ module.exports = function IssuesApi(api, opts = {}) {
   }
 
   localApi.forProject = fluid(localApi, 2)
+  localApi.forRepo = localApi.forProject // alias
   localApi.forIssue = fluid(localApi, 3)
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)

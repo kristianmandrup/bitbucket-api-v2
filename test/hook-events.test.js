@@ -13,8 +13,14 @@ const {
   repo
 } = prepareTest()
 
-test('HookEvents: create', t => {
+test('HookEvents: new', async t => {
   t.truthy(HookEvents)
 })
 
-// more tests ...
+test('HookEvents: get(callback)', async t => {
+  t.fail('todo')
+})
+
+test('HookEvents: forSubject(subjectType, callback)', async t => {
+  t.fail('todo')
+})

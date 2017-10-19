@@ -152,6 +152,8 @@ Tests will be written and run using [ava](https://github.com/avajs/ava) the "Fut
 
 Intial skeleton tests have been started. Please contribute!
 
+Please see the [Test](https://github.com/kristianmandrup/node-bitbucket-v2/blob/master/Api.md) document for best practices when writing tests. In short: use *test generators*!!
+
 To run test suite:
 
 ```js

@@ -10,7 +10,11 @@ import {
 
 const api = $api.repositories.promised
 let methods = []
-let $stubs = prepareTest(test, api, methods)
+let {
+  $stubs,
+  user,
+  repo
+} = prepareTest(test, api, methods)
 
 function isFun(t, x) {
   t.is(typeof x, 'function')
@@ -33,13 +37,60 @@ test.cb('Repositories: new', t => {
   })
 })
 
-test('Repositories: get', async t => {
-  let result = await repositories.get(user, repo)
+test('Repositories: get(username, repoSlug, callback)', async t => {
+  let result = await api.get(user, repo)
+  t.truthy(result)
 })
 
-test('Repositories: create', async t => {
-  t.truthy(Repositories)
+test('Repositories: create(username, repo, callback)', async t => {
+  let result = await api.create(user, repo)
+  t.truthy(result)
+})
 
-  let result = await $get(user, repo)
-    .expect(200)
+test('Repositories: createPullRequest(username, repoSlug, pullRequest, callback)', async t => {
+  t.fail('todo')
+})
+
+test('Repositories: commit(username, repoSlug, params, options, callback)', async t => {
+  t.fail('todo')
+})
+
+test('Repositories: getBranches(username, repoSlug, callback)', async t => {
+  t.fail('todo')
+})
+
+test('Repositories: getCommit(username, repoSlug, revision, callback)', async t => {
+  t.fail('todo')
+})
+
+test('Repositories: getPullRequests(username, repoSlug, state, callback)', async t => {
+  t.fail('todo')
+})
+
+test('Repositories: getByUser(username, callback)', async t => {
+  t.fail('todo')
+})
+
+test('Repositories: getByTeam(teamname, callback)', async t => {
+  t.fail('todo')
+})
+
+test('Repositories: getForks(username, repoSlug, callback)', async t => {
+  t.fail('todo')
+})
+
+test('Repositories: getForksFromResponse(response, callback)', async t => {
+  t.fail('todo')
+})
+
+test('Repositories: getParentFromResponse(response, callback)', async t => {
+  t.fail('todo')
+})
+
+test('Repositories: hasParent(response)', async t => {
+  t.fail('todo')
+})
+
+test('Repositories: forProject(username, repoSlug)', async t => {
+  t.fail('todo')
 })

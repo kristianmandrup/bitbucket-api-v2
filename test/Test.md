@@ -43,3 +43,48 @@ test('Commit: approve', async t => {
   t.truthy(result)
 })
 ```
+
+## Generating tests
+
+To reduce maintenance and human error and reduce size of test files etc. we will instead generate tests baed on data:
+
+Please see `test/helpers` folder for some initial infra:
+
+```js
+generateTest(test, config = {})
+
+async function execute(config = {}) {
+  let {
+    methodName,
+    api,
+    args
+  } = config
+  return await api[methodName](...args)
+}
+
+function createComparer(t, config) => {
+  let { expect } = config
+  return result => {
+    t.is(result.x, expect.x)
+  }
+}
+
+const expected = {
+  create: {
+    // expected http response body (json) from create call
+  },
+  remove: {
+    // ...
+  }
+}
+
+generateTest(test, {
+  methodName: 'getAll',
+  requestType: 'get', // usually all that is needed
+  request: {
+    // more request details if needed
+  },
+  expected,
+  createComparer
+})
+```

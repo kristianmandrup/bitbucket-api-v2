@@ -147,8 +147,8 @@ module.exports = function CommitApi(api, opts = {}) {
   }
 
   localApi.forProject = fluid(localApi, 2)
-  localApi.forNode = fluid(localApi, 3)
-  localApi.forComment = fluid(localApi, 4)
+  localApi.forProjectNode = fluid(localApi, 3)
+  localApi.forProjectNode = fluid(localApi, 4)
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
 }

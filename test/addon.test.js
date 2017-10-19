@@ -13,8 +13,14 @@ const {
   repo
 } = prepareTest(test, addon, ['get'])
 
-test('Addon: create', t => {
+test('Addon: new', t => {
   t.truthy(Addon)
 })
 
-// more tests ...
+test('HookEvents: remove(callback)', async t => {
+  t.fail('todo')
+})
+
+test('HookEvents: update(addon, callback)', async t => {
+  t.fail('todo')
+})

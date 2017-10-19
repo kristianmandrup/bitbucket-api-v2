@@ -10,11 +10,16 @@ import {
 
 const api = $api.components.promised
 let methods = ['getAll']
-let $stubs = prepareTest(test, api, methods)
+let {
+  $stubs,
+  user,
+  repo
+} = prepareTest(test, api, methods)
+
+const expected = require('./mocks/commits.json')
+const node = '123'
 
 test('Components: getAll', async t => {
-  const expected = require('./mocks/commits.json')
-  const node = '123'
   $stubs.getAll.returns(Promise.resolve(expected))
 
   let result = await api.getAll(user, repo, node)
