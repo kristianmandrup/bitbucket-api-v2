@@ -231,6 +231,7 @@ module.exports = function UsersApi(api, opts = {}) {
     }
   }
 
+  localApi.forUser = fluid(localApi, 1)
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
 }

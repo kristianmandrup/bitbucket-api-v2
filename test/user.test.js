@@ -5,4 +5,14 @@ test('User: create', t => {
   t.truthy(User)
 })
 
-// more tests ...
+test('Teams: get(callback)', t => {
+  t.fail('todo')
+})
+
+test('Teams: getEmails(callback)', t => {
+  t.fail('todo')
+})
+
+test('Teams: getEmailDetails(emailAddr, callback)', t => {
+  t.fail('todo')
+})

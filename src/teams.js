@@ -137,7 +137,8 @@ module.exports = function TeamsApi(api, opts = {}) {
 
     // TODO: Reuse same API as for UsersApi
   }
-
+  localApi.forOwner = fluid(localApi, 1)
+  localApi.forProject = fluid(localApi, 2)
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
 }
