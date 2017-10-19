@@ -69,6 +69,7 @@ function Bitbucket(opts = {}) {
   apiModel.pipelinesConfig = new PipelinesConfig(apiModel, opts)
   apiModel.forks = new Forks(apiModel, opts)
   apiModel.downloads = new Downloads(apiModel, opts)
+  apiModel.branchRestrictions = new BranchRestrictions(apiModel, opts)
 
   let reqOpts = Object.assign({
     proxy_host: $proxy_host,
