@@ -1,4 +1,4 @@
-module.exports = function AbstractApi($api, opts = {}) {
+module.exports = function createAbstractApi($api, opts = {}) {
   return {
     $api,
 

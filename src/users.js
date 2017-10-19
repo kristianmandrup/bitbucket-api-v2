@@ -1,17 +1,16 @@
-const _ = require('lodash')
 const {
-  createPromisedApi
-} = require('./promised')
-
-const AbstractApi = require('./abstract_api')
+  _,
+  createPromisedApi,
+  createAbstractApi
+} = './base'
 
 /**
  * API docs:
  * https://developer.atlassian.com/bitbucket/api/2/reference/resource/users/
  *
  */
-module.exports = function UsersApi(api, opts = {}) {
-  const result = AbstractApi(api, opts = {})
+function createApi(api, opts = {}) {
+  const result = createAbstractApi(api, opts = {})
 
   function buildUri(username, action) {
     const baseUri = `users/${username}`
@@ -234,4 +233,22 @@ module.exports = function UsersApi(api, opts = {}) {
   localApi.forUser = fluid(localApi, 1)
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
+}
+
+module.exports = {
+  createApi,
+  methods: [
+    'get',
+    'getFollowers',
+    'getFollowing',
+    'getWebHooks',
+    'getWebHook',
+    'removeWebHook',
+    'updateWebHook',
+    'getPipelineConfigVars',
+    'getPipelineConfigVar',
+    'removePipelineConfigVar',
+    'updatePipelineConfigVar',
+    'getRepositories'
+  ]
 }

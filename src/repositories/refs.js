@@ -40,3 +40,10 @@ module.exports = function RefsApi(api, opts = {}) {
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
 }
+
+module.exports = {
+  createApi,
+  methods: [
+    'getAll'
+  ]
+}

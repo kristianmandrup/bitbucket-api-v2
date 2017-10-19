@@ -18,12 +18,22 @@ const {
 const {
   Request
 } = require('./request')
-const Teams = require('./teams')
-const User = require('./user')
-const Users = require('./users')
-const Addon = require('./addon')
-const HookEvents = require('./hook-events')
-const Snippets = require('./snippets')
+
+const teams = require('./teams')
+const user = require('./user')
+const users = require('./users')
+const addon = require('./addon')
+const hookEvents = require('./hook-events')
+const snippets = require('./snippets')
+
+let apis = {
+  teams,
+  user,
+  users,
+  addon,
+  hookEvents,
+  snippets
+}
 
 /**
  * Simple JavaScript Bitbucket API v2
@@ -57,6 +67,12 @@ function Bitbucket(opts = {}) {
     constants: Constants
   }
 
+  // TODO: generate all instead
+  let apiNames = Object.keys(apis)
+  apiNames.map(name => {
+    apiModel[name] = new apis[name](apiModel, opts)
+  })
+
   apiModel.repositories = new Repositories(apiModel, opts)
   apiModel.commit = new Commit(apiModel, opts)
   apiModel.commits = new Commits(apiModel, opts)
@@ -83,7 +99,7 @@ function Bitbucket(opts = {}) {
   apiModel.teams = new Teams(apiModel, opts)
   apiModel.user = new User(apiModel, opts)
   apiModel.users = new Users(apiModel, opts)
-  apiModel.addon = new Addon(apiModel, opts)
+  apiModel.addon = new addon.createApi(apiModel, opts)
   apiModel.snippets = new Snippets(apiModel, opts)
   apiModel.hookEvents = new HookEvents(apiModel, opts)
 
