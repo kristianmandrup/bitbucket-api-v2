@@ -1,15 +1,14 @@
-const _ = require('lodash')
 const {
-  createPromisedApi
-} = require('./promised')
-
-const AbstractApi = require('./abstract_api')
+  _,
+  createPromisedApi,
+  createAbstractApi
+} = './base'
 
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/user-endpoint-2-0-744527199.html
  */
-module.exports = function UserApi(api, opts = {}) {
-  const result = AbstractApi(api, opts = {})
+function createApi(api, opts = {}) {
+  const result = createAbstractApi(api, opts = {})
 
   const localApi = {
     name: 'User',
@@ -51,4 +50,13 @@ module.exports = function UserApi(api, opts = {}) {
 
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
+}
+
+module.exports = {
+  createApi,
+  methods: [
+    'get',
+    'getEmails',
+    'getEmailDetails'
+  ]
 }

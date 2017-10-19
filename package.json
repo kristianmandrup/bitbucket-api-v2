@@ -33,6 +33,7 @@
     "babili": "^0.1.4",
     "babili-webpack-plugin": "^0.1.2",
     "eslint": "^4.9.0",
+    "nock": "^9.0.22",
     "nyc": "^11.2.1",
     "sinon": "^4.0.1",
     "supertest": "^3.0.0",

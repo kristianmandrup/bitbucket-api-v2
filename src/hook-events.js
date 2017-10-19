@@ -1,15 +1,14 @@
-const _ = require('lodash')
 const {
-  createPromisedApi
-} = require('./promised')
-
-const AbstractApi = require('./abstract_api')
-
+  _,
+  createPromisedApi,
+  createAbstractApi
+} = './base'
 /**
- * API docs: https://developer.atlassian.com/bitbucket/api/2/reference/resource/hook_events
+ * API docs: https://developer.atlassian.com/bitbucket/api/2/reference/
+ * resource/hook_events
  */
-module.exports = function HookEventsApi(api, opts = {}) {
-  const result = AbstractApi(api, opts = {})
+module.exports = function createApi(api, opts = {}) {
+  const result = createAbstractApi(api, opts = {})
 
   function buildUri(owner, action) {
     const baseUri = `teams/${owner}`
@@ -53,4 +52,12 @@ module.exports = function HookEventsApi(api, opts = {}) {
 
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
+}
+
+module.exports = {
+  createApi,
+  methods: [
+    'get',
+    'forSubject'
+  ]
 }

@@ -1,15 +1,14 @@
-const _ = require('lodash')
 const {
-  createPromisedApi
-} = require('./promised')
-
-const AbstractApi = require('./abstract_api')
+  _,
+  createPromisedApi,
+  createAbstractApi
+} = './base'
 
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/teams-endpoint-423626335.html
  */
-module.exports = function TeamsApi(api, opts = {}) {
-  const result = AbstractApi(api, opts = {})
+function createApi(api, opts = {}) {
+  const result = createAbstractApi(api, opts = {})
 
   function buildUri(owner, action) {
     const baseUri = `teams/${owner}`
@@ -141,4 +140,17 @@ module.exports = function TeamsApi(api, opts = {}) {
   localApi.forProject = fluid(localApi, 2)
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
+}
+
+module.exports = {
+  createApi,
+  methods: [
+    'get',
+    'getProjects',
+    'addProject',
+    'getProject',
+    'updateProject',
+    'removeProject',
+    'getUserInfo'
+  ]
 }

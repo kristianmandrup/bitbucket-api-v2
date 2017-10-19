@@ -1,16 +1,16 @@
-const _ = require('lodash')
 const {
-  createPromisedApi
-} = require('../promised')
-
-const AbstractApi = require('../abstract_api')
+  _,
+  fluid,
+  createPromisedApi,
+  createAbstractApi
+} = '../base'
 
 /**
  * API doc: https://developer.atlassian.com/bitbucket/api/2/reference/
  * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit
  */
-module.exports = function ForksApi(api, opts = {}) {
-  const result = AbstractApi(api, opts)
+function createApi(api, opts = {}) {
+  const result = createAbstractApi(api, opts)
 
   function buildUri(username, repoSlug, action) {
     const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`
@@ -38,4 +38,11 @@ module.exports = function ForksApi(api, opts = {}) {
 
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
+}
+
+module.exports = {
+  createApi,
+  methods: [
+    'getAll'
+  ]
 }

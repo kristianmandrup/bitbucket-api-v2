@@ -1,26 +1,30 @@
 import {
   test,
-  Addon
-} from './imports'
-import {
-  prepareTest
-} from './prepare'
+  log,
+  error,
+  defaults,
+  prepareTest,
+  addon
+} from './helpers'
 
-const {
-  $get,
-  $post,
-  user,
-  repo
-} = prepareTest(test, addon, ['get'])
+const api = addon.createApi()
 
 test('Addon: new', t => {
   t.truthy(Addon)
+  t.truthy(api.addon)
 })
 
-test('HookEvents: remove(callback)', async t => {
-  t.fail('todo')
+test('Addon: remove(callback)', async t => {
+  prepareTest({
+    delete: '/addon'
+  })
+  let result = await api()
+  log({
+    result
+  })
+  t.is(result.code, 200)
 })
 
-test('HookEvents: update(addon, callback)', async t => {
+test('Addon: update(addon, callback)', async t => {
   t.fail('todo')
 })

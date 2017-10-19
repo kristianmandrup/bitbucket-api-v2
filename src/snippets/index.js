@@ -1,15 +1,15 @@
-const _ = require('lodash')
 const {
-  createPromisedApi
-} = require('./promised')
-
-const AbstractApi = require('./abstract_api')
+  _,
+  fluid,
+  createPromisedApi,
+  createAbstractApi
+} = '../base'
 
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/teams-endpoint-423626335.html
  */
-module.exports = function SnippetsApi(api, opts = {}) {
-  const result = AbstractApi(api, opts = {})
+function createApi(api, opts = {}) {
+  const result = createAbstractApi(api, opts = {})
 
   function buildUri(username, action) {
     const baseUri = `snippets/${username}`
@@ -280,4 +280,24 @@ module.exports = function SnippetsApi(api, opts = {}) {
 
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
+}
+
+module.exports = {
+  createApi,
+  methods: [
+    'get',
+    'create',
+    'createWithMeta',
+    'getFor',
+    'createSnippetFor',
+    'getSnippetFor',
+    'updateSnippetFor',
+    'removeSnippetFor',
+    'getSnippetCommentsFor',
+    'addSnippetCommentFor',
+    'isSnippetWatchedFor',
+    'watchSnippetFor',
+    'stopWatchingSnippetFor',
+    'getSnippetWatchersFor'
+  ]
 }
