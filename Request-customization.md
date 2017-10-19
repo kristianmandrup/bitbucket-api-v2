@@ -2,6 +2,8 @@
 
 Each resource uses `Request` to perform the actual server requests.
 
+## Customize request API
+
 `Request` allows overriding parts of its API so that f.ex the Ajax request library being used can be customized as shown here.
 
 The context of each method in `requestApi` object will be set to the context of the `Request` scope so you have access to all the original variables in that scope (as if each custom API function was defined in there).
@@ -19,7 +21,36 @@ opts = {
 const api = createBitBucketAPI(opts)
 ```
 
-Example replacing with `request`:
+## Custom request adapter
+
+Alternatively you can substitute your own full adapter (that you can even further customize as described above if needed)
+
+```js
+opts = {
+  requestAdapter: (opts = {}) {
+    // do whatever to return full request API
+  },
+}
+```
+
+Currently only the (original) `xhr` adapter is provided.
+There are skeleton implementation for `xhr2` and `request` to be developed and refined by community (see `src/request` folder).
+
+## Select adapter by name
+
+When more working adapters are provided, you can simply specify the option `adapterName` instead to switch adapter.
+
+```js
+opts = {
+  adapterName: 'xhr2'
+}
+```
+
+## Full customization scenario (request)
+
+Example scenario replacing `xhr` with `request`:
+
+`xhr` uses the following kind of options:
 
 ```js
 xhrOptions = {
@@ -31,8 +62,8 @@ xhrOptions = {
 }
 ```
 
-We can parse the `xhrOptions` and turn them into valid args for request.
-Could look something like the following
+We can parse the `xhrOptions` and turn them into valid args for `request` to use.
+It might look something like this:
 
 ```js
 function prepareRequestOpts(xhrOptions = {})

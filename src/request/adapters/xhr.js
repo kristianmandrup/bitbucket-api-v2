@@ -10,7 +10,7 @@ const {
 /**
  * Performs requests on GitHub API.
  */
-module.exports = function Request(_options) {
+module.exports = function XhrAdapter(_options) {
   const $defaults = {
     protocol: 'https',
     path: '/2.0',
