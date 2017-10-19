@@ -41,12 +41,14 @@ Each resource uses `Request` to perform the actual server requests.
 
 ### Main api objects
 
-- `request` (for making generic API requests)
 - `repositories`
 - `teams`
 - `user`
+- `users`
+- `addon`
+- `hookEvents`
 
-Actions on a user repository
+APIs acting on a user repository
 
 - `commit`
 - `commits`
@@ -61,19 +63,27 @@ Actions on a user repository
 - `pipelinesConfig`
 - `forks`
 - `downloads`
+- `branchRestrictions`
+
+## Full API list
+
+Please see the [API document](https://github.com/kristianmandrup/node-bitbucket-v2/blob/master/Api.md) for a full list of implemented and available API methods
 
 ### API usage
 
 Callback API:
 
 ```js
-api.commit.approve(username, repoSlug, node, callback)
+api.commit.approve(username, repoSlug, commitId, (result) => {
+  // ...
+  console.log(result)
+})
 ```
 
 Promise API
 
 ```js
-let result = await api.commit.promised.approve(username, repoSlug, node)
+let result = await api.commit.promised.approve(username, repoSlug, commitId)
 ```
 
 ## Request
@@ -89,183 +99,6 @@ let result = await api.commit.promised.approve(username, repoSlug, node)
 - `prepRequest(options)`
 - `sendHttpsRequest(httpsOptions, query, done)`
 - `sendXhrRequest(xhrOptions, done)`
-
-## User
-
-See [user API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/user)
-
-- `get(callback)`
-
-## Users
-
-See [users API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/users)
-
-TODO
-
-## Repositories
-
-Would be nice with a more "fluent" api so we can avoid having to use the form: `username, repoSlug` for each repository request
-
-Would like to see:
-
-```js
-let project = repositories.forProject(username, repo)
-await project.create()
-await project.commit(commit)
-```
-
-`forProject` now has experimental support ;)
-
-See [repositories API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories)
-
-POST (create)
-
-- `create(username, repo, callback)`
-
-### On existing repositiory
-
-See [repo (slug) API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D)
-
-- `createPullRequest(username, repoSlug, pullRequest, callback)`
-
-GET (get)
-
-- `get(username, repoSlug, callback)`
-- `getBranches(username, repoSlug, callback)`
-- `getCommit(username, repoSlug, sha, callback)`
-- `getPullRequests(username, repoSlug, state, callback)`
-- `getByUser(username, callback)`
-- `getByTeam(teamname, callback)`
-- `getForks(username, repoSlug, callback)`
-- `getForksFromResponse(response, callback)`
-- `getParentFromResponse(response, callback)`
-
-POST
-
-- `commit(username, repoSlug, files, callback)`
-- `commit(username, repoSlug, files, options, callback)`
-
-### Commit
-
-Repository commit:
-
-- `approve(username, repoSlug, node, callback)`
-- `disApprove(username, repoSlug, node, callback)`
-- `getBuildStatuses(username, repoSlug, node, callback)`
-- `createNewBuild(username, repoSlug, node, callback)`
-- `getBuildStatus(username, repoSlug, node, key, callback)`
-- `getComments(username, repoSlug, sha, callback)`
-- `getComment(username, repoSlug, sha, commentId, callback)`
-
-### Commits
-
-- `getAll(username, repoSlug, callback)`
-
-### Components
-
-- `getAll(username, repoSlug, callback)`
-
-### Issues
-
-- `create(username, repoSlug, callback)`
-- `getAll(username, repoSlug, callback)`
-- `get(username, repoSlug, issue_id, callback)`
-- `remove(username, repoSlug, issue_id, callback)`
-- `getAttachments(username, repoSlug, issue_id, callback)`
-- `getAttachment(username, repoSlug, issue_id, path, callback)`
-- `uploadAttachments(username, repoSlug, issue_id, attachments, options, callback)`
-- `getComments(username, repoSlug, issue_id, callback)`
-- `getComment(username, repoSlug, issue_id, commentId, callback)`
-- `hasVoted(username, repoSlug, issue_id, callback)`
-- `vote(username, repoSlug, issue_id, callback)`
-- `retractVote(username, repoSlug, issue_id, callback)`
-- `isWatched(username, repoSlug, issue_id, callback)`
-- `watch(username, repoSlug, issue_id, callback)`
-- `stopWatch(username, repoSlug, issue_id, callback)`
-
-### Milestones
-
-- `getAll(username, repoSlug, callback)`
-- `get(username, repoSlug, milestoneId, callback)`
-
-### Pipelines
-
-- `create(username, repoSlug, callback)`
-- `getAll(username, repoSlug, callback)`
-- `get(username, repoSlug, pipeline, callback)`
-- `stop(username, repoSlug, pipeline, callback)`
-- `getSteps(username, repoSlug, pipeline, callback)`
-- `getStep(username, repoSlug, pipeline, step, stepUuid, callback)`
-
-### Pull requests
-
-- `getAll(username, repoSlug, callback)`
-- `create(username, repoSlug, pullRequest, callback)`
-- `allActivity(username, repoSlug, callback)`
-- `getActivity(username, repoSlug, pr_id, callback)`
-- `approve(username, repoSlug, pr_id, callback)`
-- `disApprove(username, repoSlug, pr_id, callback)`
-- `getComments(username, repoSlug, pr_id, callback)`
-- `getComment(username, repoSlug, pr_id, comment_id, callback)`
-- `getCommits(username, repoSlug, pr_id, callback)`
-- `decline(username, repoSlug, pr_id, callback)`
-- `getDiff(username, repoSlug, pr_id, callback)`
-- `merge(username, repoSlug, pr_id, callback)`
-- `patch(username, repoSlug, pr_id, callback)`
-- `statuses(username, repoSlug, pr_id, callback)`
-
-### Refs
-
-- `getAll(username, repoSlug, callback)`
-
-### Hooks
-
-- `getAll(username, repoSlug, callback)`
-- `create(username, repoSlug, callback)`
-
-### Versions
-
-- `getAll(username, repoSlug, callback)`
-- `get(username, repoSlug, version_id, callback)`
-
-### Downloads
-
-- `getAll(username, repoSlug, callback)`
-- `upload(username, repoSlug, file, callback)`
-
-### Pipelines Config
-
-- `get(username, repoSlug, callback)`
-- `update(username, repoSlug, config, callback)`
-- `nextBuildNumber(username, repoSlug, number, callback)`
-- `getSchedules(username, repoSlug, callback)`
-- `createSchedule(username, repoSlug, schedule, callback)`
-- `getSchedule(username, repoSlug, scheduleId, callback)`
-- `getScheduleExecutions(username, repoSlug, scheduleId, callback)`
-- `updateSchedule(username, repoSlug, scheduleId, callback)`
-- `deleteSchedule(username, repoSlug, scheduleId, callback)`
-
-### Forks
-
-- `getAll(username, repoSlug, callback)`
-
-## Teams
-
-See [teams API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams)
-
-- `get(role = 'member', callback)`
-
-## Hook events
-
-See [hook events API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/hook_events)
-
-## Snippets
-
-See [snippets API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/snippets)
-
-## Addon
-
-See [addon API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/addon)
 
 ## Promise support async/await
 

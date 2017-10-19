@@ -18,6 +18,10 @@ const {
 const Request = require('./request')
 const Teams = require('./teams')
 const User = require('./user')
+const Users = require('./users')
+const Addon = require('./addon')
+const HookEvents = require('./hook-events')
+const Snippets = require('./snippets')
 
 /**
  * Simple JavaScript Bitbucket API v2
@@ -75,6 +79,10 @@ function Bitbucket(opts = {}) {
   apiModel.request = new Request(reqOpts)
   apiModel.teams = new Teams(apiModel, opts)
   apiModel.user = new User(apiModel, opts)
+  apiModel.users = new Users(apiModel, opts)
+  apiModel.addon = new Addon(apiModel, opts)
+  apiModel.snippets = new Snippets(apiModel, opts)
+  apiModel.hookEvents = new HookEvents(apiModel, opts)
 
   /**
    * Authenticate a user for all next requests using an API token
@@ -187,11 +195,6 @@ function Bitbucket(opts = {}) {
 
   return apiModel
 };
-
-import Addon from './addon'
-import Users from './users'
-import HookEvents from './hook-events'
-import Snippets from './snippets'
 
 module.exports = {
   Bitbucket,

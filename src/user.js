@@ -22,6 +22,30 @@ module.exports = function UserApi(api, opts = {}) {
         null, null,
         result.$createListener(callback)
       )
+    },
+
+    /**
+     * Get all the registered emails for the authenticated user
+     */
+    getEmails(callback) {
+      const uri = 'user/emails'
+      api.get(
+        uri,
+        null, null,
+        result.$createListener(callback)
+      )
+    },
+
+    /**
+     * Get email details for email registered to authenticated user
+     */
+    getEmailDetails(emailAddr, callback) {
+      const uri = `user/emails/${emailAddr}`
+      api.get(
+        uri,
+        null, null,
+        result.$createListener(callback)
+      )
     }
   }
 
