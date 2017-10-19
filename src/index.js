@@ -1,39 +1,32 @@
 const Constants = require('./constants')
 const {
-  Repositories,
-  Commit,
-  Commits,
-  Components,
-  Issues,
-  Milestones,
-  Pipelines,
-  PullRequests,
-  Refs,
-  Versions,
-  Hooks,
-  PipelinesConfig,
-  Forks,
-  Downloads
-} = require('./repositories')
-const {
-  Request
+  Request,
+  adapters
 } = require('./request')
 
-const teams = require('./teams')
-const user = require('./user')
-const users = require('./users')
-const addon = require('./addon')
-const hookEvents = require('./hook-events')
-const snippets = require('./snippets')
-
-let apis = {
-  teams,
-  user,
-  users,
-  addon,
-  hookEvents,
-  snippets
+const repoApis = require('./repositories')
+const mainApis = {
+  teams: require('./teams'),
+  user: require('./user'),
+  users: require('./users'),
+  addon: require('./addon'),
+  hookEvents: require('./hook-events'),
+  snippets: require('./snippets')
 }
+
+const allApis = Object.assign(mainApis, repoApis)
+
+function createApiEnricher(apiModel, opts) {
+  return apis => {
+    // TODO: generate all instead
+    let apiNames = Object.keys(apis)
+    apiNames.map(name => {
+      apiModel[name] = new apis[name].createApi(apiModel, opts)
+    })
+    return apiModel
+  }
+}
+
 
 /**
  * Simple JavaScript Bitbucket API v2
@@ -67,41 +60,14 @@ function Bitbucket(opts = {}) {
     constants: Constants
   }
 
-  // TODO: generate all instead
-  let apiNames = Object.keys(apis)
-  apiNames.map(name => {
-    apiModel[name] = new apis[name](apiModel, opts)
-  })
-
-  apiModel.repositories = new Repositories(apiModel, opts)
-  apiModel.commit = new Commit(apiModel, opts)
-  apiModel.commits = new Commits(apiModel, opts)
-  apiModel.components = new Components(apiModel, opts)
-  apiModel.issues = new Issues(apiModel, opts)
-  apiModel.milestones = new Milestones(apiModel, opts)
-  apiModel.pipelines = new Pipelines(apiModel, opts)
-  apiModel.pullRequests = new PullRequests(apiModel, opts)
-  apiModel.refs = new Refs(apiModel, opts)
-  apiModel.versions = new Versions(apiModel, opts)
-  apiModel.hooks = new Hooks(apiModel, opts)
-  apiModel.pipelinesConfig = new PipelinesConfig(apiModel, opts)
-  apiModel.forks = new Forks(apiModel, opts)
-  apiModel.downloads = new Downloads(apiModel, opts)
-  apiModel.branchRestrictions = new BranchRestrictions(apiModel, opts)
+  const apiEnricher = createApiEnricher(apiModel, opts)
+  apiEnricher(allApis)
 
   let reqOpts = Object.assign({
     proxy_host: $proxy_host,
     proxy_port: $proxy_port,
     use_xhr: useXhr
   }, opts)
-
-  apiModel.request = new Request(reqOpts)
-  apiModel.teams = new Teams(apiModel, opts)
-  apiModel.user = new User(apiModel, opts)
-  apiModel.users = new Users(apiModel, opts)
-  apiModel.addon = new addon.createApi(apiModel, opts)
-  apiModel.snippets = new Snippets(apiModel, opts)
-  apiModel.hookEvents = new HookEvents(apiModel, opts)
 
   /**
    * Authenticate a user for all next requests using an API token
@@ -217,13 +183,8 @@ function Bitbucket(opts = {}) {
 
 module.exports = {
   Bitbucket,
+  Request,
+  adapters,
   createBitBucketAPI,
-  Repositories,
-  User,
-  Users,
-  Team,
-  Addon,
-  HookEvents,
-  Snippets,
-  Request
+  apis: allApis
 }
