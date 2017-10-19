@@ -15,7 +15,9 @@ const {
   Forks,
   Downloads
 } = require('./repositories')
-const Request = require('./request')
+const {
+  Request
+} = require('./request')
 const Teams = require('./teams')
 const User = require('./user')
 const Users = require('./users')
