@@ -66,7 +66,7 @@ We can parse the `xhrOptions` and turn them into valid args for `request` to use
 It might look something like this:
 
 ```js
-function prepareRequestOpts(xhrOptions = {})
+function prepareRequestOpts(xhrOptions = {}) {
   let { method, url, json } = xhrOptions
    let requestOpts = {
       url,
@@ -90,7 +90,7 @@ requestOpts = {
   sendXhrRequest(xhrOptions, done) {
     let { method, url, json } = xhrOptions
 
-    function responseHandler(error, response, body) => {
+    function responseHandler(error, response, body) {
       // return result via done
     }
 

@@ -1,9 +1,5 @@
-const XhrAdapter = require('./xhr')
-const Xhr2Adapter = require('./xhr2')
-const RequestAdapter = require('./request')
-
 module.exports = {
-  XhrAdapter,
-  Xhr2Adapter,
-  RequestAdapter
+  xhr: require('./xhr'),
+  xhr2: require('./xhr2'),
+  request: require('./request')
 }
