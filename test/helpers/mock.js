@@ -4,22 +4,36 @@ function anyPath(uri) {
   return true
 }
 
-export function createConfig(config = {}) {
-  let keys = Object.keys(config)
-  let method = keys[0]
-  let path = config[key]
-  let request = {
-    method,
-    path
+// pass just path as string and we will try to determine from name alone
+// otherwise pass object such as: {delete: 'cancelVote'}
+export function createConfig(config) {
+  let verb, path
+  if (typeof config === 'string') {
+    methodName = config
   }
+  if (typeof config === 'object') {
+    let keys = Object.keys(config)
+    verb = keys[0]
+    methodName = config[key]
+    let request = {
+      verb,
+      methodName
+    }
+  }
+  code = config.code || 200
+
   let response = {
-    code: 200
+    code
   }
   return {
     request,
     response
   }
 }
+
+import {
+  guessRequestType
+} from './guess'
 
 function mock(config = {}) {
   if (!config.request) {
@@ -29,11 +43,14 @@ function mock(config = {}) {
   let {
     request,
     response,
+    methodName
   } = config
 
   request = request || {}
   response = response || {}
   request.uri = request.uri || 'localhost'
+  let httpVerb = request.verb || guessRequestType(methodName) || 'get'
+
   request.path = request.path || anyPath // ie. match any path
   // options: can contain custom headers etc. via reqheaders:
   httpMethod = nock(request.uri, request.options || {})[request.verb]

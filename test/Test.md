@@ -85,7 +85,8 @@ generateTest(test, {
     // more request details if needed
   },
   expected,
-  createComparer
+  createComparer,
+  args: []
 })
 ```
 
