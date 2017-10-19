@@ -79,11 +79,20 @@ module.exports = function Request(_options) {
     },
 
     /**
-     * Send a POST multiForm request
+     * Send a POST multiForm/form-data request
      * @see send
      */
     postForm(apiPath, parameters, options, callback) {
       options.contentType = 'multipart/form-data'
+      return result.send(apiPath, parameters, 'POST', options, callback)
+    },
+
+    /**
+     * Send a POST multiForm/related request
+     * @see send
+     */
+    postRelated(apiPath, parameters, options, callback) {
+      options.contentType = 'multipart/related'
       return result.send(apiPath, parameters, 'POST', options, callback)
     },
 
@@ -100,6 +109,24 @@ module.exports = function Request(_options) {
      * @see send
      */
     update(apiPath, parameters, options, callback) {
+      return result.send(apiPath, parameters, 'UPDATE', options, callback)
+    },
+
+    /**
+     * Send an UPDATE request using multipart/related
+     * @see send
+     */
+    updateRelated(apiPath, parameters, options, callback) {
+      options.contentType = 'multipart/related'
+      return result.send(apiPath, parameters, 'UPDATE', options, callback)
+    },
+
+    /**
+     * Send an UPDATE request using multipart/form
+     * @see send
+     */
+    updateForm(apiPath, parameters, options, callback) {
+      options.contentType = 'multipart/form-data'
       return result.send(apiPath, parameters, 'UPDATE', options, callback)
     },
 
@@ -202,8 +229,7 @@ module.exports = function Request(_options) {
         if (!options.use_xhr) {
           headers['Content-Length'] = query.length
         }
-      }
- else {
+      } else {
         query = querystring.stringify(parameters)
         path += `?${query}`
       }
@@ -315,8 +341,7 @@ module.exports = function Request(_options) {
           }
           if (response.statusCode === 204) {
             msg = {}
-          }
- else {
+          } else {
             msg = result.decodeResponse(msg)
           }
 
