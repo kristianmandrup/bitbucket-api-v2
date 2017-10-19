@@ -51,8 +51,6 @@ To reduce maintenance and human error and reduce size of test files etc. we will
 Please see `test/helpers` folder for some initial infra:
 
 ```js
-generateTest(test, config = {})
-
 async function execute(config = {}) {
   let {
     methodName,
@@ -62,7 +60,7 @@ async function execute(config = {}) {
   return await api[methodName](...args)
 }
 
-function createComparer(t, config) => {
+function createComparer(t, config) {
   let { expect } = config
   return result => {
     t.is(result.x, expect.x)
@@ -89,6 +87,8 @@ generateTest(test, {
   args: []
 })
 ```
+
+Start with `test/testing.test.js` and go from there ;)
 
 ## Mocking
 
