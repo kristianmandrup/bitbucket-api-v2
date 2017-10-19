@@ -20,6 +20,7 @@ const Hooks = require('./hooks')
 const Forks = require('./forks')
 const Downloads = require('./downloads')
 const PipelinesConfig = require('./pipelines-config')
+const BranchRestrictions = require('./branch-restrictions')
 
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/repositories-endpoint-423626330.html
@@ -175,8 +176,7 @@ function RepositoriesApi(api, opts = {}) {
       let stateArray = state
       if (!stateArray) {
         stateArray = [constants.pullRequest.states.OPEN]
-      }
- else if (!_.isArray(stateArray)) {
+      } else if (!_.isArray(stateArray)) {
         stateArray = [stateArray]
       }
 
@@ -311,5 +311,6 @@ module.exports = {
   Hooks,
   PipelinesConfig,
   Forks,
-  Downloads
+  Downloads,
+  BranchRestrictions
 }
