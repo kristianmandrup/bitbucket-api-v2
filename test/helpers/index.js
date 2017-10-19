@@ -2,10 +2,6 @@ import test from 'ava'
 export {
   test
 }
-export {
-  prepareTest
-}
-from './prepare'
 const {
   log,
   error
@@ -24,6 +20,16 @@ export {
   Request
 }
 from './imports'
+
+export {
+  prepareForTests
+}
+from './test'
+
+export {
+  prepareMock
+}
+from './mock'
 
 export {
   defaults
