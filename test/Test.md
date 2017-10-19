@@ -30,6 +30,8 @@ import {
 
 const api = $api.commit.promised
 let methods = ['approve']
+
+// should stub the underlying mechanism that makes the http requests, such as Xhr or whatever
 let $stubs = prepareTest(test, api, methods)
 
 test('Commit: approve', async t => {

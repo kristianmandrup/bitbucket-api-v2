@@ -34,10 +34,11 @@ bitbucketApi.user.get((response) => {
 
 ## Architecture
 
-Uses [xhr](https://www.npmjs.com/package/xhr) to submit Ajax requests to the server.
-Could be nice to switch to [xhr2](https://www.npmjs.com/package/xhr2) or a higher level, more feature rich API!
+The library by default uses [xhr](https://www.npmjs.com/package/xhr) to submit Ajax requests to the server.
 
-Each resource uses `Request` to perform the actual server requests.
+Would be nice to switch to [xhr2](https://www.npmjs.com/package/xhr2) or a higher level, more feature rich API such as [request](https://www.npmjs.com/package/request)
+
+Please see [Request customization](https://github.com/kristianmandrup/node-bitbucket-v2/blob/master/Request-customization.md) for details on how to customize how requests to the server are being made
 
 ### Main api objects
 

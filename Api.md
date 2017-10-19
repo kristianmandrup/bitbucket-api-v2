@@ -211,6 +211,14 @@ Schedules:
 
 - `getAll(username, repoSlug, callback)`
 
+### Branch Restrictions
+
+- `get(username, repoSlug, callback)`
+- `create(username, repoSlug, kind, callback)`
+- `getRestriction(username, repoSlug, restrictionId, callback)`
+- `updateRestriction(username, repoSlug, restrictionId, restriction, callback)`
+- `removeRestriction(username, repoSlug, restrictionId, callback)`
+
 ## Teams
 
 See [teams API](https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams)

@@ -22,7 +22,11 @@ function prepareTest(test, handle, methods) {
       $stubs[name].restore()
     })
   })
-  return $stubs
+  return {
+    $stubs,
+    user,
+    repo
+  }
 }
 
 module.exports = {
