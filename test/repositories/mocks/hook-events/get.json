@@ -1,0 +1,23 @@
+{
+  "repository": {
+    "links": {
+      "events": {
+        "href": "https://api.bitbucket.org/2.0/hook_events/repository"
+      }
+    }
+  },
+  "team": {
+    "links": {
+      "events": {
+        "href": "https://api.bitbucket.org/2.0/hook_events/team"
+      }
+    }
+  },
+  "user": {
+    "links": {
+      "events": {
+        "href": "https://api.bitbucket.org/2.0/hook_events/user"
+      }
+    }
+  }
+}

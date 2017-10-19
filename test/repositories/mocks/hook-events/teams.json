@@ -1,0 +1,24 @@
+{
+  "page": 1,
+  "pagelen": 30,
+  "size": 21,
+  "values": [{
+      "category": "Repository",
+      "description": "Whenever a repository push occurs",
+      "event": "repo:push",
+      "label": "Push"
+    },
+    {
+      "category": "Repository",
+      "description": "Whenever a repository fork occurs",
+      "event": "repo:fork",
+      "label": "Fork"
+    },
+    {
+      "category": "Repository",
+      "description": "Whenever a repository import occurs",
+      "event": "repo:imported",
+      "label": "Import"
+    }
+  ]
+}
