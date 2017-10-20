@@ -68,22 +68,21 @@ export function mock(config = {}, opts = {}) {
     request,
     response,
     methodName,
-    accessToken
+    accessToken,
+    code,
+    body
   } = config
-
-  log({
-    accessToken
-  })
-
   accessToken = accessToken || opts.accessToken
   request = request || {}
   response = response || {}
   let hostname = connection.hostname
   let httpVerb = request.verb || guessRequestType(methodName) || 'get'
 
-  let path = request.path || anyPath // ie. match any path
+  let path = request.path || opts.path || anyPath // ie. match any path
   // ensure we are using v.2 API
-  path = `/2.0/${path}`
+  if (typeof path === 'string') {
+    path = `/2.0/${path}`
+  }
 
   // options: can contain custom headers etc. via reqheaders:
   let nockInstance = nock(hostname, request.options || {})
@@ -91,13 +90,12 @@ export function mock(config = {}, opts = {}) {
   let headers = {
     Authorization: `Bearer ${accessToken}`
   }
-  nockInstance.defaultReplyHeaders(headers)
+  // nockInstance.defaultReplyHeaders(headers)
   let verbMethod = nockInstance[httpVerb].bind(nockInstance)
   let requestMethod = verbMethod(path)
-  let {
-    code,
-    body
-  } = response
+
+  code = code || opts.code || response.code || 200
+  body = body || opts.body || response.body
 
   console.log('nock config:', {
     hostname,
