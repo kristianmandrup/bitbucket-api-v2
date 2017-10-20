@@ -48,8 +48,8 @@ import {
 } from './guess'
 
 import {
-  https
-} from './https'
+  connection
+} from './connection'
 
 
 const {
@@ -72,12 +72,12 @@ export function mock(config = {}, opts = {}) {
   accessToken = accessToken || opts.accessToken
   request = request || {}
   response = response || {}
-  request.uri = request.uri || https.hostname
+  let hostname = connection.hostname
   let httpVerb = request.verb || guessRequestType(methodName) || 'get'
 
   let path = request.path || anyPath // ie. match any path
   // options: can contain custom headers etc. via reqheaders:
-  let nockInstance = nock(request.uri, request.options || {})
+  let nockInstance = nock(hostname, request.options || {})
 
   // ensure we are using v.2 API
   path = `/2.0/${path}`

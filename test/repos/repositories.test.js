@@ -11,9 +11,11 @@ import {
   prepareForTests
 } from '../helpers'
 
+const accessToken = 'xxxyyy'
+
 const $api = createApi({
-  accessToken,
-  logging: true
+  logging: true,
+  accessToken
 })
 
 // const api = $api.repositories.promised
