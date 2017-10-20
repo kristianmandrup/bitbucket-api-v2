@@ -17,19 +17,12 @@ module.exports = function createApiEnricher(apiModel, opts) {
     apiNames.map(name => {
       let value = apis[name]
       if (name === 'methods' || typeof value !== 'object') return
-
       // recurse if object
       if (isSubApi(value)) {
-        log('recurse sub api', name, value)
         const enrich = createApiEnricher(apiModel, opts)
         enrich(value)
       } else if (isApiFactory(value)) {
         let apiFactory = value.createApi
-        log('add to api', {
-          name,
-          apiFactory,
-          type: typeof apiFactory
-        })
         apiModel[name] = apiFactory(apiModel, opts)
       }
     })

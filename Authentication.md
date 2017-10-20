@@ -60,3 +60,7 @@ $ curl -X POST -u "client_id:secret" https://bitbucket.org/site/oauth2/access_to
 -d grant_type=authorization_code -d code={code}
 ```
 
+### Auth0 auth
+
+[Auth0 for bitbucket](https://auth0.com/docs/connections/social/bitbucket) is another option. This would work well if you have a client side app, that does the authentication handshake using the browser, then stores a JWT token in localstorage.
+This token can then be submitted to the server.
