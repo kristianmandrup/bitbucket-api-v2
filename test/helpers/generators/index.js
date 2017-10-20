@@ -4,8 +4,9 @@
 //   t.truthy(result)
 // })
 
-import mock from './mock'
-
+import {
+  prepareMock
+} from '../mock'
 import defaults from './defaults'
 
 function generateTest(test, config = {}) {
@@ -49,6 +50,5 @@ function generateTest(test, config = {}) {
 
 module.exports = {
   generateTest,
-  createComparer,
-  prepareStub
+  createComparer
 }

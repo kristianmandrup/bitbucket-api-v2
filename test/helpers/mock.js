@@ -1,4 +1,4 @@
-import defaults from './defaults'
+import nock from 'nock'
 
 function anyPath(uri) {
   return true
