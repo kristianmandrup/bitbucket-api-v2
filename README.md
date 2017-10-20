@@ -117,13 +117,27 @@ During development/testing, you can place your own tokens in `test/secret/access
 
 ### JWT auth
 
-Is there possibly support for [JWT auth](https://community.atlassian.com/t5/Answers-Developer-Questions/Can-t-get-access-token-with-JWT-from-Bitbucket-API/qaq-p/533548) ??
+- [Oauth2](https://developer.atlassian.com/static/bitbucket/concepts/oauth2.html)
+- [Bitbucket JWT examples](https://bitbucket.org/b_c/jose4j/wiki/JWT%20Examples)
+
+#### Bitbucket Cloud JWT Grant (urn:bitbucket:oauth2:jwt)
+
+If your Atlassian Connect add-on uses JWT authentication, you can swap a JWT for an OAuth access token. The resulting access token represents the account for which the add-on is installed.
+
+Make sure you send the JWT token in the Authorization request header using the "JWT" scheme (case sensitive). Note that this custom scheme makes this different from HTTP Basic Auth (and so you cannot use `curl -u`).
+
+Making Requests
 
 ```bash
-curl -X POST -H "Authorization: JWT {jwt_token}"
+$ curl -X POST -H "Authorization: JWT {jwt_token}" \
   https://bitbucket.org/site/oauth2/access_token \
   -d grant_type=urn:bitbucket:oauth2:jwt
 ```
+
+#### Issues
+
+- [issue #1](https://community.atlassian.com/t5/Answers-Developer-Questions/Can-t-get-access-token-with-JWT-from-Bitbucket-API/qaq-p/533548)
+- [Issue #2](https://community.atlassian.com/t5/Answers-Developer-Questions/Bitbucket-get-access-token-from-JWT/qaq-p/549041)
 
 ## Architecture
 
