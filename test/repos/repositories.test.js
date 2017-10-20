@@ -15,10 +15,7 @@ const $api = createApi({
   logging: true
 })
 
-console.log({
-  $api
-})
-
+// const api = $api.repositories.promised
 const api = $api.repositories.promised
 
 prepareForTests(test)
@@ -30,10 +27,10 @@ const {
 } = values
 
 test.only('Repositories: get(username, repoSlug, callback)', async t => {
-  mock('get', {
+  await mock('get', {
     path: '/2.0/repositories'
   }) // default get
-  let result = await api.get(user, repo, node)
+  let result = await api.get(user, repo)
   t.truthy(result)
 })
 

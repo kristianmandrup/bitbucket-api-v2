@@ -11,10 +11,15 @@ function switchEachFunctionContext(api, context) {
 }
 
 const {
+  promisify
+} = require('util')
+
+const {
   createPromisedApi
 } = require('../../../util')
 
 module.exports = {
+  promisify,
   createPromisedApi,
   switchEachFunctionContext,
   defaults: require('./defaults')

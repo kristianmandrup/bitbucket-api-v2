@@ -16,7 +16,6 @@ export function createConfig(config, opts = {}) {
     methodName = config
   }
   let {
-    data,
     body,
     path
   } = opts
@@ -29,8 +28,7 @@ export function createConfig(config, opts = {}) {
   methodName = config[key]
   request = {
     verb,
-    methodName,
-    data
+    methodName
   }
 
   code = config.code || opts.code || 200
@@ -67,8 +65,9 @@ export function mock(config = {}) {
 
   request.path = request.path || anyPath // ie. match any path
   // options: can contain custom headers etc. via reqheaders:
-  let httpMethod = nock(request.uri, request.options || {})[request.verb]
-  let requestMethod = httpMethod(request.path, request.data)
+  let nockInstance = nock(request.uri, request.options || {})
+  let verbMethod = nockInstance[httpVerb].bind(nockInstance)
+  let requestMethod = verbMethod(request.path)
   requestMethod.reply(response.code, response.body)
 }
 
