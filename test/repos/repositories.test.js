@@ -29,10 +29,12 @@ const {
   node
 } = values
 
+const singleRepo = require('./mocks/repos/repo-single.json')
+
 test.only('Repositories: get(username, repoSlug, callback)', async t => {
   await mock('get', {
-    path: '/2.0/repositories'
-  }, {
+    path: '/2.0/repositories',
+    body: singleRepo,
     accessToken
   }) // default get
   let result = await api.get(user, repo)

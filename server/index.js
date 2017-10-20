@@ -18,7 +18,6 @@ app.post('/authenticated', (request, response) => {
   response.end('post: authenticated ok :)')
 })
 
-
 app.listen(port, err => {
   if (err) {
     return error('something bad happened', err)
