@@ -4,7 +4,7 @@ const defaults = {
   adapters: require('./adapters')
 }
 
-function Request(options = {}) {
+function createRequest(options = {}) {
   const adapterName = options.adapterName || defaults.adapterName
   let adapters = options.adapters || defaults.adapters
   const defaultRequestAdapter = adapters[adapterName]
@@ -14,6 +14,6 @@ function Request(options = {}) {
 }
 
 module.exports = {
-  Request,
-  adapters
+  createRequest,
+  adapters: defaults.adapters
 }

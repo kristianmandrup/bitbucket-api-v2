@@ -1,0 +1,48 @@
+{
+  "size": 5,
+  "limit": 25,
+  "isLastPage": true,
+  "values": [
+    {
+      "id": "refs/heads/develop",
+      "displayId": "develop",
+      "type": "BRANCH",
+      "latestCommit": "abc",
+      "latestChangeset": "def",
+      "isDefault": true
+    },
+    {
+      "id": "refs/heads/master",
+      "displayId": "master",
+      "type": "BRANCH",
+      "latestCommit": "abc",
+      "latestChangeset": "def",
+      "isDefault": false
+    },
+    {
+      "id": "refs/heads/features/mongoose",
+      "displayId": "features/mongoose",
+      "type": "BRANCH",
+      "latestCommit": "abc",
+      "latestChangeset": "def",
+      "isDefault": false
+    },
+    {
+      "id": "refs/heads/features/registry",
+      "displayId": "features/registry",
+      "type": "BRANCH",
+      "latestCommit": "abc",
+      "latestChangeset": "def",
+      "isDefault": false
+    },
+    {
+      "id": "refs/heads/error-handling",
+      "displayId": "error-handling",
+      "type": "BRANCH",
+      "latestCommit": "abc",
+      "latestChangeset": "def",
+      "isDefault": false
+    }
+  ],
+  "start": 0
+}

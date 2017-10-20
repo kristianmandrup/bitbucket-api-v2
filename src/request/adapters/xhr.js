@@ -3,12 +3,10 @@ const https = require('https')
 const querystring = require('querystring')
 const url = require('url')
 const xhr = require('xhr')
-const {
-  createPromisedApi
-} = require('./promised')
 
 const {
   defaults,
+  createPromisedApi,
   switchEachFunctionContext
 } = require('./util')
 
