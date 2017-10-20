@@ -84,6 +84,8 @@ export function mock(config = {}, opts = {}) {
     path = `/2.0/${path}`
   }
 
+  hostname = `https://${hostname}`
+
   // options: can contain custom headers etc. via reqheaders:
   let nockInstance = nock(hostname, request.options || {})
 

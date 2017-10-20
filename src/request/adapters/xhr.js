@@ -324,6 +324,7 @@ module.exports = function XhrAdapter(_options) {
     },
 
     sendHttpsRequest(httpsOptions, query, done) {
+      console.log('sendHttpsRequest', httpsOptions)
       const request = https.request(httpsOptions, response => {
         response.setEncoding('utf8')
 
@@ -379,6 +380,7 @@ module.exports = function XhrAdapter(_options) {
     },
 
     sendXhrRequest(xhrOptions, done) {
+      console.log('sendXhrRequest', xhrOptions)
       xhr(xhrOptions, (error, response) => {
         if (error) {
           done(error)

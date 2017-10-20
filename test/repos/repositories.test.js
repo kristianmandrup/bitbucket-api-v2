@@ -32,8 +32,17 @@ const {
 const singleRepo = require('./mocks/repos/repo-single.json')
 
 test.only('Repositories: get(username, repoSlug, callback)', async t => {
+
+  // TODO: enforce https on mock?
   await mock('get', {
-    path: 'repositories',
+    // path: `repositories/${user}/${repo}?`,
+    // { headers:
+    //   { 'Content-Type': 'application/x-www-form-urlencoded',
+    //     Authorization: 'Bearer xxxyyy',
+    //     Host: 'api.bitbucket.org',
+    //     'User-Agent': 'NodeJS HTTP Client',
+    //     'Content-Length': '0' }
+
     body: singleRepo,
     code: 200,
     accessToken
