@@ -9,7 +9,7 @@ function createRequest(options = {}) {
   let adapters = options.adapters || defaults.adapters
   const defaultRequestAdapter = adapters[adapterName]
 
-  let requestAdapter = opttions.requestAdapter || defaultRequestAdapter
+  let requestAdapter = options.requestAdapter || defaultRequestAdapter
   return requestAdapter(options)
 }
 

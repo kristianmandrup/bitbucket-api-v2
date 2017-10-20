@@ -3,11 +3,17 @@ module.exports = function createAbstractApi($api, opts = {}) {
     $api,
 
     $createListener(callback) {
+      if (typeof callback !== 'function') {
+        if (callback === undefined) return
+        console.error('callback is not a function', {
+          callback
+        })
+        throw new Error('callback is not a function')
+      }
+
       return function callbackRunner(err, response) {
         if (err) {
-          if (callback) {
-            callback(err)
-          }
+          callback(err)
           return
         }
 

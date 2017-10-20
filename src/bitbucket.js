@@ -40,6 +40,8 @@ function Bitbucket(opts = {}) {
     constants: Constants
   }
 
+  apiModel.request = createRequest(apiModel)
+
   const apiEnricher = createApiEnricher(apiModel, opts)
   apiModel = apiEnricher($api)
 

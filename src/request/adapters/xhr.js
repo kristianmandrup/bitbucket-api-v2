@@ -6,6 +6,7 @@ const xhr = require('xhr')
 
 const {
   defaults,
+  promisify,
   createPromisedApi,
   switchEachFunctionContext
 } = require('./util')
@@ -17,8 +18,8 @@ module.exports = function XhrAdapter(_options) {
   const $defaults = defaults
   const $options = _.defaults({}, _options, $defaults)
 
-  opts.requestApi = opts.requestApi || {}
-  let customRequestApi = switchEachFunctionContext(opts.requestApi, this)
+  let requestApi = _options.requestApi || {}
+  let customRequestApi = switchEachFunctionContext(requestApi, this)
 
   const result = {
     $defaults,
@@ -57,7 +58,8 @@ module.exports = function XhrAdapter(_options) {
      * @see send
      */
     get(apiPath, parameters, options, callback) {
-      return result.send(apiPath, parameters, 'GET', options, callback)
+      let send = callback ? result.send : result.sendPromised
+      return send(apiPath, parameters, 'GET', options, callback)
     },
 
     /**
@@ -65,7 +67,8 @@ module.exports = function XhrAdapter(_options) {
      * @see send
      */
     post(apiPath, parameters, options, callback) {
-      return result.send(apiPath, parameters, 'POST', options, callback)
+      let send = callback ? result.send : result.sendPromised
+      return send(apiPath, parameters, 'POST', options, callback)
     },
 
     /**
@@ -74,7 +77,8 @@ module.exports = function XhrAdapter(_options) {
      */
     postForm(apiPath, parameters, options, callback) {
       options.contentType = 'multipart/form-data'
-      return result.send(apiPath, parameters, 'POST', options, callback)
+      let send = callback ? result.send : result.sendPromised
+      return send(apiPath, parameters, 'POST', options, callback)
     },
 
     /**
@@ -82,8 +86,9 @@ module.exports = function XhrAdapter(_options) {
      * @see send
      */
     postRelated(apiPath, parameters, options, callback) {
+      let send = callback ? result.send : result.sendPromised
       options.contentType = 'multipart/related'
-      return result.send(apiPath, parameters, 'POST', options, callback)
+      return send(apiPath, parameters, 'POST', options, callback)
     },
 
     /**
@@ -91,7 +96,8 @@ module.exports = function XhrAdapter(_options) {
      * @see send
      */
     delete(apiPath, parameters, options, callback) {
-      return result.send(apiPath, parameters, 'DELETE', options, callback)
+      let send = callback ? result.send : result.sendPromised
+      return send(apiPath, parameters, 'DELETE', options, callback)
     },
 
     /**
@@ -99,7 +105,8 @@ module.exports = function XhrAdapter(_options) {
      * @see send
      */
     update(apiPath, parameters, options, callback) {
-      return result.send(apiPath, parameters, 'UPDATE', options, callback)
+      let send = callback ? result.send : result.sendPromised
+      return send(apiPath, parameters, 'UPDATE', options, callback)
     },
 
     /**
@@ -108,7 +115,8 @@ module.exports = function XhrAdapter(_options) {
      */
     updateRelated(apiPath, parameters, options, callback) {
       options.contentType = 'multipart/related'
-      return result.send(apiPath, parameters, 'UPDATE', options, callback)
+      let send = callback ? result.send : result.sendPromised
+      return send(apiPath, parameters, 'UPDATE', options, callback)
     },
 
     /**
@@ -117,7 +125,8 @@ module.exports = function XhrAdapter(_options) {
      */
     updateForm(apiPath, parameters, options, callback) {
       options.contentType = 'multipart/form-data'
-      return result.send(apiPath, parameters, 'UPDATE', options, callback)
+      let send = callback ? result.send : result.sendPromised
+      return send(apiPath, parameters, 'UPDATE', options, callback)
     },
 
     /**
@@ -146,6 +155,17 @@ module.exports = function XhrAdapter(_options) {
       })
     },
 
+    async sendPromised(apiPath, parameters, httpMethod = 'GET', __options) {
+      const options = __options || $options
+      try {
+        let promisedDoSend = promisify(result.doSend)
+        let _response = await promisedDoSend(apiPath, parameters, httpMethod, options)
+        const response = options.use_xhr ? _response : result.decodeResponse(_response)
+        return response
+      } catch (err) {
+        return err
+      }
+    },
 
     /**
      * Send a request to the server using a URL received from the API directly, receive a response
