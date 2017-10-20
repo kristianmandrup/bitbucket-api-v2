@@ -40,16 +40,6 @@ bitbucketApi.user.get((response) => {
 });
 ```
 
-### JWT
-
-Is there possibly support for [JWT auth?](https://community.atlassian.com/t5/Answers-Developer-Questions/Can-t-get-access-token-with-JWT-from-Bitbucket-API/qaq-p/533548)
-
-```bash
-curl -X POST -H "Authorization: JWT {jwt_token}"
-  https://bitbucket.org/site/oauth2/access_token \
-  -d grant_type=urn:bitbucket:oauth2:jwt
-```
-
 ### OAuth2
 
 [Bitbucket OAuth guide](https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html)
@@ -68,7 +58,7 @@ The three-legged OAuth flow involves the following sets of tokens and secrets th
 
 #### Client ID, client secret, and client certificate
 
-The client ID is a unique identifier for an OAuth client. The OAuth client uses its client ID and client secret or its client ID and client certificate to provide identity. In the specification, the client ID is client_id and client secret is client_secret. When you define an OAuth client profile for DataPower integration, the configured name is the client ID.
+The client ID is a unique identifier for an OAuth client. The OAuth client uses its client ID and client secret or its client ID and client certificate to provide identity. In the specification, the client ID is client_id and client secret is client_secret. When you define an OAuth client profile, the configured name is the client ID.
 
 #### Access token
 
@@ -94,7 +84,7 @@ $ curl -X POST -u "client_id:secret" \
 
 `-u "client_id:secret"` is the username
 
-Note: See the `test/server` folder for a sample Express server setup with an authentication callback handler!
+Note: See the `/server` folder for a sample Express server setup with an authentication callback handler!
 
 Once you have an access token, as per [RFC-6750](https://tools.ietf.org/html/rfc6749), you can use it in a request in any of the following ways (in decreasing order of desirability):
 
@@ -125,6 +115,15 @@ During development/testing, you can place your own tokens in `test/secret/access
 }
 ```
 
+### JWT auth
+
+Is there possibly support for [JWT auth](https://community.atlassian.com/t5/Answers-Developer-Questions/Can-t-get-access-token-with-JWT-from-Bitbucket-API/qaq-p/533548) ??
+
+```bash
+curl -X POST -H "Authorization: JWT {jwt_token}"
+  https://bitbucket.org/site/oauth2/access_token \
+  -d grant_type=urn:bitbucket:oauth2:jwt
+```
 
 ## Architecture
 

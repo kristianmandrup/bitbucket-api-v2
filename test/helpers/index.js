@@ -26,9 +26,9 @@ export {
 from './api'
 
 export {
-  https
+  connection
 }
-from './https'
+from './connection'
 
 export {
   mock,

@@ -1,4 +1,4 @@
-export const https = {
+export const connection = {
   protocol: 'https',
   path: '/2.0',
   hostname: 'api.bitbucket.org',
