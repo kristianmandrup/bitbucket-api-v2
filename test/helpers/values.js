@@ -1,4 +1,5 @@
 export default {
   user: 'kmandrup',
-  repo: 'my-repo'
+  repo: 'my-repo',
+  node: '123'
 }

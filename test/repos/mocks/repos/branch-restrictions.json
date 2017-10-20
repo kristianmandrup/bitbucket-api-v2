@@ -1,0 +1,15 @@
+{
+  "size": 5,
+  "limit": 25,
+  "isLastPage": true,
+  "values": [{
+    "kind": "require_tasks_to_be_completed",
+    "users": [{
+      "type": "user",
+      "username": "km",
+      "website": "",
+      "display_name": "kristian mandrup",
+      "uuid": "1234"
+    }]
+  }]
+}

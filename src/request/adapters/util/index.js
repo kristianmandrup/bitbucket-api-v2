@@ -10,7 +10,12 @@ function switchEachFunctionContext(api, context) {
 
 }
 
+const {
+  createPromisedApi
+} = require('../../../util')
+
 module.exports = {
+  createPromisedApi,
   switchEachFunctionContext,
   defaults: require('./defaults')
 }

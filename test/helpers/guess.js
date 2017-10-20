@@ -6,12 +6,13 @@ const exprMap = {
   ],
   update: [
     /^update/,
-    /^prove/, //approve
-    /^vote/,
+    /pprove/, //approve
+    /vote/,
   ],
   delete: [
     /^delete/,
-    /^remove/
+    /^remove/,
+    /^decline/,
   ]
 }
 

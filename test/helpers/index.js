@@ -11,20 +11,19 @@ export {
   error
 }
 export {
-  User,
-  Users,
-  Team,
-  Addon,
-  HookEvents,
-  Snippets,
-  Request
+  default as api
 }
-from './imports'
+from '../../src/api'
 
 export {
   prepareForTests
 }
 from './test'
+export {
+  $api,
+  createApi
+}
+from './prepare'
 
 export {
   prepareMock
@@ -32,6 +31,6 @@ export {
 from './mock'
 
 export {
-  defaults
+  values
 }
-from './defaults'
+from './values'

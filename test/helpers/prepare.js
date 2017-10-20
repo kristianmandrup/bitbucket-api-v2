@@ -2,7 +2,7 @@ const nock = require('nock')
 
 const {
   createBitbucketAPI
-} = require('bitbucket-v2')
+} = require('../..')
 
 function createApi(opts = {}) {
   // or: createBitbucketAPI({useXhr: true})

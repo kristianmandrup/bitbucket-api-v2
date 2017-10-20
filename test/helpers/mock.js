@@ -4,29 +4,36 @@ function anyPath(uri) {
   return true
 }
 
+function hasSingleKey(config) {
+  return typeof config === 'object' && Object.keys(config).length === 1
+}
+
 // pass just path as string and we will try to determine from name alone
 // otherwise pass object such as: {delete: 'cancelVote'}
 export function createConfig(config, opts = {}) {
-  let verb, path
+  let verb
   if (typeof config === 'string') {
     methodName = config
   }
   let {
     data,
-    body
+    body,
+    path
   } = opts
 
-  if (typeof config === 'object') {
-    let keys = Object.keys(config)
-    verb = keys[0]
-    methodName = config[key]
-    let request = {
-      verb,
-      methodName,
-      data
-    }
+  // use "as is" if a normal multi-key config
+  if (!hasSingleKey(config)) return config
+
+  let keys = Object.keys(config)
+  verb = keys[0]
+  methodName = config[key]
+  request = {
+    verb,
+    methodName,
+    data
   }
-  code = config.code || 200
+
+  code = config.code || opts.code || 200
 
   let response = {
     code,
