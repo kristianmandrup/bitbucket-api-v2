@@ -15,7 +15,12 @@ const $api = require('./api')
  */
 
 function createBitBucketAPI(opts = {}) {
-  return new Bitbucket(opts)
+
+  let bitbucketApi = new Bitbucket(opts)
+  if (opts.accessToken) {
+    bitbucketApi.authenticateOAuth2(opts.accessToken)
+  }
+  return bitbucketApi
 }
 
 function Bitbucket(opts = {}) {
@@ -45,15 +50,21 @@ function Bitbucket(opts = {}) {
   const apiEnricher = createApiEnricher(apiModel, opts)
   apiModel = apiEnricher($api)
 
-  console.log('enriched', {
-    apiModel
-  })
-
   let reqOpts = Object.assign({
     proxy_host: $proxy_host,
     proxy_port: $proxy_port,
     use_xhr: useXhr
   }, opts)
+
+
+  apiModel.authorizeOAuth2 = client_id => {
+    let parameters = {
+      client_id,
+      response_type: 'code'
+    }
+    apiModel.request.get('oauth2/authorize', parameters || {}, requestOptions, callback)
+  }
+
 
   /**
    * Authenticate a user for all next requests using an API token

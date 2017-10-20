@@ -18,6 +18,14 @@ Still untested. Please take it for a spin or help add tests for the test suite
 
 Authentication via [Bitbucket OAuth2](https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication)
 
+Create an OAuth2 token under [Account](https://bitbucket.org/account).
+
+Add the `Secret` and `Key` to environment variables or similar.
+
+Create a Callback URL such as: `http://localhost/bitbucket/authenticated`
+
+You will need to create an endpoint on your server to receive the access token from bitbucket and then proceed.
+
 ```js
 const { createBitbucketAPI } = require('bitbucket-v2')
 const bitbucketApi = createBitbucketAPI(); //or: createBitbucketAPI({useXhr: true})
@@ -31,6 +39,92 @@ bitbucketApi.user.get((response) => {
   console.log(response.username);
 });
 ```
+
+### JWT
+
+Is there possibly support for [JWT auth?](https://community.atlassian.com/t5/Answers-Developer-Questions/Can-t-get-access-token-with-JWT-from-Bitbucket-API/qaq-p/533548)
+
+```bash
+curl -X POST -H "Authorization: JWT {jwt_token}"
+  https://bitbucket.org/site/oauth2/access_token \
+  -d grant_type=urn:bitbucket:oauth2:jwt
+```
+
+### OAuth2
+
+[Bitbucket OAuth guide](https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html)
+
+[More on Oauth2](https://developer.atlassian.com/cloud/bitbucket/oauth-2/)
+
+We support all 4 of [RFC-6750](https://tools.ietf.org/html/rfc6749)'s grant flows to obtain access tokens through the following URL's:
+
+`https://bitbucket.org/site/oauth2/authorize`
+
+`https://bitbucket.org/site/oauth2/access_token`
+
+### Authorization code grant
+
+The three-legged OAuth flow involves the following sets of tokens and secrets that the server issues:
+
+#### Client ID, client secret, and client certificate
+
+The client ID is a unique identifier for an OAuth client. The OAuth client uses its client ID and client secret or its client ID and client certificate to provide identity. In the specification, the client ID is client_id and client secret is client_secret. When you define an OAuth client profile for DataPower integration, the configured name is the client ID.
+
+#### Access token
+
+The access token is an identifier to access the protected resources of the resource owner. The OAuth client can use the access token before it expires. The resource server honors the access token until expiry.
+
+#### Refresh token
+
+The refresh token is an identifier to obtain access tokens. The authorization server generates the refresh token together with the access token as configured. The OAuth client can use the refresh token to request a new access token from the authorization server when the current access token expires or to request an access token with identical or narrower scope. Unlike access tokens, refresh tokens are not sent to the resource server.
+
+### The bitbucket 3-LO flow
+
+Request authorization from the end user by sending their browser to:
+
+`https://bitbucket.org/site/oauth2/authorize?client_id={client_id}&response_type=code`
+
+The callback includes the `?code={}` query parameter that you can swap for an access token:
+
+```bash
+$ curl -X POST -u "client_id:secret" \
+  https://bitbucket.org/site/oauth2/access_token \
+  -d grant_type=authorization_code -d code={code}
+```
+
+`-u "client_id:secret"` is the username
+
+Note: See the `test/server` folder for a sample Express server setup with an authentication callback handler!
+
+Once you have an access token, as per [RFC-6750](https://tools.ietf.org/html/rfc6749), you can use it in a request in any of the following ways (in decreasing order of desirability):
+
+- Send it in a request header: `Authorization: Bearer {access_token}`
+- Include it in a (`application/x-www-form-urlencoded`) `POST` body as `access_token={access_token}`
+- Put it in the query string of a non-POST: `?access_token={access_token}`
+
+### Refresh Tokens
+
+Bitbucket access tokens expire in one hour. When this happens you’ll get `401` responses.
+
+Most access token grant responses (Implicit and JWT excluded) therefore include a refresh token that can then be used to generate a new access token, without the need for end user participation:
+
+```js
+$ curl -X POST -u "client_id:secret" \
+  https://bitbucket.org/site/oauth2/access_token \
+  -d grant_type=refresh_token -d refresh_token={refresh_token}
+```
+
+### Managing (token) secrets
+
+During development/testing, you can place your own tokens in `test/secret/access-tokens.json`, something like this (not real keys here!):
+
+```json
+{
+  "key": "a9d9fg2A3XrNFPjPwh9zx",
+  "secret": "1djJwEd3fU4ptVut9QRPz6zjAxfUNqLA"
+}
+```
+
 
 ## Architecture
 

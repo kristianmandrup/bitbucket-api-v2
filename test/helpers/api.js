@@ -2,13 +2,8 @@ const {
   createBitBucketAPI
 } = require('../../src/bitbucket')
 
-console.log({
-  createBitBucketAPI
-})
-
 function createApi(opts = {}) {
-  // or: createBitBucketAPI({useXhr: true})
-  return createBitBucketAPI()
+  return createBitBucketAPI(opts)
 }
 
 module.exports = {
