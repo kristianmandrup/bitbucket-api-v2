@@ -163,5 +163,5 @@ function Bitbucket(opts = {}) {
 
 module.exports = {
   Bitbucket,
-  createBitBucketAPI,
+  createBitBucketAPI
 }

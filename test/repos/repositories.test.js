@@ -4,17 +4,17 @@ import {
 import {
   test,
   values,
-  $api,
+  // $api,
   createApi,
   prepareTest,
   prepareForTests
 } from '../helpers'
 
-$spi = createApi({
+const $api = createApi({
   logging: true
 })
 
-const api = $api.repositories.promised
+const api = $api.repos.repositories.promised
 
 prepareForTests(test)
 

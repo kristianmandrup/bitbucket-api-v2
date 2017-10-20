@@ -23,7 +23,7 @@ export {
   $api,
   createApi
 }
-from './prepare'
+from './api'
 
 export {
   prepareMock
