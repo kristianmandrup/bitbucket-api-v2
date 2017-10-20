@@ -12,6 +12,7 @@ import {
 } from '../helpers'
 
 const $api = createApi({
+  accessToken,
   logging: true
 })
 
@@ -29,6 +30,8 @@ const {
 test.only('Repositories: get(username, repoSlug, callback)', async t => {
   await mock('get', {
     path: '/2.0/repositories'
+  }, {
+    accessToken
   }) // default get
   let result = await api.get(user, repo)
   t.truthy(result)

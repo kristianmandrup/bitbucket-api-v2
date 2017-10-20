@@ -47,17 +47,24 @@ import {
   guessRequestType
 } from './guess'
 
-export function mock(config = {}) {
+const {
+  log
+} = console
+
+export function mock(config = {}, opts = {}) {
   if (!config.request) {
     config = createConfig(config)
   }
-
   let {
     request,
     response,
-    methodName
+    methodName,
+    accessToken
   } = config
 
+  log(config, opts, accessToken)
+
+  accessToken = accessToken || opts.accessToken
   request = request || {}
   response = response || {}
   request.uri = request.uri || 'localhost'
@@ -66,8 +73,18 @@ export function mock(config = {}) {
   request.path = request.path || anyPath // ie. match any path
   // options: can contain custom headers etc. via reqheaders:
   let nockInstance = nock(request.uri, request.options || {})
+
+  let headers = {
+    Authorization: `Bearer ${accessToken}`
+  }
+  console.log({
+    headers
+  })
+  nockInstance.defaultReplyHeaders(headers)
+
   let verbMethod = nockInstance[httpVerb].bind(nockInstance)
   let requestMethod = verbMethod(request.path)
+
   requestMethod.reply(response.code, response.body)
 }
 
