@@ -2,7 +2,7 @@ const {
   _,
   createPromisedApi,
   createAbstractApi
-} = './_base'
+} = require('./_base')
 
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/user-endpoint-2-0-744527199.html

@@ -34,14 +34,18 @@ function Bitbucket(opts = {}) {
     $proxy_port = proxy.split(':')[1]
   }
 
-  const apiModel = {
+  let apiModel = {
     $proxy_host,
     $proxy_port,
     constants: Constants
   }
 
   const apiEnricher = createApiEnricher(apiModel, opts)
-  apiEnricher($api)
+  apiModel = apiEnricher($api)
+
+  console.log('enriched', {
+    apiModel
+  })
 
   let reqOpts = Object.assign({
     proxy_host: $proxy_host,

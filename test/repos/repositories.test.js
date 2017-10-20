@@ -4,6 +4,7 @@ import {
 import {
   test,
   values,
+  mock,
   // $api,
   createApi,
   prepareTest,
@@ -14,7 +15,11 @@ const $api = createApi({
   logging: true
 })
 
-const api = $api.repos.repositories.promised
+console.log({
+  $api
+})
+
+const api = $api.repositories.promised
 
 prepareForTests(test)
 

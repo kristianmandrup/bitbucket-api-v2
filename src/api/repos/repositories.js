@@ -3,7 +3,7 @@ const {
   fluid,
   createPromisedApi,
   createAbstractApi
-} = '../_base'
+} = require('../_base')
 
 const constants = require('../../util')
 /**

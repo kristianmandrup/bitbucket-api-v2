@@ -1,8 +1,9 @@
 const {
   _,
+  fluid,
   createPromisedApi,
   createAbstractApi
-} = './_base'
+} = require('./_base')
 
 /**
  * API docs:

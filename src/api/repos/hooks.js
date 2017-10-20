@@ -3,7 +3,7 @@ const {
   fluid,
   createPromisedApi,
   createAbstractApi
-} = '../_base'
+} = require('../_base')
 
 /**
  * API doc: https://developer.atlassian.com/bitbucket/api/2/reference/

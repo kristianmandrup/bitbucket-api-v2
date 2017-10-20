@@ -1,8 +1,9 @@
 const {
   _,
+  fluid,
   createPromisedApi,
   createAbstractApi
-} = './_base'
+} = require('./_base')
 
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/teams-endpoint-423626335.html
