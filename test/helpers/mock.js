@@ -11,7 +11,7 @@ function hasSingleKey(config) {
 // pass just path as string and we will try to determine from name alone
 // otherwise pass object such as: {delete: 'cancelVote'}
 export function createConfig(config, opts = {}) {
-  let verb
+  let verb, methodName
   if (typeof config === 'string') {
     methodName = config
   }
@@ -49,7 +49,7 @@ import {
   guessRequestType
 } from './guess'
 
-function mock(config = {}) {
+export function mock(config = {}) {
   if (!config.request) {
     config = createConfig(config)
   }
@@ -67,7 +67,7 @@ function mock(config = {}) {
 
   request.path = request.path || anyPath // ie. match any path
   // options: can contain custom headers etc. via reqheaders:
-  httpMethod = nock(request.uri, request.options || {})[request.verb]
+  let httpMethod = nock(request.uri, request.options || {})[request.verb]
   let requestMethod = httpMethod(request.path, request.data)
   requestMethod.reply(response.code, response.body)
 }
@@ -77,5 +77,6 @@ export function prepareMock(config = {}) {
 }
 
 export default {
+  mock,
   prepareMock
 }

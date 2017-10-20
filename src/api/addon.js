@@ -2,7 +2,7 @@ const {
   _,
   createPromisedApi,
   createAbstractApi
-} = './_base'
+} = require('./_base')
 
 /**
  * API docs: https://developer.atlassian.com/bitbucket/api/2/reference/resource/addon

@@ -1,4 +1,4 @@
-function createAbstractApi($api, opts = {}) {
+module.exports = function createAbstractApi($api, opts = {}) {
   return {
     $api,
 
@@ -17,8 +17,4 @@ function createAbstractApi($api, opts = {}) {
       }
     }
   }
-}
-
-module.exports = {
-  createAbstractApi
 }

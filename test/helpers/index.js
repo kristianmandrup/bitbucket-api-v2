@@ -26,11 +26,12 @@ export {
 from './api'
 
 export {
+  mock,
   prepareMock
 }
 from './mock'
 
 export {
-  values
+  default as values
 }
 from './values'
