@@ -26,6 +26,11 @@ export {
 from './api'
 
 export {
+  https
+}
+from './https'
+
+export {
   mock,
   prepareMock
 }
