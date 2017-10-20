@@ -32,17 +32,8 @@ const {
 const singleRepo = require('./mocks/repos/repo-single.json')
 
 test.only('Repositories: get(username, repoSlug, callback)', async t => {
-
-  // TODO: enforce https on mock?
   await mock('get', {
-    // path: `repositories/${user}/${repo}?`,
-    // { headers:
-    //   { 'Content-Type': 'application/x-www-form-urlencoded',
-    //     Authorization: 'Bearer xxxyyy',
-    //     Host: 'api.bitbucket.org',
-    //     'User-Agent': 'NodeJS HTTP Client',
-    //     'Content-Length': '0' }
-
+    path: new RegExp(`repositories/${user}/${repo}`),
     body: singleRepo,
     code: 200,
     accessToken
@@ -51,17 +42,10 @@ test.only('Repositories: get(username, repoSlug, callback)', async t => {
   t.truthy(result)
 })
 
-// generateTest({
-//   methodName: 'get',
-//   // forced response in mock
-//   body: {
-//     x: 2
-//   },
-//   expected,
-//   execute,
-//   createComparer,
-//   args: []
-// })
+// Take the test.only and change into these 2 lines
+// to avoid pattern duplication!
+import template from './templates/_repositories'
+// generateTest(template.get)
 
 test('Repositories: get(username, repoSlug, callback)', async t => {
   let result = await api.get(user, repo)
