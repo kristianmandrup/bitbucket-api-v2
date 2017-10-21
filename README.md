@@ -156,13 +156,23 @@ const bitbucketApi = createBitbucketAPI({
 })
 ```
 
+## Debugging
+
+To enable logging on requests sent to the server, try adding `logging: true` to the options argument when creating the API.
+
+```js
+createBitbucketAPI({
+  logging: true
+})
+```
+
 ## Tests
 
 Tests will be written and run using [ava](https://github.com/avajs/ava) the "Futuristic JavaScript test runner"
 
 Intial skeleton tests have been started. Please contribute!
 
-Please see the [Test](https://github.com/kristianmandrup/node-bitbucket-v2/blob/master/Api.md) document for best practices when writing tests.
+Please see [Testing](https://github.com/kristianmandrup/node-bitbucket-v2/blob/master/Api.md) for best practices when writing tests for the API.
 
 In short: use *test generators* via mocks made with `nock`!
 

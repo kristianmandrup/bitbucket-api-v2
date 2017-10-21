@@ -5,7 +5,10 @@ const {
   createAbstractApi
 } = require('../_base')
 
-const constants = require('../../util')
+const {
+  constants,
+  validateArg
+} = require('../../util')
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/repositories-endpoint-423626330.html
  *           https://confluence.atlassian.com/bitbucket/repository-resource-423626331.html
@@ -13,7 +16,12 @@ const constants = require('../../util')
 function createApi(api, opts = {}) {
   const result = createAbstractApi(api, opts)
 
+  function validateArgs(username, repoSlug) {
+    [username, repoSlug].map(validateArg)
+  }
+
   function buildUri(username, repoSlug, action) {
+    validateArgs(username, repoSlug)
     const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`
     return action ? [baseUri, action].join('/') : baseUri
   }

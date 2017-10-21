@@ -7,6 +7,10 @@ const {
   adapters
 } = require('./request')
 
+const {
+  getAccessToken
+} = require('./auth')
+
 const $api = require('./api')
 /**
  * Simple JavaScript Bitbucket API v2
@@ -14,8 +18,13 @@ const $api = require('./api')
  * Based on the PHP GitHub API project http://github.com/ornicar/php-github-api
  */
 
-function createBitBucketAPI(opts = {}) {
+async function createAuthenticatedAPI(opts = {}) {
+  const accessToken = await getAccessToken(opts)
+  opts.accessToken = accessToken
+  return createBitBucketAPI(opts)
+}
 
+function createBitBucketAPI(opts = {}) {
   let bitbucketApi = new Bitbucket(opts)
   if (opts.accessToken) {
     bitbucketApi.authenticateOAuth2(opts.accessToken)
@@ -179,5 +188,6 @@ function Bitbucket(opts = {}) {
 
 module.exports = {
   Bitbucket,
-  createBitBucketAPI
+  createBitBucketAPI,
+  createAuthenticatedAPI
 }

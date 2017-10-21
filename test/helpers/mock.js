@@ -1,5 +1,18 @@
 import nock from 'nock'
 
+import {
+  guessRequestType
+} from './guess'
+
+import {
+  connection
+} from './connection'
+
+
+const {
+  log
+} = console
+
 function anyPath(uri) {
   return true
 }
@@ -44,77 +57,70 @@ export function createConfig(config, opts = {}) {
 }
 
 import {
-  guessRequestType
-} from './guess'
-
-import {
-  connection
-} from './connection'
-
-
-const {
-  log
-} = console
+  Logger
+} from './logger'
 
 export function mock(config = {}, opts = {}) {
-  log('mock', {
-    config,
-    opts
-  })
-  if (!config.request) {
-    config = createConfig(config)
-  }
-  let {
-    request,
-    response,
-    methodName,
-    accessToken,
-    code,
-    body
-  } = config
-  accessToken = accessToken || opts.accessToken
-  request = request || {}
-  response = response || {}
-  let hostname = connection.hostname
-  let httpVerb = request.verb || guessRequestType(methodName) || 'get'
-
-  let path = request.path || opts.path || anyPath // ie. match any path
-  // ensure we are using v.2 API
-  if (typeof path === 'string') {
-    path = `/2.0/${path}`
-  }
-
-  hostname = `https://${hostname}`
-
-  // options: can contain custom headers etc. via reqheaders:
-  let nockInstance = nock(hostname, request.options || {})
-
-  let headers = {
-    Authorization: `Bearer ${accessToken}`
-  }
-  // nockInstance.defaultReplyHeaders(headers)
-  let verbMethod = nockInstance[httpVerb].bind(nockInstance)
-  let requestMethod = verbMethod(path)
-
-  code = code || opts.code || response.code || 200
-  body = body || opts.body || response.body
-
-  console.log('nock config:', {
-    hostname,
-    path,
-    httpVerb,
-    headers,
-    code,
-    body
-  })
-  requestMethod.reply(code, body)
+  return new Mock(config, opts).build()
 }
 
-export function prepareMock(config = {}) {
-  mock(config)
-}
+export class Mock extends Logger {
+  constructor(config, opts) {
+    super(opts)
+    this.logging = opts.logging
+    this.config = config
+    this.opts = opts
+  }
 
-export default {
-  mock,
-  prepareMock
+  build() {
+    let {
+      config,
+      opts
+    } = this
+    this.log('build', {
+      config,
+      opts
+    })
+    if (!config.request) {
+      config = createConfig(config)
+    }
+    let {
+      request,
+      response,
+      methodName,
+      accessToken,
+      code,
+      body
+    } = config
+    accessToken = accessToken || opts.accessToken
+    request = request || {}
+    response = response || {}
+    let hostname = connection.hostname
+    let httpVerb = request.verb || guessRequestType(methodName) || 'get'
+
+    let path = request.path || opts.path || anyPath // ie. match any path
+    // ensure we are using v.2 API
+    if (typeof path === 'string') {
+      path = new RegExp(`/2.0/${path}`)
+    }
+
+    hostname = `https://${hostname}`
+    code = code || opts.code || response.code || 200
+    body = body || opts.body || response.body
+
+    // options: can contain custom headers etc. via reqheaders:
+    let nockInstance = nock(hostname, request.options || {})
+
+    this.log('configure nock', {
+      hostname,
+      request: request.options,
+      path,
+      httpVerb,
+      code,
+      body
+    })
+    let verbMethod = nockInstance[httpVerb].bind(nockInstance)
+    let requestMethod = verbMethod(path)
+    requestMethod.reply(code, body)
+  }
 }

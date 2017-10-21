@@ -16,12 +16,23 @@ export {
 from '../../src/api'
 
 export {
+  createTestGenerator
+}
+from './create-test'
+
+export {
+  createTestsGenerator
+}
+from './test-generator'
+
+export {
   prepareForTests
 }
 from './test'
 export {
   $api,
-  createApi
+  createApi,
+  createAuthenticatedAPI
 }
 from './api'
 

@@ -1,11 +1,6 @@
 import {
-  prepareApiTests
+  createTestsGenerator
 } from '../helpers'
 
-const {
-  $api,
-  generator
-} = prepareApiTests(test, 'repositories')
-
-generator.generate('get')
-generator.generateAll()
+createTestsGenerator('repositories')
+  .generate('get')
