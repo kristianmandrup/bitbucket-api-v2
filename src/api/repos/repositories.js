@@ -139,6 +139,7 @@ function createApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     getBranches(username, repoSlug, callback) {
+      const buildUri = uriBuilder('getBranches')
       const uri = buildUri(username, repoSlug, 'refs/branches')
       api.get(
         uri,
@@ -156,6 +157,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Brevision%7D
      */
     getCommit(username, repoSlug, revision, callback) {
+      const buildUri = uriBuilder('getCommit')
       const uri = buildUri(username, repoSlug, `commit/${revision}`)
       api.get(
         uri,
