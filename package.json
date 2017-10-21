@@ -17,8 +17,11 @@
     "node >=7.0.0"
   ],
   "dependencies": {
+    "home-dir": "^1.0.0",
+    "jsonfile": "^4.0.0",
     "lodash": "^4.17.4",
     "oauth": "^0.9.15",
+    "superagent": "^3.7.0",
     "xhr": "^2.4.0"
   },
   "devDependencies": {

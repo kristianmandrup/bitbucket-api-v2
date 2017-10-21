@@ -1,12 +1,25 @@
 # Test
 
-The test are written using [ava]() and [supertest]()
+The test are written using `async`/`await` and:
 
-## Samples
+- [ava](https://github.com/avajs/ava)
+- [supertest](https://github.com/visionmedia/supertest)
+- [nock](https://www.npmjs.com/package/nock)
 
-Sample tests from [bitbucket-server-nodejs](https://github.com/sternba/bitbucket-server-nodejs) can be found in `test/sample` and used for refeence and inspiration to set up the basic test infrastructure, for mocks etc.
+## Nock
 
-We will use [nock](https://semaphoreci.com/community/tutorials/mocking-external-http-requests-in-node-tests-with-nock) to mock external http requests.
+See this post on [using nock](http://codejaxy.com/q/864687/javascript-ajax-xmlhttprequest-nock-nock-is-intercepting-my-request-but-my-ajax-request-is-erroring-out)
+
+```js
+nock('http://myapp.iriscouch.com')
+  .get('/users/1')
+  .reply(200, {
+    _id: '123ABC',
+    _rev: '946B7D1C',
+    username: 'pgte',
+    email: 'pedro.teixeira@gmail.com'
+    });
+```
 
 ## Generating tests
 
@@ -14,9 +27,13 @@ To reduce maintenance and human error and reduce size of test files etc. we will
 
 Please see `test/helpers` folder for some initial Test gernerator infrastructure:
 
-- `mock.js` - perform nock configuration via config object
-- `/generators` - generate the ava test
-- `guess.js` - to guess http verb from method name
+- `/generators` - generate an ava test spec via config object
+- `mock.js` - perform nock configuration of request via config object
+- `guess.js` - guess http verb from method name
+
+### Sample generator config
+
+The functionality to be executed/tested (can be reused across most test specs)
 
 ```js
 async function execute(config = {}) {
@@ -27,14 +44,22 @@ async function execute(config = {}) {
   } = config
   return await api[methodName](...args)
 }
+```
 
-function createComparer(t, config) {
+The assertion(s) to apply on the result (reusable)
+
+```js
+function createAssertion(t, config) {
   let { expect } = config
   return result => {
     t.is(result.x, expect.x)
   }
 }
+```
 
+The expected data received for each API method
+
+```js
 const expected = {
   create: {
     // expected http response body (json) from create call
@@ -43,7 +68,11 @@ const expected = {
     // ...
   }
 }
+```
 
+Generation of a test spec from a configuration Object
+
+```js
 generateTest(test, {
   methodName: 'getAll',
   requestType: 'get', // usually all that is needed
@@ -58,17 +87,7 @@ generateTest(test, {
 
 Start with `test/testing.test.js` and go from there ;)
 
-## Mocking
+## Test samples
 
-We are using [nock](https://www.npmjs.com/package/nock):
+Sample tests from [bitbucket-server-nodejs](https://github.com/sternba/bitbucket-server-nodejs) can be found in `test/sample` and used for refeence and inspiration to set up the basic test infrastructure, for mocks etc.
 
-```js
-nock('http://myapp.iriscouch.com')
-  .get('/users/1')
-  .reply(200, {
-    _id: '123ABC',
-    _rev: '946B7D1C',
-    username: 'pgte',
-    email: 'pedro.teixeira@gmail.com'
-    });
-```

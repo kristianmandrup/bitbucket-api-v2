@@ -298,6 +298,7 @@ module.exports = function XhrAdapter(_options) {
         hostname: _hostname,
         http_port: httpPort,
         oauth_access_token: oauthAccessToken,
+        jwt_access_token: jwtAccessToken,
         proxy_host: proxyHost,
         proxy_port: proxyPort,
         use_xhr: useXhr
@@ -305,9 +306,11 @@ module.exports = function XhrAdapter(_options) {
       const hostname = !useXhr && proxyHost ? proxyHost : _hostname
       const port = !useXhr && proxyHost ? proxyPort || 3128 : httpPort || 443
 
+      const authBearerToken = oauthAccessToken ? `Bearer ${oauthAccessToken}` : `Bearer ${jwtAccessToken}`
+
       const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Bearer ${oauthAccessToken}`
+        Authorization: `Bearer ${authBearerToken}`
       }
 
       if (!useXhr) {
