@@ -1,15 +1,12 @@
 # Authentication
 
-Bitbucket uses an Access Token for authentication, using one of these protocols:
-
-- JWT
-- OAuth2
+Bitbucket uses an Access Token for authentication, using the `OAuth2` protocols
 
 The client app needs to request the Access Token from the server, which has an expiration period.
 
 Access tokens expire in *one hour*. When this happens you’ll get `401` responses
 
-Most access token grant responses (Implicit and JWT excluded) therefore include a refresh token that can then be used to generate a new access token, without the need for end user participation
+Most *access token grant* responses (Implicit and JWT excluded) therefore include a *refresh token* that can then be used to generate a new *access token*, without the need for end user participation
 
 ## OAuth2 end user authorization
 
@@ -83,11 +80,15 @@ The `authorize.test.js` file contains tests for each of the authrozation routes 
 
 The request testing is done via [supertest](https://github.com/visionmedia/supertest)
 
-## OAuth2 Auth flow
+## Browser app authentication flow
 
-Request authorization from the end user by sending their browser to:
+To request authorization from the end user, call this uri in the browser app:
 
 `https://bitbucket.org/site/oauth2/authorize?client_id={client_id}&response_type=code`
+
+This will redirecting the browser to `https://bitbucket.org/site/oauth2/authorize` and display an authentication confirmation page, asking the user to approve permissions.
+
+Approval will trigger a call to the callback (route) as configured in the bitbucket OAuth settings for the app (ie. client_id).
 
 The callback includes the `?code={}` query parameter that you can swap for an access token:
 
@@ -106,9 +107,23 @@ Once you have an access token, as per [RFC-6750](https://tools.ietf.org/html/rfc
 [Auth0 for bitbucket](https://auth0.com/docs/connections/social/bitbucket) is another option.
 
 [Auth0](https://auth0.com/) works for a client app that does the authentication handshake using the browser. The app can store the JWT/access token in `localstorage`.
-The token is sent piggybacked on the request header on each request to the server.
+The token is piggy-backed on the request header on each request to the server.
 
-### Managing (token) secrets
+### Auth Callback handler
+
+When the user approves permission for the app, bitbucket will call the configured callback (as defined on the bitbucket OAuth configuration page).
+
+A sample [express server](https://expressjs.com/) can be found in the `/server` folder which you can use to test this callback auth flow.
+
+Simply create an app in the bitbucket OAuth config page (under account settings) and set the callback to `http://localhost:3000/authenticated`
+
+Create a client/browser app, include this package (create a bundle via webpack, browserify or similar?).
+
+Create an API instance as usual, then call the `authorizeOAuth2` API method to trigger the browser redirect to the bitbucket OAuth2 authentication page.
+
+When permissions are approved, the server should trigger a callback of the uri/route (such as `http://localhost:3000/authenticated`)
+
+## Managing (token) secrets
 
 During development/testing, you can place your own tokens in `test/secret/access-tokens.json`, something like this (not real keys here!).
 
@@ -143,7 +158,7 @@ $ curl -X POST -H "Authorization: JWT {jwt_token}" \
 
 The bitbucket API doesn't yet support JWT authentication. Please feel free to add JWT auth if that better suits your need.
 
-A (skeleton) implementation could look sth. like this:
+An (experimental skeleton) implementation could start with sth. like this:
 
 ```js
 apiModel.authenticateJwt = accessToken => {
@@ -152,17 +167,32 @@ apiModel.authenticateJwt = accessToken => {
     .setOption('jwt_access_token', accessToken)
   return apiModel
 }
+```
 
-apiModel.authorizeJwt = client_id => {
-  let parameters = {
-    client_id,
-    response_type: 'code'
-  }
-  apiModel.request.get('oauth2/authorize', parameters || {}, requestOptions, callback)
+To perform JWT authentication you would have to do a form `POST` request, similar to the approach used for `getTokens` in `src/auth/access-tokens.js`
+
+It might look something like this (with `supertest` as an example)
+
+```js
+import supertest from 'supertest'
+let connection = supertest('https://bitbucket.org')
+try {
+  let result = await connection
+    .post('site/oauth2/access_token')
+    .header({
+      'Authorization': `JWT ${accessToken}`
+    })
+    .field('grant_type', 'urn:bitbucket:oauth2:jwt')
+catch (err) {
+  console.error(err)
 }
 ```
+
+May the JWT authentication gods be with you!
 
 #### JWT Issues (for reference)
 
 - [issue #1](https://community.atlassian.com/t5/Answers-Developer-Questions/Can-t-get-access-token-with-JWT-from-Bitbucket-API/qaq-p/533548)
 - [Issue #2](https://community.atlassian.com/t5/Answers-Developer-Questions/Bitbucket-get-access-token-from-JWT/qaq-p/549041)
+
+If you have problems, try asking on the [Atlassian community forum](https://community.atlassian.com) or on [Stack overflow](https://stackoverflow.com/questions/tagged/bitbucket)
