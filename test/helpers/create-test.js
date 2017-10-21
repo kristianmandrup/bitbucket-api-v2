@@ -35,7 +35,6 @@ export class TestGenerator extends Logger {
   // })
 
   generateForMethod(method) {
-    console.log('generateForMethod', method)
     if (typeof method !== 'string') {
       this.error('Bad argument! generate takes the name of a method to generate test for', {
         method

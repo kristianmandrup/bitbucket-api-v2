@@ -6,6 +6,8 @@ createTestsGenerator({
   name: 'repositories',
   logging: true
 }).generate([
-  'get',
-  // 'create'
+  // 'get',
+  // 'create',
+  // 'createPullRequest',
+  'commit'
 ])

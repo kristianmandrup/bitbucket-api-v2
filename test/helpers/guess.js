@@ -2,7 +2,8 @@ const exprMap = {
   get: [/^get/],
   post: [
     /^create/,
-    /^add/
+    /^add/,
+    /^commit/
   ],
   update: [
     /^update/,

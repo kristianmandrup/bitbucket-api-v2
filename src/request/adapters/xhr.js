@@ -82,6 +82,7 @@ module.exports = function XhrAdapter(_options) {
      * @see send
      */
     postForm(apiPath, parameters, options, callback) {
+      options = options || {}
       options.contentType = 'multipart/form-data'
       let send = callback ? result.send : result.sendPromised
       return send(apiPath, parameters, 'POST', options, callback)
@@ -92,8 +93,9 @@ module.exports = function XhrAdapter(_options) {
      * @see send
      */
     postRelated(apiPath, parameters, options, callback) {
-      let send = callback ? result.send : result.sendPromised
+      options = options || {}
       options.contentType = 'multipart/related'
+      let send = callback ? result.send : result.sendPromised
       return send(apiPath, parameters, 'POST', options, callback)
     },
 
@@ -119,7 +121,8 @@ module.exports = function XhrAdapter(_options) {
      * Send an UPDATE request using multipart/related
      * @see send
      */
-    updateRelated(apiPath, parameters, options, callback) {
+    updateRelated(apiPath, parameters, options = {}, callback) {
+      options = options || {}
       options.contentType = 'multipart/related'
       let send = callback ? result.send : result.sendPromised
       return send(apiPath, parameters, 'UPDATE', options, callback)
@@ -130,6 +133,7 @@ module.exports = function XhrAdapter(_options) {
      * @see send
      */
     updateForm(apiPath, parameters, options, callback) {
+      options = options || {}
       options.contentType = 'multipart/form-data'
       let send = callback ? result.send : result.sendPromised
       return send(apiPath, parameters, 'UPDATE', options, callback)
@@ -145,7 +149,7 @@ module.exports = function XhrAdapter(_options) {
      * @param  {Object}    options        reconfigure the request for this call only
      */
     send(apiPath, parameters, httpMethod = 'GET', __options, callback) {
-      const options = __options || $options
+      const options = Object.assign(__options || {}, $options)
       result.doSend(apiPath, parameters, httpMethod, options, (err, _response) => {
         if (err) {
           if (callback) {
@@ -218,6 +222,9 @@ module.exports = function XhrAdapter(_options) {
         path,
         post: port
       }
+      log('doPrebuiltSend', {
+        httpsOptions
+      })
 
       result.sendHttpsRequest(httpsOptions, undefined, done)
     },
@@ -272,7 +279,9 @@ module.exports = function XhrAdapter(_options) {
         if (method === 'POST') {
           xhrOptions.json = parameters
         }
-
+        log('doSend', {
+          xhrOptions
+        })
         result.sendXhrRequest(xhrOptions, done)
         return
       }
@@ -284,7 +293,9 @@ module.exports = function XhrAdapter(_options) {
         path,
         post: port
       }
-
+      log('doSend', {
+        httpsOptions
+      })
       result.sendHttpsRequest(httpsOptions, query, done)
     },
 
@@ -334,7 +345,10 @@ module.exports = function XhrAdapter(_options) {
     },
 
     sendHttpsRequest(httpsOptions, query, done) {
-      log('sendHttpsRequest', httpsOptions)
+      log('sendHttpsRequest', {
+        httpsOptions,
+        query
+      })
       const request = https.request(httpsOptions, response => {
         response.setEncoding('utf8')
 
