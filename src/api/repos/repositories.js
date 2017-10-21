@@ -7,7 +7,9 @@ const {
 
 const {
   constants,
-  createArgValidator
+  createArgValidator,
+  log,
+  handleError
 } = require('../../util')
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/repositories-endpoint-423626330.html
@@ -16,19 +18,23 @@ const {
 function createApi(api, opts = {}) {
   const result = createAbstractApi(api, opts)
 
-  function validateArgs(methodName, username, repoSlug) {
+  function validateArgs(methodName, args, argsLength = 2) {
+    args = [].slice.call(args, 0, -1)
     const argValidator = createArgValidator(methodName)
-    const args = [username, repoSlug]
+    if (args.length !== argsLength) {
+      handleError(`${methodName}: Expected ${argsLength} arguments but received ${args.length}`)
+    }
     args.map(argValidator)
   }
 
-  function uriBuilder(methodName) {
-    return function buildUri(username, repoSlug, action) {
-      validateArgs(methodName, username, repoSlug)
-      const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`
-      return action ? [baseUri, action].join('/') : baseUri
+  function buildUri(username, repoSlug, action) {
+    let baseUri = `repositories/${encodeURI(username)}`
+    if (repoSlug) {
+      baseUri = `${baseUri}/${encodeURI(repoSlug)}`
     }
+    return action ? [baseUri, action].join('/') : baseUri
   }
+
 
   const localApi = {
     name: 'Repositories',
@@ -63,8 +69,7 @@ function createApi(api, opts = {}) {
         .replace(/-$/, '')
         .toLowerCase()
 
-      const buildUri = uriBuilder('create')
-
+      validateArgs('create', [...arguments])
       const uri = buildUri(username, repoSlug)
       api.post(
         uri,
@@ -81,7 +86,7 @@ function createApi(api, opts = {}) {
      * @param {Object} pullRequest The PR POST body as specified by Bitbucket's API documentation
      */
     createPullRequest(username, repoSlug, pullRequest, callback) {
-      const buildUri = uriBuilder('createPullRequest')
+      validateArgs('createPullRequest', [...arguments], 3)
       const uri = buildUri(username, repoSlug, `/pullrequests`)
       api.post(
         uri,
@@ -97,7 +102,7 @@ function createApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     get(username, repoSlug, callback) {
-      const buildUri = uriBuilder('get')
+      validateArgs('get', 2, [...arguments])
       const uri = buildUri(username, repoSlug)
       api.get(
         uri,
@@ -122,7 +127,7 @@ function createApi(api, opts = {}) {
      * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src#post
      */
     commit(username, repoSlug, params, callback) {
-      const buildUri = uriBuilder('commit')
+      validateArgs('commit', [...arguments], 3)
       const uri = buildUri(username, repoSlug, 'src')
       api.postForm(
         uri,
@@ -139,7 +144,7 @@ function createApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     getBranches(username, repoSlug, callback) {
-      const buildUri = uriBuilder('getBranches')
+      validateArgs('getBranches', [...arguments])
       const uri = buildUri(username, repoSlug, 'refs/branches')
       api.get(
         uri,
@@ -157,7 +162,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Brevision%7D
      */
     getCommit(username, repoSlug, revision, callback) {
-      const buildUri = uriBuilder('getCommit')
+      validateArgs('getCommit', [...arguments], 3)
       const uri = buildUri(username, repoSlug, `commit/${revision}`)
       api.get(
         uri,
@@ -189,7 +194,7 @@ function createApi(api, opts = {}) {
       const apiParameters = {
         state: stateArray.join(',')
       }
-
+      validateArgs('getPullRequests', [...arguments], 3)
       const uri = buildUri(username, repoSlug, 'pullrequests')
       api.get(
         uri,
@@ -204,7 +209,8 @@ function createApi(api, opts = {}) {
      * @param {String}  username
      */
     getByUser(username, callback) {
-      const uri = `repositories/${encodeURI(username)}`
+      validateArgs('getByUser', [...arguments], 1)
+      const uri = buildUri(username)
       api.get(
         uri,
         null, null,
@@ -218,7 +224,8 @@ function createApi(api, opts = {}) {
      * @param {String}  teamname
      */
     getByTeam(teamname, callback) {
-      const uri = `repositories/${encodeURI(teamname)}`
+      validateArgs('getByTeam', [...arguments], 1)
+      const uri = buildUri(teamname)
       api.get(
         uri,
         null, null,
@@ -233,6 +240,7 @@ function createApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     getForks(username, repoSlug, callback) {
+      validateArgs('getForks', [...arguments])
       const uri = buildUri(username, repoSlug, 'forks')
       api.get(
         uri,
@@ -252,7 +260,10 @@ function createApi(api, opts = {}) {
       if (!prebuiltURL) {
         throw new Error('getForksFromResponse: argument has no \'forks\' url.')
       }
-
+      validateArgs('getForksFromResponse', [...arguments], 1)
+      log('getForksFromResponse', {
+        prebuiltURL
+      })
       api.request.doPrebuiltSend(
         prebuiltURL,
         result.$createListener(callback)
@@ -273,7 +284,7 @@ function createApi(api, opts = {}) {
           'getForksFromResponse: argument has no \'parent\' info. Call hasParent first to guard this method call.'
         )
       }
-
+      validateArgs('getParentFromResponse', [...arguments], 1)
       api.request.doPrebuiltSend(
         prebuiltURL,
         result.$createListener(callback)

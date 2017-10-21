@@ -149,7 +149,8 @@ module.exports = function XhrAdapter(_options) {
      * @param  {Object}    options        reconfigure the request for this call only
      */
     send(apiPath, parameters, httpMethod = 'GET', __options, callback) {
-      const options = Object.assign(__options || {}, $options)
+      // merge specific options on top of default $options
+      const options = Object.assign($options, __options || {})
       result.doSend(apiPath, parameters, httpMethod, options, (err, _response) => {
         if (err) {
           if (callback) {

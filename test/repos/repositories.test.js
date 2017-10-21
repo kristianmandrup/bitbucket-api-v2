@@ -6,10 +6,15 @@ createTestsGenerator({
   name: 'repositories',
   logging: true
 }).generate([
-  // 'get',
   // 'create',
   // 'createPullRequest',
-  'commit',
-  'getBranches',
-  'getCommit'
+  // 'get',
+  // 'commit',
+  // 'getBranches',
+  // 'getCommit',
+  // 'getByUser',
+  // 'getByTeam',
+  // 'getForks',
+  'getForksFromResponse',
+  // 'getParentFromResponse'
 ])
