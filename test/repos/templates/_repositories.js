@@ -1,6 +1,7 @@
-const singleRepo = require('../mock/repos/repo-single.json')
+const singleRepo = require('../mocks/repos/repo-single.json')
 
 module.exports = {
+  $api: 'generators',
   get: {
     methodName: 'get',
     body: singleRepo,
