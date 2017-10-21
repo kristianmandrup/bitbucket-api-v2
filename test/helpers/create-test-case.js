@@ -14,8 +14,12 @@ export function createTestCase(config, opts) {
 export class TestCase extends Logger {
   constructor(config, opts) {
     super(opts)
+    let {
+      template
+    } = config
     this.config = config
-    this.template = config.template
+    this.template = template
+    this.api = template.api
   }
 
   get testLabel() {
