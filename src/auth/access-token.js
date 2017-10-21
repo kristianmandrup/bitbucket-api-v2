@@ -7,6 +7,12 @@ let {
   defaults
 } = require('./util')
 
+function populateDefaults(opts) {
+  opts.consumerKey = opts.consumerKey || process.env.bitbucketKey
+  opts.consumerSecret = opts.consumerSecret || process.env.bitbucketSecret
+  return opts
+}
+
 /**
  *
  * Retrieve access token from server
@@ -23,7 +29,9 @@ let {
  */
 function getAccessToken(opts = {}) {
   errorHandler = setErrorHandler(opts)
-  createValidator('getAccessToken').validateOpts(opts)
+  opts = populateDefaults(opts)
+  createValidator('getAccessToken')
+    .validateOpts(opts)
 
   // set default path for storing config
   const configPath = homeDir('/.' + opts.appName)
@@ -75,7 +83,7 @@ function getAccessToken(opts = {}) {
  */
 function getTokens(opts = {}) {
   let payload
-  const errorMessageOn401 = 'Authentication failed!'
+  let errorMessageOn401 = 'getTokens: Authentication failed!'
   // TODO: potentially add options validation here as well
   const {
     username,
@@ -144,5 +152,5 @@ function getTokens(opts = {}) {
 }
 
 module.exports = {
-  getAccessToken: getAccessToken
+  getAccessToken
 }

@@ -1,6 +1,7 @@
 const {
   Bitbucket,
   createBitBucketAPI,
+  createAuthenticatedAPI
 } = require('./bitbucket')
 const {
   createRequest,
@@ -15,6 +16,7 @@ const {
 module.exports = {
   Bitbucket,
   createBitBucketAPI,
+  createAuthenticatedAPI,
   createRequest,
   getAccessToken,
   adapters,

@@ -26,6 +26,12 @@ module.exports = function XhrAdapter(_options) {
     $options
   }
 
+  function log(...msgs) {
+    if ($options.logging) {
+      console.log(...msgs)
+    }
+  }
+
   let localApi = _.assign({
     name: 'Request',
     /**
@@ -306,7 +312,8 @@ module.exports = function XhrAdapter(_options) {
       const hostname = !useXhr && proxyHost ? proxyHost : _hostname
       const port = !useXhr && proxyHost ? proxyPort || 3128 : httpPort || 443
 
-      const authBearerToken = oauthAccessToken ? `Bearer ${oauthAccessToken}` : `Bearer ${jwtAccessToken}`
+      // console.log('prepRequest', options)
+      const authBearerToken = oauthAccessToken || jwtAccessToken || '<none>'
 
       const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -327,7 +334,7 @@ module.exports = function XhrAdapter(_options) {
     },
 
     sendHttpsRequest(httpsOptions, query, done) {
-      console.log('sendHttpsRequest', httpsOptions)
+      log('sendHttpsRequest', httpsOptions)
       const request = https.request(httpsOptions, response => {
         response.setEncoding('utf8')
 
@@ -383,7 +390,7 @@ module.exports = function XhrAdapter(_options) {
     },
 
     sendXhrRequest(xhrOptions, done) {
-      console.log('sendXhrRequest', xhrOptions)
+      log('sendXhrRequest', xhrOptions)
       xhr(xhrOptions, (error, response) => {
         if (error) {
           done(error)

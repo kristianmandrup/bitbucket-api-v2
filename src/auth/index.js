@@ -1,6 +1,6 @@
 const {
   getAccessToken
-} = require('./auth/access-token')
+} = require('./access-token')
 
 module.exports = {
   getAccessToken

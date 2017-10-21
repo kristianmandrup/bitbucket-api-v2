@@ -11,6 +11,22 @@ Access tokens expire in *one hour*. When this happens you’ll get `401` respons
 
 Most access token grant responses (Implicit and JWT excluded) therefore include a refresh token that can then be used to generate a new access token, without the need for end user participation
 
+## OAuth2 end user authorization
+
+The bitbucket API includes the method `authorizeOAuth2`:
+
+```js
+apiModel.authorizeOAuth2 = client_id => {
+  let parameters = {
+    client_id,
+    response_type: 'code'
+  }
+  apiModel.request.get('oauth2/authorize', parameters || {}, requestOptions, callback)
+}
+```
+
+This can be used for request authorization from the end user, by sending their browser to a page where they must approve access policies (scopes) by the app.
+
 ## Access Token authentication
 
 To get the access token, use the `getAccessToken` function (by [@tpettersen](https://bitbucket.org/tpettersen/bitbucket-auth-token/))
@@ -32,6 +48,31 @@ const accessToken = await getAccessToken(config)
 
 // create API instance with accessToken set in header for each request
 const api = createBitbucketAPI(accessToken)
+```
+
+`getAccessToken` will try to read the `consumerKey` and `consumerSecret` from the above listed environment variables if they are not passed as arguments.
+
+If you follow this best practice, you can simplify it to:
+
+```js
+const accessToken = await getAccessToken({
+  appName: 'my-app'
+})
+// create API instance with accessToken set in header for each request
+const api = createBitbucketAPI(accessToken)
+```
+
+We also expose a `createAuthenticatedAPI` function to encapsulate this commong practice:
+
+```js
+import {
+  createAuthenticatedAPI,
+} from 'bitbucket-v2'
+
+// create API instance with accessToken set in header for each request
+const api = await createAuthenticatedAPI({
+  appName: 'my-app'
+})
 ```
 
 ## Test cases

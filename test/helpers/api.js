@@ -1,5 +1,7 @@
 const {
-  createBitBucketAPI
+  createBitBucketAPI,
+  createAuthenticatedAPI,
+  getAccessToken
 } = require('../../src/bitbucket')
 
 function createApi(opts = {}) {
@@ -8,5 +10,7 @@ function createApi(opts = {}) {
 
 module.exports = {
   $api: createApi(),
-  createApi
+  createApi,
+  createAuthenticatedAPI,
+  getAccessToken
 }
