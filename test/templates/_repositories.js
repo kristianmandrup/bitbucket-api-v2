@@ -4,14 +4,27 @@ function merge(args, moreArgs) {
   return args.concat(moreArgs)
 }
 
+const user = 'kmandrup'
+const team = 'my-team'
+const repo = 'my-repo'
+const forkPath = `http://bitbucket.org/${user}/${repo}.git`
+
+const response = {
+  links: {
+    forks: {
+      href: forkPath
+    }
+  }
+}
+
 const args = {
-  repo: [
-    'kmandrup',
-    'my-repo'
+  project: [
+    user,
+    repo
   ]
 }
 
-args.commit = merge(args.repo, {
+args.commit = merge(args.project, {
   author: 'unknown@gmail.com',
   message: 'first commit',
   files: [{
@@ -21,7 +34,7 @@ args.commit = merge(args.repo, {
 
 const method = {
   body: singleRepo,
-  args: args.repo
+  args: args.project
 }
 
 module.exports = {
@@ -31,7 +44,7 @@ module.exports = {
     create: method,
     createPullRequest: {
       body: singleRepo,
-      args: merge(args.repo, {
+      args: merge(args.project, {
         type: 'pull'
       })
     },
@@ -40,7 +53,36 @@ module.exports = {
       args: args.commit
     },
     getBranches: method,
-    getCommit: method
+    getCommit: {
+      body: singleRepo,
+      args: merge(args.project, '123')
+    },
+    getByUser: {
+      body: singleRepo,
+      args: [
+        user
+      ]
+    },
+    getByTeam: {
+      body: singleRepo,
+      args: [
+        team
+      ]
+    },
+    getForks: method,
+    getForksFromResponse: {
+      path: forkPath,
+      body: singleRepo,
+      args: [
+        response
+      ]
+    },
+    getParentFromResponse: {
+      body: singleRepo,
+      args: [
+        response
+      ]
+    },
   }
   // ... more test data templates
 }

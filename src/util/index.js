@@ -15,11 +15,23 @@ function createArgValidator(methodName) {
   }
 }
 
+const {
+  log,
+  error
+} = console
+
+function handleError(msg, value) {
+  error('ERROR:', msg, value)
+  throw msg
+}
+
 module.exports = {
   _,
   constants,
   createArgValidator,
   fluid,
+  log,
+  handleError,
   createApiEnricher,
   createPromisedApi
 }
