@@ -12,8 +12,12 @@ import {
   Logger
 } from './logger'
 
+function isObject(obj) {
+  return obj === Object(obj)
+}
 export function createTestsGenerator(config, opts) {
-  return new TestsGenerator(config, opts || config).generate()
+  opts = opts || config
+  return new TestsGenerator(config, opts)
 }
 
 class TestsGenerator extends Logger {
@@ -22,12 +26,17 @@ class TestsGenerator extends Logger {
     this.config = config
   }
 
-  generate() {
+  generate(...methods) {
+    this.log('generate', {
+      methods
+    })
     const {
       config,
       opts
     } = this
+
     prepareForTests()
+
     let name
     if (typeof config === 'string') {
       name = config
@@ -36,9 +45,7 @@ class TestsGenerator extends Logger {
     }
     const _createApi = config.createApi || createApi
 
-    const $api = _createApi({
-      logging: true
-    })
+    const $api = _createApi(opts)
     const api = $api[name].promised
 
     const templates = config.templates || defaultTemplates
@@ -46,8 +53,27 @@ class TestsGenerator extends Logger {
     template.api = api
     this.log('generate', {
       name,
-      template
+      template,
     })
-    return createTestGenerator(template, this.opts)
+
+    this.testMethodGenerator = createTestGenerator(template, this.opts)
+
+    if (methods.length === 0) {
+      if (!isObject(template.methods)) {
+        this.error(`.methods property of template must be a map of methods => test configuration (ie. an Object), was: ${typeof template.methods}`)
+      }
+      methods = Object.keys(template.methods)
+    }
+    this.log('generate: generate test for each method', {
+      methods
+    })
+
+    methods.map(method => {
+      this.generateMethodTest(method)
+    })
+  }
+
+  generateMethodTest(method) {
+    return this.testMethodGenerator.generateForMethod(method)
   }
 }

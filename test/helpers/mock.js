@@ -24,9 +24,9 @@ function hasSingleKey(config) {
 // pass just path as string and we will try to determine from name alone
 // otherwise pass object such as: {delete: 'cancelVote'}
 export function createConfig(config, opts = {}) {
-  let verb, methodName
+  let verb, method
   if (typeof config === 'string') {
-    methodName = config
+    method = config
   }
   let {
     body,
@@ -38,10 +38,10 @@ export function createConfig(config, opts = {}) {
 
   let keys = Object.keys(config)
   verb = keys[0]
-  methodName = config[key]
+  method = config[key]
   request = {
     verb,
-    methodName
+    method
   }
 
   code = config.code || opts.code || 200
@@ -60,16 +60,18 @@ import {
   Logger
 } from './logger'
 
-export function mock(config = {}, opts = {}) {
+export function mock(config, opts = {}) {
   return new Mock(config, opts).build()
 }
 
 export class Mock extends Logger {
   constructor(config, opts) {
-    super(opts)
-    this.logging = opts.logging
+    super(opts || config)
+    console.log('Mock', {
+      config,
+      opts
+    })
     this.config = config
-    this.opts = opts
   }
 
   build() {
@@ -77,7 +79,7 @@ export class Mock extends Logger {
       config,
       opts
     } = this
-    this.log('build', {
+    this.log('build mock', {
       config,
       opts
     })
@@ -87,7 +89,7 @@ export class Mock extends Logger {
     let {
       request,
       response,
-      methodName,
+      method,
       accessToken,
       code,
       body
@@ -96,7 +98,7 @@ export class Mock extends Logger {
     request = request || {}
     response = response || {}
     let hostname = connection.hostname
-    let httpVerb = request.verb || guessRequestType(methodName) || 'get'
+    let httpVerb = request.verb || guessRequestType(method) || 'get'
 
     let path = request.path || opts.path || anyPath // ie. match any path
     // ensure we are using v.2 API
@@ -112,6 +114,7 @@ export class Mock extends Logger {
     let nockInstance = nock(hostname, request.options || {})
 
     this.log('configure nock', {
+      method,
       hostname,
       request: request.options,
       path,
@@ -122,5 +125,7 @@ export class Mock extends Logger {
     let verbMethod = nockInstance[httpVerb].bind(nockInstance)
     let requestMethod = verbMethod(path)
     requestMethod.reply(code, body)
+
+    return nockInstance
   }
 }

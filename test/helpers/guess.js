@@ -1,6 +1,6 @@
 const exprMap = {
   get: [/^get/],
-  create: [
+  post: [
     /^create/,
     /^add/
   ],

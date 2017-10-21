@@ -7,7 +7,7 @@ const {
 
 const {
   constants,
-  validateArg
+  createArgValidator
 } = require('../../util')
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/repositories-endpoint-423626330.html
@@ -16,14 +16,18 @@ const {
 function createApi(api, opts = {}) {
   const result = createAbstractApi(api, opts)
 
-  function validateArgs(username, repoSlug) {
-    [username, repoSlug].map(validateArg)
+  function validateArgs(methodName, username, repoSlug) {
+    const argValidator = createArgValidator(methodName)
+    const args = [username, repoSlug]
+    args.map(argValidator)
   }
 
-  function buildUri(username, repoSlug, action) {
-    validateArgs(username, repoSlug)
-    const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`
-    return action ? [baseUri, action].join('/') : baseUri
+  function uriBuilder(methodName) {
+    return function buildUri(username, repoSlug, action) {
+      validateArgs(methodName, username, repoSlug)
+      const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`
+      return action ? [baseUri, action].join('/') : baseUri
+    }
   }
 
   const localApi = {
@@ -38,7 +42,11 @@ function createApi(api, opts = {}) {
      */
     create(username, repo, callback) {
       if (!repo || !_.isBoolean(repo.is_private) || !_.isString(repo.name)) {
-        throw new Error('Repo must be initialized with a booelan privacy setting and a string name')
+        repo = {
+          name: repo,
+          is_private: false
+        }
+        // throw new Error('Repo must be initialized with a booelan privacy setting and a string name')
       }
 
       // The official API error is that slugs must be alphanumeric with underscore, dot, and dash, lowercase, and
@@ -54,6 +62,8 @@ function createApi(api, opts = {}) {
         .replace(/^-/, '')
         .replace(/-$/, '')
         .toLowerCase()
+
+      const buildUri = uriBuilder('create')
 
       const uri = buildUri(username, repoSlug)
       api.post(
@@ -71,6 +81,7 @@ function createApi(api, opts = {}) {
      * @param {Object} pullRequest The PR POST body as specified by Bitbucket's API documentation
      */
     createPullRequest(username, repoSlug, pullRequest, callback) {
+      const buildUri = uriBuilder('createPullRequest')
       const uri = buildUri(username, repoSlug, `/pullrequests`)
       api.post(
         uri,
@@ -86,6 +97,7 @@ function createApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     get(username, repoSlug, callback) {
+      const buildUri = uriBuilder('get')
       const uri = buildUri(username, repoSlug)
       api.get(
         uri,

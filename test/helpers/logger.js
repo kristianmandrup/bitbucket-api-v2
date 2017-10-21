@@ -1,10 +1,12 @@
 export class Logger {
   constructor(opts = {}) {
+    this.opts = opts
     this.logging = opts.logging
+    this.reportError = opts.error
   }
 
   get logLabel() {
-    return this.constructor.name
+    return `${this.constructor.name}:`
   }
 
   log(...msgs) {
@@ -12,9 +14,12 @@ export class Logger {
     console.log(this.logLabel, ...msgs)
   }
 
+  warn(...msgs) {
+    this.log('WARNING:', ...msgs)
+  }
+
   error(msg, value) {
-    if (!this.logging) return
     console.error(this.logLabel, msg, value)
-    throw new Error(msg)
+    throw msg
   }
 }
