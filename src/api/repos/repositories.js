@@ -121,18 +121,13 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/
      * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src#post
      */
-    commit(username, repoSlug, params, options, callback) {
-      const uri = buildUri(username, repoSlug, '/src')
-      if (typeof options === 'function') {
-        callback = options
-        options = null
-      }
-      const defaultOpts = {
-        contentType: 'multipart/form-data'
-      }
-      api.post(
+    commit(username, repoSlug, params, callback) {
+      const buildUri = uriBuilder('commit')
+      const uri = buildUri(username, repoSlug, 'src')
+      api.postForm(
         uri,
-        params, options || defaultOpts,
+        params,
+        null,
         result.$createListener(callback)
       )
     },

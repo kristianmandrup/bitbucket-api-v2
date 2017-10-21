@@ -54,7 +54,7 @@ function Bitbucket(opts = {}) {
     constants: Constants
   }
 
-  apiModel.request = createRequest(apiModel)
+  apiModel.request = createRequest(opts)
 
   const apiEnricher = createApiEnricher(apiModel, opts)
   apiModel = apiEnricher($api)
@@ -132,6 +132,24 @@ function Bitbucket(opts = {}) {
    */
   apiModel.post = (route, parameters, requestOptions, callback) =>
     apiModel.request.post(route, parameters || {}, requestOptions, callback)
+
+  apiModel.postForm = (route, parameters, requestOptions, callback) =>
+    apiModel.request.postForm(route, parameters || {}, requestOptions, callback)
+
+  apiModel.postRelated = (route, parameters, requestOptions, callback) =>
+    apiModel.request.postRelated(route, parameters || {}, requestOptions, callback)
+
+  apiModel.delete = (route, parameters, requestOptions, callback) =>
+    apiModel.request.delete(route, parameters || {}, requestOptions, callback)
+
+  apiModel.update = (route, parameters, requestOptions, callback) =>
+    apiModel.request.update(route, parameters || {}, requestOptions, callback)
+
+  apiModel.updateRelated = (route, parameters, requestOptions, callback) =>
+    apiModel.request.updateRelated(route, parameters || {}, requestOptions, callback)
+
+  apiModel.updateForm = (route, parameters, requestOptions, callback) =>
+    apiModel.request.updateForm(route, parameters || {}, requestOptions, callback)
 
   /**
    * Check for whether we can iterate to another page using this.getNextPage(response).
