@@ -9,5 +9,7 @@ createTestsGenerator({
   // 'get',
   // 'create',
   // 'createPullRequest',
-  'commit'
+  'commit',
+  'getBranches',
+  'getCommit'
 ])

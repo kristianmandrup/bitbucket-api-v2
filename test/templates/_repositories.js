@@ -19,20 +19,16 @@ args.commit = merge(args.repo, {
   }]
 })
 
+const method = {
+  body: singleRepo,
+  args: args.repo
+}
+
 module.exports = {
   apiName: 'repositories',
   methods: {
-    get: {
-      body: singleRepo,
-      // expected: singleRepo, (defaults to body)
-      // execute,
-      // createAssertion,
-      args: args.repo
-    },
-    create: {
-      body: singleRepo,
-      args: args.repo
-    },
+    get: method,
+    create: method,
     createPullRequest: {
       body: singleRepo,
       args: merge(args.repo, {
@@ -42,7 +38,9 @@ module.exports = {
     commit: {
       body: singleRepo,
       args: args.commit
-    }
+    },
+    getBranches: method,
+    getCommit: method
   }
   // ... more test data templates
 }
