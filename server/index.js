@@ -7,15 +7,10 @@ const {
   error
 } = console
 
-// handle bitbucket authentication callback for 3-LO OAuth2 flow
+// handle bitbucket authentication callback
 app.get('/authenticated', (request, response) => {
   log('get', request)
-  response.end('get: authenticated ok :)')
-})
-
-app.post('/authenticated', (request, response) => {
-  log('post', request)
-  response.end('post: authenticated ok :)')
+  response.end('authenticated ok :)')
 })
 
 app.listen(port, err => {

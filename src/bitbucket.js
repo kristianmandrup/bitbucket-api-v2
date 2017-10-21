@@ -65,7 +65,6 @@ function Bitbucket(opts = {}) {
     apiModel.request.get('oauth2/authorize', parameters || {}, requestOptions, callback)
   }
 
-
   /**
    * Authenticate a user for all next requests using an API token
    *
