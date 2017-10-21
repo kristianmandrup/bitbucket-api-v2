@@ -61,7 +61,7 @@ test('JWT auth', async t => {
       .header({
         'Authorization': `JWT ${jwtToken}`
       })
-      .auth('z9D3A3XrNFPjPwh9zx', '2R8n5QP3fU4ptVut9QRPz6zjAxfUNqLA')
+      // .auth('z9D3A3XrNFPjPwh9zx', '2R8n5QP3fU4ptVut9QRPz6zjAxfUNqLA')
       .field('grant_type', 'urn:bitbucket:oauth2:jwt')
       .expect(200)
     log('JWT token result:', {
