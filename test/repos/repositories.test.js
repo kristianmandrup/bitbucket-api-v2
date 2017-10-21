@@ -2,5 +2,9 @@ import {
   createTestsGenerator
 } from '../helpers'
 
-createTestsGenerator('repositories')
-  .generate('get')
+let generator = createTestsGenerator({
+  name: 'repositories',
+  logging: true
+})
+
+generator.generate('get', 'create')
