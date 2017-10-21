@@ -31,7 +31,7 @@ import {
 } from '../helpers'
 
 createTestsGenerator('repositories')
-  .generate('get')
+  .generate('get', 'create')
 
 createTestsGenerator('teams')
   .generate() // generate for all templates available
@@ -44,10 +44,17 @@ const generator = createTestsGenerator({
   name: 'repositories',
   mock: false,
   logging: true,
-  createApi
+  async createApi(config) {
+    await createAuthenticatedApi(config)
+  }
 })
 
-generator.generate()
+// Note: if createApi is async we have to use the async variant of generate!
+await generator.asyncGenerate([
+  'get',
+  'create',
+  // ... add more methods to generate tests for ;)
+])
 ```
 
 ### Test data templates

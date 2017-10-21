@@ -20,6 +20,7 @@ export class TestCase extends Logger {
     this.config = config
     this.template = template
     this.api = template.api
+    this.method = config.method
   }
 
   get testLabel() {
