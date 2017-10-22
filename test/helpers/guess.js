@@ -5,7 +5,7 @@ const exprMap = {
     /^add/,
     /^commit/
   ],
-  update: [
+  put: [
     /^update/,
     /pprove/, //approve
     /vote/,

@@ -13,7 +13,7 @@ const {
   log
 } = console
 
-function anyPath(uri) {
+function acceptAny(value) {
   return true
 }
 
@@ -70,6 +70,7 @@ export class Mock extends Logger {
     this.config = config
   }
 
+  // TODO: split up in smaller functions
   build() {
     let {
       config,
@@ -88,7 +89,9 @@ export class Mock extends Logger {
       method,
       accessToken,
       code,
-      body
+      body,
+      data,
+      query
     } = config
     accessToken = accessToken || opts.accessToken
     request = request || {}
@@ -96,7 +99,7 @@ export class Mock extends Logger {
     let hostname = connection.hostname
     let httpVerb = request.verb || guessRequestType(method) || 'get'
 
-    let path = request.path || opts.path || anyPath // ie. match any path
+    let path = request.path || opts.path || acceptAny // ie. match any path
     // ensure we are using v.2 API
     if (typeof path === 'string') {
       path = new RegExp(`/2.0/${path}`)
@@ -104,24 +107,75 @@ export class Mock extends Logger {
 
     hostname = `https://${hostname}`
     code = code || opts.code || response.code || 200
-    body = body || opts.body || response.body
+    body = body || opts.body || response.body || {}
 
     // options: can contain custom headers etc. via reqheaders:
     let nockInstance = nock(hostname, request.options || {})
-
+    let verbMethod = nockInstance[httpVerb]
     this.log('configure nock', {
       method,
       hostname,
       request: request.options,
       path,
       httpVerb,
+      verbMethod,
+      code,
+      body,
+      query,
+      data
+    })
+    if (!verbMethod) {
+      this.error(`No .${httpVerb} method available on nock instance`, {
+        httpVerb,
+        nockInstance
+      })
+    }
+    verbMethod = verbMethod.bind(nockInstance)
+    this.log('find verb method')
+
+    let requestMethod
+    data = data || acceptAny
+    try {
+      if (['post', 'put', 'patch'].includes(httpVerb)) {
+        this.log(`configure ${httpVerb} method`, {
+          path,
+          data
+        })
+
+        requestMethod = verbMethod(path, data)
+      } else {
+        requestMethod = verbMethod(path)
+      }
+    } catch (err) {
+      this.error(err.message, {
+        err
+      })
+    }
+
+    this.log('happy', {
+      requestMethod
+    })
+    if (httpVerb === 'get') {
+      if (query) {
+        requestMethod.query(query)
+      }
+    }
+
+    if (!requestMethod) {
+      this.error('Invalid http verb request method', {
+        path,
+        verbMethod,
+        requestMethod
+      })
+    }
+
+    this.log('build: reply', {
+      requestMethod,
       code,
       body
     })
-    let verbMethod = nockInstance[httpVerb].bind(nockInstance)
-    let requestMethod = verbMethod(path)
-    requestMethod.reply(code, body)
 
+    requestMethod.reply(code, body)
     return nockInstance
   }
 }

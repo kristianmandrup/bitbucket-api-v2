@@ -46,8 +46,18 @@ function createApi(api, opts = {}) {
      * @param {String} slug (name) of the repo
      * @param {String} kind describes what will be restricted.
      *
+     * Allowed values for kind are:
+     * - require_tasks_to_be_completed
+     * - require_passing_builds_to_merge
+     * - force
+     * - require_all_dependencies_merged
+     * - push
+     * - require_approvals_to_merge
+     * - enforce_merge_checks
+     * - restrict_merges
+     * - reset_pullrequest_approvals_on_change
+     * - delete
      *
-     * Allowed values for kind are: push, force, delete, and restrict_merges.
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/
      * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/branch-restrictions#get
      */
@@ -74,7 +84,7 @@ function createApi(api, opts = {}) {
      * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/branch-restrictions/%7Bid%7D
      */
     getRestriction(username, repoSlug, restrictionId, callback) {
-      validateArgs('create', [...arguments], 3)
+      validateArgs('getRestriction', [...arguments], 3)
       const uri = buildUri(username, repoSlug, `branch-restrictions/${restrictionId}`)
       api.get(
         uri,
@@ -95,7 +105,7 @@ function createApi(api, opts = {}) {
      * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/branch-restrictions/%7Bid%7D
      */
     updateRestriction(username, repoSlug, restrictionId, restriction, callback) {
-      validateArgs('create', [...arguments], 4)
+      validateArgs('updateRestriction', [...arguments], 4)
       const uri = buildUri(username, repoSlug, `branch-restrictions/${restrictionId}`)
       const data = {
         _body: restriction
@@ -118,7 +128,7 @@ function createApi(api, opts = {}) {
      * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/branch-restrictions/%7Bid%7D
      */
     removeRestriction(username, repoSlug, restrictionId, callback) {
-      validateArgs('create', [...arguments], 3)
+      validateArgs('removeRestriction', [...arguments], 3)
       const uri = buildUri(username, repoSlug, `branch-restrictions/${restrictionId}`)
       api.delete(
         uri,

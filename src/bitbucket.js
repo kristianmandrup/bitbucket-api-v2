@@ -142,14 +142,14 @@ function Bitbucket(opts = {}) {
   apiModel.delete = (route, parameters, requestOptions, callback) =>
     apiModel.request.delete(route, parameters || {}, requestOptions, callback)
 
-  apiModel.update = (route, parameters, requestOptions, callback) =>
-    apiModel.request.update(route, parameters || {}, requestOptions, callback)
+  apiModel.put = (route, parameters, requestOptions, callback) =>
+    apiModel.request.put(route, parameters || {}, requestOptions, callback)
 
-  apiModel.updateRelated = (route, parameters, requestOptions, callback) =>
-    apiModel.request.updateRelated(route, parameters || {}, requestOptions, callback)
+  apiModel.putRelated = (route, parameters, requestOptions, callback) =>
+    apiModel.request.putRelated(route, parameters || {}, requestOptions, callback)
 
-  apiModel.updateForm = (route, parameters, requestOptions, callback) =>
-    apiModel.request.updateForm(route, parameters || {}, requestOptions, callback)
+  apiModel.putForm = (route, parameters, requestOptions, callback) =>
+    apiModel.request.putForm(route, parameters || {}, requestOptions, callback)
 
   /**
    * Check for whether we can iterate to another page using this.getNextPage(response).
