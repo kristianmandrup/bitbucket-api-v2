@@ -4,17 +4,17 @@ import {
 
 createTestsGenerator({
   name: 'repositories',
-  logging: true
+  // logging: true
 }).generate([
-  // 'create',
-  // 'createPullRequest',
-  // 'get',
-  // 'commit',
-  // 'getBranches',
-  // 'getCommit',
-  // 'getByUser',
-  // 'getByTeam',
-  // 'getForks',
+  'create',
+  'createPullRequest',
+  'get',
+  'commit',
+  'getBranches',
+  'getCommit',
+  'getByUser',
+  'getByTeam',
+  'getForks',
   'getForksFromResponse',
-  // 'getParentFromResponse'
+  'getParentFromResponse'
 ])

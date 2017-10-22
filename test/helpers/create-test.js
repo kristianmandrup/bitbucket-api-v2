@@ -12,10 +12,6 @@ export function createTestGenerator(template, opts) {
 export class TestGenerator extends Logger {
   constructor(template, opts) {
     super(opts || template)
-    console.log('TestGenerator construct', {
-      template,
-      opts
-    })
     this.template = template
     this.methods = template.methods
     this.api = template.api

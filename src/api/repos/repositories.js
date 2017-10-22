@@ -261,9 +261,6 @@ function createApi(api, opts = {}) {
         throw new Error('getForksFromResponse: argument has no \'forks\' url.')
       }
       validateArgs('getForksFromResponse', [...arguments], 1)
-      log('getForksFromResponse', {
-        prebuiltURL
-      })
       api.request.doPrebuiltSend(
         prebuiltURL,
         result.$createListener(callback)

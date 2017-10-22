@@ -23,7 +23,6 @@ export function createTestsGenerator(config, opts) {
 class TestsGenerator extends Logger {
   constructor(config, opts = {}) {
     super(opts)
-    console.log('options', opts)
     this.config = config
   }
 
