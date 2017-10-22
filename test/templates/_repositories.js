@@ -1,6 +1,6 @@
 const singleRepo = require('../mocks/repos/repo-single.json')
 
-function merge(args, moreArgs) {
+function concat(args, moreArgs) {
   return args.concat(moreArgs)
 }
 
@@ -31,7 +31,7 @@ const args = {
   ]
 }
 
-args.commit = merge(args.project, {
+args.commit = concat(args.project, {
   author: 'unknown@gmail.com',
   message: 'first commit',
   files: [{
@@ -51,7 +51,7 @@ module.exports = {
     create: method,
     createPullRequest: {
       body: singleRepo,
-      args: merge(args.project, {
+      args: concat(args.project, {
         type: 'pull'
       })
     },
@@ -62,7 +62,7 @@ module.exports = {
     getBranches: method,
     getCommit: {
       body: singleRepo,
-      args: merge(args.project, '123')
+      args: concat(args.project, '123')
     },
     getByUser: {
       body: singleRepo,

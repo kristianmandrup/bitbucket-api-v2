@@ -1,9 +1,14 @@
 const {
   _,
   fluid,
+  constants,
+  log,
+  handleError,
+  validateArgs,
   createPromisedApi,
-  createAbstractApi
-} = require('../_base')
+  createAbstractApi,
+  buildUri
+} = require('./_base')
 
 /**
  * API doc: https://developer.atlassian.com/bitbucket/api/2/reference/
@@ -11,11 +16,6 @@ const {
  */
 function createApi(api, opts = {}) {
   const result = createAbstractApi(api, opts)
-
-  function buildUri(username, repoSlug, action) {
-    const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}/commit/{node}`
-    return action ? [baseUri, action].join('/') : baseUri
-  }
 
   const localApi = {
     name: 'BranchRestrictions',
@@ -30,6 +30,7 @@ function createApi(api, opts = {}) {
      * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/branch-restrictions#get
      */
     get(username, repoSlug, callback) {
+      validateArgs('create', [...arguments])
       const uri = buildUri(username, repoSlug, 'branch-restrictions')
       api.post(
         uri,
@@ -51,6 +52,7 @@ function createApi(api, opts = {}) {
      * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/branch-restrictions#get
      */
     create(username, repoSlug, kind, callback) {
+      validateArgs('create', [...arguments], 3)
       const uri = buildUri(username, repoSlug, 'branch-restrictions')
       const data = {
         kind
@@ -72,6 +74,7 @@ function createApi(api, opts = {}) {
      * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/branch-restrictions/%7Bid%7D
      */
     getRestriction(username, repoSlug, restrictionId, callback) {
+      validateArgs('create', [...arguments], 3)
       const uri = buildUri(username, repoSlug, `branch-restrictions/${restrictionId}`)
       api.get(
         uri,
@@ -92,6 +95,7 @@ function createApi(api, opts = {}) {
      * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/branch-restrictions/%7Bid%7D
      */
     updateRestriction(username, repoSlug, restrictionId, restriction, callback) {
+      validateArgs('create', [...arguments], 4)
       const uri = buildUri(username, repoSlug, `branch-restrictions/${restrictionId}`)
       const data = {
         _body: restriction
@@ -114,6 +118,7 @@ function createApi(api, opts = {}) {
      * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/branch-restrictions/%7Bid%7D
      */
     removeRestriction(username, repoSlug, restrictionId, callback) {
+      validateArgs('create', [...arguments], 3)
       const uri = buildUri(username, repoSlug, `branch-restrictions/${restrictionId}`)
       api.delete(
         uri,
