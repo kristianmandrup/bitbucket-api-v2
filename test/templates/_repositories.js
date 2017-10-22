@@ -1,12 +1,13 @@
-const singleRepo = require('../mocks/repos/repo-single.json')
+import {
+  singleRepo,
+  concat,
+  user,
+  repo,
+  args,
+  method
+} from './_base'
 
-function concat(args, moreArgs) {
-  return args.concat(moreArgs)
-}
-
-const user = 'kmandrup'
 const team = 'my-team'
-const repo = 'my-repo'
 const forkPath = `https://api.bitbucket.org/2.0/repositories/${user}/${repo}.git`
 
 const response = {
@@ -24,13 +25,6 @@ const response = {
   }
 }
 
-const args = {
-  project: [
-    user,
-    repo
-  ]
-}
-
 args.commit = concat(args.project, {
   author: 'unknown@gmail.com',
   message: 'first commit',
@@ -38,11 +32,6 @@ args.commit = concat(args.project, {
     'Readme.md': 'hello world'
   }]
 })
-
-const method = {
-  body: singleRepo,
-  args: args.project
-}
 
 module.exports = {
   apiName: 'repositories',
