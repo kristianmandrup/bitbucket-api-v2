@@ -7,12 +7,19 @@ function merge(args, moreArgs) {
 const user = 'kmandrup'
 const team = 'my-team'
 const repo = 'my-repo'
-const forkPath = `http://bitbucket.org/${user}/${repo}.git`
+const forkPath = `https://api.bitbucket.org/2.0/repositories/${user}/${repo}.git`
 
 const response = {
   links: {
     forks: {
       href: forkPath
+    }
+  },
+  parent: {
+    links: {
+      self: {
+        href: forkPath
+      }
     }
   }
 }

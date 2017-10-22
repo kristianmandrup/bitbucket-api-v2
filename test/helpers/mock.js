@@ -67,10 +67,6 @@ export function mock(config, opts = {}) {
 export class Mock extends Logger {
   constructor(config, opts) {
     super(opts || config)
-    console.log('Mock', {
-      config,
-      opts
-    })
     this.config = config
   }
 
