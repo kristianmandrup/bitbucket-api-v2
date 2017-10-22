@@ -7,8 +7,8 @@ createTestsGenerator({
   // logging: true
 }).generate([
   'get',
-  // 'create',
-  // 'getRestriction',
-  // 'updateRestriction',
-  // 'removeRestriction'
+  'create',
+  'getRestriction',
+  'updateRestriction',
+  'removeRestriction'
 ])

@@ -109,34 +109,35 @@ module.exports = function XhrAdapter(_options) {
     },
 
     /**
-     * Send an UPDATE request
+     * Send a PUT request
      * @see send
      */
-    update(apiPath, parameters, options, callback) {
+    put(apiPath, parameters, options, callback) {
+      log('put', apiPath, parameters, options)
       let send = callback ? result.send : result.sendPromised
-      return send(apiPath, parameters, 'UPDATE', options, callback)
+      return send(apiPath, parameters, 'PUT', options, callback)
     },
 
     /**
-     * Send an UPDATE request using multipart/related
+     * Send a PUT request using multipart/related
      * @see send
      */
-    updateRelated(apiPath, parameters, options = {}, callback) {
+    putRelated(apiPath, parameters, options = {}, callback) {
       options = options || {}
       options.contentType = 'multipart/related'
       let send = callback ? result.send : result.sendPromised
-      return send(apiPath, parameters, 'UPDATE', options, callback)
+      return send(apiPath, parameters, 'PUT', options, callback)
     },
 
     /**
-     * Send an UPDATE request using multipart/form
+     * Send a PUT request using multipart/form
      * @see send
      */
     updateForm(apiPath, parameters, options, callback) {
       options = options || {}
       options.contentType = 'multipart/form-data'
       let send = callback ? result.send : result.sendPromised
-      return send(apiPath, parameters, 'UPDATE', options, callback)
+      return send(apiPath, parameters, 'PUT', options, callback)
     },
 
     /**
