@@ -32,7 +32,7 @@ function createApi(api, opts = {}) {
     get(username, repoSlug, callback) {
       validateArgs('create', [...arguments])
       const uri = buildUri(username, repoSlug, 'branch-restrictions')
-      api.post(
+      api.get(
         uri,
         null, null,
         result.$createListener(callback)
