@@ -1,40 +1,21 @@
 const {
   _,
   fluid,
-  createPromisedApi,
-  createAbstractApi
-} = require('../_base')
-
-const {
   constants,
-  createArgValidator,
   log,
-  handleError
-} = require('../../util')
+  handleError,
+  validateArgs,
+  createPromisedApi,
+  createAbstractApi,
+  buildUri
+} = require('./_base')
+
 /**
  * API docs: https://confluence.atlassian.com/bitbucket/repositories-endpoint-423626330.html
  *           https://confluence.atlassian.com/bitbucket/repository-resource-423626331.html
  */
 function createApi(api, opts = {}) {
   const result = createAbstractApi(api, opts)
-
-  function validateArgs(methodName, args, argsLength = 2) {
-    args = [].slice.call(args, 0, -1)
-    const argValidator = createArgValidator(methodName)
-    if (args.length !== argsLength) {
-      handleError(`${methodName}: Expected ${argsLength} arguments but received ${args.length}`)
-    }
-    args.map(argValidator)
-  }
-
-  function buildUri(username, repoSlug, action) {
-    let baseUri = `repositories/${encodeURI(username)}`
-    if (repoSlug) {
-      baseUri = `${baseUri}/${encodeURI(repoSlug)}`
-    }
-    return action ? [baseUri, action].join('/') : baseUri
-  }
-
 
   const localApi = {
     name: 'Repositories',
