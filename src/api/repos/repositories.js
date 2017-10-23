@@ -1,13 +1,13 @@
 const {
   _,
-  fluid,
-  constants,
   log,
   handleError,
-  validateArgs,
+  buildUri,
+  fluid,
+  constants,
   createPromisedApi,
   createAbstractApi,
-  buildUri
+  validateArgs
 } = require('./_base')
 
 /**

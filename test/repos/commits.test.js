@@ -5,6 +5,4 @@ import {
 createTestsGenerator({
   name: 'commits',
   logging: true
-}).generate([
-  'getAll'
-])
+}).generate()

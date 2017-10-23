@@ -1,9 +1,13 @@
 const {
   _,
+  log,
+  handleError,
+  buildUri,
   fluid,
   createPromisedApi,
-  createAbstractApi
-} = require('../_base')
+  createAbstractApi,
+  validateArgs
+} = require('./_base')
 
 /**
  * API doc: https://developer.atlassian.com/bitbucket/api/2/reference/
@@ -11,11 +15,6 @@ const {
  */
 function createApi(api, opts = {}) {
   const result = createAbstractApi(api, opts)
-
-  function buildUri(username, repoSlug, action) {
-    const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`
-    return action ? [baseUri, action].join('/') : baseUri
-  }
 
   const localApi = {
 

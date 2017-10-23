@@ -1,13 +1,13 @@
 const exprMap = {
-  get: [/^get/],
+  get: [/^get/, /^has/, /^is/],
   post: [
     /^create/,
     /^add/,
-    /^commit/
+    /^commit/,
+    /pprove/, //approve
   ],
   put: [
     /^update/,
-    /pprove/, //approve
     /vote/,
   ],
   delete: [
