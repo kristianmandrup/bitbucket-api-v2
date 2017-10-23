@@ -3,8 +3,10 @@ import {
 } from '../templates'
 import {
   createApi,
+} from '../helpers/api'
+import {
   prepareForTests
-} from '.'
+} from './test'
 import {
   createTestGenerator
 } from './create-test'

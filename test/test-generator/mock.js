@@ -4,10 +4,10 @@ import {
   guessRequestType
 } from './guess'
 
-import {
-  connection
-} from './connection'
-
+const defaults = {
+  hostname: 'api.bitbucket.org',
+  code: 200
+}
 
 const {
   log
@@ -71,10 +71,23 @@ export class Mock extends Logger {
     this.configure()
   }
 
+  get defaults() {
+    return defaults
+  }
+
+  get hostname() {
+    return this._hostname || this.defaults.hostname
+  }
+
+  set hostname(value) {
+    this._hostname = value
+  }
+
   configure() {
     let {
       config,
-      opts
+      opts,
+      defaults
     } = this
     this.log('build mock', {
       config,
@@ -95,8 +108,8 @@ export class Mock extends Logger {
     } = config
     response = response || {}
     this.accessToken = accessToken || opts.accessToken
-    this.code = code || opts.code || response.code || 200
-    this.body = body || opts.body || response.body || {}
+    this.code = code || opts.code || response.code || defaults.code || 200
+    this.body = body || opts.body || response.body || defaults.body || {}
     this.request = request || {}
     this.response = response
     this.method = method
@@ -108,7 +121,7 @@ export class Mock extends Logger {
   }
 
   configHostname() {
-    this.hostname = `https://${connection.hostname}`
+    this.hostname = `https://${this.hostname}`
     return this
   }
 

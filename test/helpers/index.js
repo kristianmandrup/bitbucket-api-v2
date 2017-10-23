@@ -16,37 +16,15 @@ export {
 from '../../src/api'
 
 export {
-  createTestGenerator
-}
-from './create-test'
-
-export {
   createTestsGenerator
 }
-from './test-generator'
-
-export {
-  prepareForTests
-}
-from './test'
+from '../test-generator'
 export {
   $api,
   createApi,
   createAuthenticatedAPI
 }
 from './api'
-
-export {
-  connection
-}
-from './connection'
-
-export {
-  mock,
-  prepareMock
-}
-from './mock'
-
 export {
   default as values
 }

@@ -55,6 +55,10 @@ export class TestGenerator extends Logger {
     this.log('generateForMethod', {
       [method]: config
     })
+    this.createTestCase(this.config, this.opts)
+  }
+
+  createTestCase(config, opts) {
     createTestCase(this.config, this.opts).buildTestCase()
   }
 }

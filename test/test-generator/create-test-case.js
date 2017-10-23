@@ -34,23 +34,30 @@ export class TestCase extends Logger {
     } = this
 
     let {
-      request,
-      execute,
-      method,
       createAssertion,
     } = config
 
     test(this.testLabel, async t => {
-      createAssertion = (createAssertion || this.createAssertion).bind(this)
-      execute = (execute || this.execute).bind(this)
-      this.configureMock()
-      const assert = createAssertion(t, config)
-      if (!assert) {
-        this.error('no assertion defined', config)
-      }
-      const result = await execute(config)
-      assert(t, result)
+      this.assertion = (createAssertion || this.createAssertion).bind(this)
+      this.executeTest(t)
     })
+  }
+
+  async executeTest(t) {
+    const {
+      config
+    } = this
+    let {
+      execute
+    } = config
+    execute = (execute || this.execute).bind(this)
+    this.configureMock()
+    const assert = this.assertion(t, config)
+    if (!assert) {
+      this.error('no assertion defined', config)
+    }
+    const result = await execute(config)
+    assert(t, result)
   }
 
   configureMock() {
