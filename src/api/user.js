@@ -1,5 +1,7 @@
 const {
   _,
+  uriBuilder,
+  validateArgs,
   createPromisedApi,
   createAbstractApi
 } = require('./_base')
@@ -9,6 +11,7 @@ const {
  */
 function createApi(api, opts = {}) {
   const result = createAbstractApi(api, opts = {})
+  const buildUri = uriBuilder('user')
 
   const localApi = {
     name: 'User',
@@ -27,7 +30,7 @@ function createApi(api, opts = {}) {
      * Get all the registered emails for the authenticated user
      */
     getEmails(callback) {
-      const uri = 'user/emails'
+      const uri = buildUri('emails')
       api.get(
         uri,
         null, null,
@@ -39,7 +42,7 @@ function createApi(api, opts = {}) {
      * Get email details for email registered to authenticated user
      */
     getEmailDetails(emailAddr, callback) {
-      const uri = `user/emails/${emailAddr}`
+      const uri = buildUri('emails', emailAddr)
       api.get(
         uri,
         null, null,

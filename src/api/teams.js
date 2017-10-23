@@ -1,5 +1,7 @@
 const {
   _,
+  uriBuilder,
+  validateArgs,
   fluid,
   createPromisedApi,
   createAbstractApi
@@ -10,11 +12,7 @@ const {
  */
 function createApi(api, opts = {}) {
   const result = createAbstractApi(api, opts = {})
-
-  function buildUri(owner, action) {
-    const baseUri = `teams/${owner}`
-    return action ? [baseUri, action].join('/') : baseUri
-  }
+  const buildUri = uriBuilder('teams')
 
   let localApi = {
     name: 'Teams',
@@ -24,7 +22,7 @@ function createApi(api, opts = {}) {
      * @param {String} role (default: member)
      */
     get(role = 'member', callback) {
-      const uri = 'teams'
+      const uri = buildUri()
       api.get(
         uri, {
           role
@@ -72,7 +70,7 @@ function createApi(api, opts = {}) {
      * @param {String} projectId (id) of project
      */
     getProject(owner, projectId, callback) {
-      const uri = buildUri(owner, `projects/${projectId}`)
+      const uri = buildUri(owner, 'projects', projectId)
       api.get(
         uri,
         null,
@@ -92,7 +90,7 @@ function createApi(api, opts = {}) {
      * Data format expected: https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Bowner%7D/projects/#post
      */
     updateProject(owner, projectId, project, callback) {
-      const uri = buildUri(owner, `projects/${projectId}`)
+      const uri = buildUri(owner, 'projects', projectId)
       api.put(
         uri,
         project,
@@ -111,7 +109,7 @@ function createApi(api, opts = {}) {
      * Data format expected: https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Bowner%7D/projects/#post
      */
     removeProject(owner, projectId, callback) {
-      const uri = buildUri(owner, `projects/${projectId}`)
+      const uri = buildUri(owner, 'projects', projectId)
       api.delete(
         uri,
         project,

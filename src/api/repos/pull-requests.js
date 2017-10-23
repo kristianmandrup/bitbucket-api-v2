@@ -28,6 +28,7 @@ function createApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests
      */
     getAll(username, repoSlug, callback) {
+      validateArgs('getAll', arguments, 2)
       const uri = buildUri(username, repoSlug, 'pullrequests')
       api.get(
         uri,
@@ -50,6 +51,7 @@ function createApi(api, opts = {}) {
      *  _body:	The new pull request.
      */
     create(username, repoSlug, pullRequest, callback) {
+      validateArgs('create', arguments, 3)
       const uri = buildUri(username, repoSlug, 'pullrequests')
       const data = {
         _body: pullRequest
@@ -70,6 +72,7 @@ function createApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests
      */
     allActivity(username, repoSlug, callback) {
+      validateArgs('deleteSchedule', arguments, 3)
       const uri = buildUri(username, repoSlug, 'pullrequests/activity')
       api.get(
         uri, null, null,
@@ -88,7 +91,8 @@ function createApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/activity
      */
     getActivity(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/activity`)
+      validateArgs('deleteSchedule', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pullrequests', pr_id, 'activity')
       api.get(
         uri, null, null,
         result.$createListener(callback)
@@ -106,7 +110,8 @@ function createApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve
      */
     approve(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/approve`)
+      validateArgs('deleteSchedule', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pullrequests', pr_id, 'approve')
       api.post(
         uri, null, null,
         result.$createListener(callback)
@@ -124,7 +129,8 @@ function createApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     disApprove(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/approve`)
+      validateArgs('deleteSchedule', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pullrequests', pr_id, 'approve')
       api.delete(
         uri, null, null,
         result.$createListener(callback)
@@ -142,7 +148,8 @@ function createApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     getComments(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/comments`)
+      validateArgs('getComments', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pullrequests', pr_id, 'comments')
       api.get(
         uri, null, null,
         result.$createListener(callback)
@@ -161,7 +168,8 @@ function createApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     getComment(username, repoSlug, pr_id, comment_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/comments/${comment_id}`)
+      validateArgs('getComment', arguments, 4)
+      const uri = buildUri(username, repoSlug, 'pullrequests', pr_id, 'comments', comment_id)
       api.get(
         uri, null, null,
         result.$createListener(callback)
@@ -180,7 +188,8 @@ function createApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     getCommits(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/commits`)
+      validateArgs('getCommits', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pullrequests', pr_id, 'commits')
       api.get(
         uri, null, null,
         result.$createListener(callback)
@@ -198,7 +207,8 @@ function createApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     decline(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/decline`)
+      validateArgs('decline', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pullrequests', pr_id, 'decline')
       api.post(
         uri, null, null,
         result.$createListener(callback)
@@ -216,7 +226,8 @@ function createApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     getDiff(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/diff`)
+      validateArgs('getDiff', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pullrequests', pr_id, 'diff')
       api.get(
         uri, null, null,
         result.$createListener(callback)
@@ -234,7 +245,8 @@ function createApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     merge(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/merge`)
+      validateArgs('merge', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pullrequests', pr_id, 'merge')
       api.post(
         uri, null, null,
         result.$createListener(callback)
@@ -252,7 +264,8 @@ function createApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     patch(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/patch`)
+      validateArgs('patch', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pullrequests', pr_id, 'patch')
       api.post(
         uri, null, null,
         result.$createListener(callback)
@@ -270,7 +283,8 @@ function createApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests/%7Bpull_request_id%7D/approve#delete
      */
     statuses(username, repoSlug, pr_id, callback) {
-      const uri = buildUri(username, repoSlug, `pullrequests/${pr_id}/statuses`)
+      validateArgs('statuses', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pullrequests', pr_id, 'statuses')
       api.get(
         uri, null, null,
         result.$createListener(callback)

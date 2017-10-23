@@ -27,7 +27,8 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits
      */
     get(username, repoSlug, callback) {
-      const uri = buildUri(username, repoSlug, '/pipelines_config')
+      validateArgs('get', arguments, 2)
+      const uri = buildUri(username, repoSlug, 'pipelines_config')
       api.get(
         uri,
         null, null,
@@ -46,7 +47,8 @@ function createApi(api, opts = {}) {
      * _ body: The updated repository pipelines configuration.
      */
     update(username, repoSlug, config, callback) {
-      const uri = buildUri(username, repoSlug, '/pipelines_config')
+      validateArgs('update', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pipelines_config')
       const data = {
         _body: config
       }
@@ -66,7 +68,8 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits
      */
     nextBuildNumber(username, repoSlug, number, callback) {
-      const uri = buildUri(username, repoSlug, '/pipelines_config/build_number')
+      validateArgs('nextBuildNumber', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pipelines_config/build_number')
       const data = {
         _body: number
       }
@@ -86,7 +89,8 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits
      */
     getSchedules(username, repoSlug, callback) {
-      const uri = buildUri(username, repoSlug, '/pipelines_config/schedules')
+      validateArgs('getSchedules', arguments, 2)
+      const uri = buildUri(username, repoSlug, 'pipelines_config/schedules')
       api.get(
         uri,
         null, null,
@@ -103,7 +107,8 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits
      */
     createSchedule(username, repoSlug, schedule, callback) {
-      const uri = buildUri(username, repoSlug, '/pipelines_config/schedules')
+      validateArgs('createSchedule', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pipelines_config/schedules')
       const data = {
         _body: schedule
       }
@@ -124,7 +129,8 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits
      */
     getSchedule(username, repoSlug, scheduleId, callback) {
-      const uri = buildUri(username, repoSlug, `/pipelines_config/schedules/${scheduleId}`)
+      validateArgs('getSchedule', arguments, 3)
+      const uri = buildUri(username, repoSlug, `pipelines_config/schedules/${scheduleId}`)
       api.get(
         uri,
         null, null,
@@ -142,7 +148,8 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits
      */
     getScheduleExecutions(username, repoSlug, scheduleId, callback) {
-      const uri = buildUri(username, repoSlug, `/pipelines_config/schedules/${scheduleId}/executions`)
+      validateArgs('getScheduleExecutions', arguments, 3)
+      const uri = buildUri(username, repoSlug, `pipelines_config/schedules/${scheduleId}/executions`)
       api.get(
         uri,
         null, null,
@@ -160,7 +167,8 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits
      */
     updateSchedule(username, repoSlug, scheduleId, callback) {
-      const uri = buildUri(username, repoSlug, `/pipelines_config/schedules/${scheduleId}`)
+      validateArgs('updateSchedule', arguments, 3)
+      const uri = buildUri(username, repoSlug, `pipelines_config/schedules/${scheduleId}`)
       api.put(
         uri,
         null, null,
@@ -178,7 +186,8 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits
      */
     deleteSchedule(username, repoSlug, scheduleId, callback) {
-      const uri = buildUri(username, repoSlug, `/pipelines_config/schedules/${scheduleId}`)
+      validateArgs('deleteSchedule', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pipelines_config/schedules', scheduleId)
       api.delete(
         uri,
         null, null,

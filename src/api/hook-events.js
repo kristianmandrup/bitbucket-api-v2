@@ -1,5 +1,7 @@
 const {
   _,
+  uriBuilder,
+  validateArgs,
   createPromisedApi,
   createAbstractApi
 } = require('./_base')
@@ -9,11 +11,7 @@ const {
  */
 function createApi(api, opts = {}) {
   const result = createAbstractApi(api, opts = {})
-
-  function buildUri(owner, action) {
-    const baseUri = `teams/${owner}`
-    return action ? [baseUri, action].join('/') : baseUri
-  }
+  const buildUri = uriBuilder('hook_events')
 
   let localApi = {
     name: 'HookEvents',
@@ -24,7 +22,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/addon#delete
      */
     get(callback) {
-      const uri = 'hook_events'
+      const uri = buildUri()
       api.get(
         uri,
         null,
@@ -40,7 +38,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/hook_events/%7Bsubject_type%7D
      */
     forSubject(subjectType, callback) {
-      const uri = `hook_events/${subjectType}`
+      const uri = buildUri(subjectType)
       api.get(
         uri,
         null,

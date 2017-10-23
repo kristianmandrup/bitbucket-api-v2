@@ -44,7 +44,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits
      */
     get(username, repoSlug, milestoneId, callback) {
-      const uri = buildUri(username, repoSlug, `milestones/${milestoneId}`)
+      const uri = buildUri(username, repoSlug, 'milestones', milestoneId)
       api.get(
         uri,
         null, null,
