@@ -22,7 +22,9 @@ const apis = [
   'addon',
   'hookEvents',
   'snippets',
-  'teams'
+  'teams',
+  'user',
+  'users'
 ]
 
 const templates = apis.reduce((acc, name) => {

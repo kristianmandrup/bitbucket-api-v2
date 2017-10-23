@@ -1,15 +1,7 @@
 # Changelog
 
-## 1.0.0
+## 1.0.0:
 
-TODO: When API is complete and fully tested...
+- 23 October 2017, by [@kristianmandrup](github.com/kristianmandrup)
 
-## 0.6.0
-
-Added `getAccessToken` function to retrieve an access token for use on each request.
-
-## 0.5.0
-
-Major updates to API :)
-
-See `Readme` for the changes and additions ;)
+First release of newly refactored and extended API, including extensive test coverage.

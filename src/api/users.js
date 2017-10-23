@@ -28,7 +28,8 @@ function createApi(api, opts = {}) {
      * resource/users/%7Busername%7D
      */
     get(username, callback) {
-      uri = buildUri(username)
+      validateArgs('get', arguments, 1)
+      const uri = buildUri(username)
       api.get(
         uri,
         null,
@@ -45,7 +46,8 @@ function createApi(api, opts = {}) {
      * resource/users/%7Busername%7D
      */
     getFollowers(username, callback) {
-      uri = buildUri(username, 'followers')
+      validateArgs('getFollowers', arguments, 1)
+      const uri = buildUri(username, 'followers')
       api.get(
         uri,
         null,
@@ -62,7 +64,8 @@ function createApi(api, opts = {}) {
      * resource/users/%7Busername%7D
      */
     getFollowing(username, callback) {
-      uri = buildUri(username, 'following')
+      validateArgs('getFollowing', arguments, 1)
+      const uri = buildUri(username, 'following')
       api.get(
         uri,
         null,
@@ -79,7 +82,8 @@ function createApi(api, opts = {}) {
      * resource/users/%7Busername%7D
      */
     getWebHooks(username, callback) {
-      uri = buildUri(username, 'hooks')
+      validateArgs('getWebHooks', arguments, 1)
+      const uri = buildUri(username, 'hooks')
       api.get(
         uri,
         null,
@@ -96,7 +100,8 @@ function createApi(api, opts = {}) {
      * resource/users/%7Busername%7D
      */
     getWebHook(username, hookId, callback) {
-      uri = buildUri(username, 'hooks', hookId)
+      validateArgs('getWebHook', arguments, 2)
+      const uri = buildUri(username, 'hooks', hookId)
       api.get(
         uri,
         null,
@@ -112,7 +117,8 @@ function createApi(api, opts = {}) {
      * resource/users/%7Busername%7D
      */
     removeWebHook(username, hookId, callback) {
-      uri = buildUri(username, 'hooks', hookId)
+      validateArgs('removeWebHook', arguments, 2)
+      const uri = buildUri(username, 'hooks', hookId)
       api.delete(
         uri,
         null,
@@ -129,7 +135,8 @@ function createApi(api, opts = {}) {
      * resource/users/%7Busername%7D
      */
     updateWebHook(username, hookId, hook, callback) {
-      uri = buildUri(username, 'hooks', hookId)
+      validateArgs('updateWebHook', arguments, 3)
+      const uri = buildUri(username, 'hooks', hookId)
       const data = {
         _body: hook
       }
@@ -148,8 +155,9 @@ function createApi(api, opts = {}) {
      * https://developer.atlassian.com/bitbucket/api/2/reference/
      * resource/users/%7Busername%7D
      */
-    getPipelineConfigVars(username, hookId, callback) {
-      uri = buildUri(username, 'pipelines_config', 'variables')
+    getPipelineConfigVars(username, callback) {
+      validateArgs('getPipelineConfigVars', arguments, 1)
+      const uri = buildUri(username, 'pipelines_config', 'variables')
       api.get(
         uri,
         null,
@@ -161,12 +169,14 @@ function createApi(api, opts = {}) {
     /**
      * Retrieve a user level variable.
      * @param {String} username
+     * @param {String} variableId (uuid)
      *
      * https://developer.atlassian.com/bitbucket/api/2/reference/
      * resource/users/%7Busername%7D
      */
-    getPipelineConfigVar(username, variable_uuid, callback) {
-      uri = buildUri(username, 'pipelines_config', 'variables', variable_uuid)
+    getPipelineConfigVar(username, variableId, callback) {
+      validateArgs('getPipelineConfigVar', arguments, 2)
+      const uri = buildUri(username, 'pipelines_config', 'variables', variableId)
       api.get(
         uri,
         null,
@@ -178,12 +188,14 @@ function createApi(api, opts = {}) {
     /**
      * Remove a user level variable.
      * @param {String} username
+     * @param {String} variableId (uuid)
      *
      * https://developer.atlassian.com/bitbucket/api/2/reference/
      * resource/users/%7Busername%7D
      */
-    removePipelineConfigVar(username, variable_uuid, callback) {
-      uri = buildUri(username, 'pipelines_config', 'variables', variable_uuid)
+    removePipelineConfigVar(username, variableId, callback) {
+      validateArgs('removePipelineConfigVar', arguments, 2)
+      const uri = buildUri(username, 'pipelines_config', 'variables', variableId)
       api.delete(
         uri,
         null,
@@ -195,12 +207,15 @@ function createApi(api, opts = {}) {
     /**
      * Remove a user level variable.
      * @param {String} username
+     * @param {String} variableId (uuid)
+     * @param {Object} variable
      *
      * https://developer.atlassian.com/bitbucket/api/2/reference/
      * resource/users/%7Busername%7D
      */
-    updatePipelineConfigVar(username, variable_uuid, variable, callback) {
-      uri = buildUri(username, 'pipelines_config', 'variables', variable_uuid)
+    updatePipelineConfigVar(username, variableId, variable, callback) {
+      validateArgs('updatePipelineConfigVar', arguments, 3)
+      const uri = buildUri(username, 'pipelines_config', 'variables', variableId)
       const data = {
         _body: variable
       }
@@ -220,7 +235,8 @@ function createApi(api, opts = {}) {
      * resource/users/%7Busername%7D
      */
     getRepositories(username, callback) {
-      uri = buildUri(username, 'repositories')
+      validateArgs('getRepositories', arguments, 1)
+      const uri = buildUri(username, 'repositories')
       api.get(
         uri,
         null,

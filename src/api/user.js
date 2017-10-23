@@ -42,6 +42,7 @@ function createApi(api, opts = {}) {
      * Get email details for email registered to authenticated user
      */
     getEmailDetails(emailAddr, callback) {
+      validateArgs('get', arguments, 1)
       const uri = buildUri('emails', emailAddr)
       api.get(
         uri,

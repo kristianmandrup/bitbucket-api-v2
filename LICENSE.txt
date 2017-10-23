@@ -6,6 +6,9 @@ Portions of this project are copyright (c) 2010 Ajax.org B.V.
 
 Other portions written by Jordan Wallet et al are Copyright 2016 Axosoft LLC.
 
+A major re-write, refactoring and extension has been undertaken by Kristian Mandrup
+and are Copyright 2017, Tecla5
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights

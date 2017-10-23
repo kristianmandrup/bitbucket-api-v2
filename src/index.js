@@ -9,16 +9,11 @@ const {
 } = require('./request')
 const $api = require('./api')
 
-const {
-  getAccessToken
-} = require('./auth')
-
 module.exports = {
   Bitbucket,
   createBitBucketAPI,
   createAuthenticatedAPI,
   createRequest,
-  getAccessToken,
   adapters,
   $api
 }

@@ -6,7 +6,7 @@ To get the access token, use the `getAccessToken` function (originally by [@tpet
 import {
   createBitbucketAPI,
   getAccessToken
-} from 'bitbucket-v2'
+} from 'bitbucket-api-v2'
 
 const config = {
   appName: 'my-app',
@@ -38,7 +38,7 @@ We also expose a `createAuthenticatedAPI` function to encapsulate this commong p
 ```js
 import {
   createAuthenticatedAPI,
-} from 'bitbucket-v2'
+} from 'bitbucket-api-v2'
 
 // create API instance with accessToken set in header for each request
 const api = await createAuthenticatedAPI({

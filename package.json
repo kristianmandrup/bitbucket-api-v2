@@ -1,17 +1,19 @@
 {
-  "name": "bitbucket-v2",
+  "name": "bitbucket-api",
   "version": "0.5.0",
   "description": "Wrapper for the BitBucket API v2, the version required to use OAuth2. Includes support for XHR requests.",
-  "author": "Jordan Wallet <jjwallet@gmail.com>",
-  "homepage": "https://github.com/Mr-Wallet/node-bitbucket-v2.git",
+  "homepage": "https://github.com/kristianmandrup/bitbucket-api-v2.git",
   "main": "src/index.js",
+  "author": "Kristian Mandrup <kmandrup@gmail.com",
   "scripts": {
     "lint": "eslint ./bitbucket --quiet",
-    "test": "ava"
+    "test": "nyc ava",
+    "build:prod": "webpack --progress --colors --display-error-details --env=prod",
+    "build:dev": "webpack --progress --colors --display-error-details --env=dev"
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/Mr-Wallet/node-bitbucket-v2.git"
+    "url": "http://github.com/kristianmandrup/bitbucket-api-v2.git"
   },
   "engine": [
     "node >=7.0.0"

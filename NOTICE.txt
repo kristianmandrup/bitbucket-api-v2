@@ -1,9 +1,0 @@
-node-github-v2
-===========
-
-Portions copyright 2010 Ajax.org B.V.
-
-This product includes software developed by
-Ajax.org B.V. (http://www.ajax.org/).
-
-Other portions copyright 2015 Axosoft LLC.

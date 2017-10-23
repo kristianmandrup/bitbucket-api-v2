@@ -1,18 +1,8 @@
-import test from 'ava'
-import User from '../src/user'
+import {
+  createTestsGenerator
+} from './helpers'
 
-test('User: create', t => {
-  t.truthy(User)
-})
-
-test('Teams: get(callback)', t => {
-  t.fail('todo')
-})
-
-test('Teams: getEmails(callback)', t => {
-  t.fail('todo')
-})
-
-test('Teams: getEmailDetails(emailAddr, callback)', t => {
-  t.fail('todo')
-})
+createTestsGenerator({
+  name: 'user',
+  logging: true
+}).generate()
