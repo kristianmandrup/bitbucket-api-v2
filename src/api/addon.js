@@ -36,6 +36,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/addon#delete
      */
     update(addon, callback) {
+      validateArgs('update', arguments, 1)
       const uri = buildUri('addon')
       api.put(
         uri,

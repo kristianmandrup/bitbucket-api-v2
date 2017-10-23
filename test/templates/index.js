@@ -1,4 +1,7 @@
-const dasherize = require('underscore.string/dasherize')
+const {
+  dasherize,
+  camelize
+} = require('underscore.string')
 
 const apis = [
   'repositories',
@@ -16,11 +19,16 @@ const apis = [
   'refs',
   'reviewers',
   'versions',
+  'addon',
+  'hookEvents',
+  'snippets',
+  'teams'
 ]
 
 const templates = apis.reduce((acc, name) => {
   const template = dasherize(name)
-  acc[name] = require(`./_${template}`)
+  const label = camelize(name)
+  acc[label] = require(`./_${template}`)
   return acc
 }, {})
 
