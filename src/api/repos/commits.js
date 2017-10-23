@@ -1,5 +1,8 @@
 const {
   _,
+  log,
+  handleError,
+  buildUri,
   fluid,
   createPromisedApi,
   createAbstractApi,
@@ -12,11 +15,6 @@ const {
  */
 function createApi(api, opts = {}) {
   const result = createAbstractApi(api, opts)
-
-  function buildUri(username, repoSlug, action) {
-    const baseUri = `repositories/${encodeURI(username)}/${encodeURI(repoSlug)}`
-    return action ? [baseUri, action].join('/') : baseUri
-  }
 
   const localApi = {
 

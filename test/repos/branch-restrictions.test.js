@@ -5,10 +5,4 @@ import {
 createTestsGenerator({
   name: 'branchRestrictions',
   logging: true
-}).generate([
-  'get',
-  'create',
-  'getRestriction',
-  'updateRestriction',
-  'removeRestriction'
-])
+}).generate()

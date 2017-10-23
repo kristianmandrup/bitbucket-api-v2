@@ -4,10 +4,10 @@ const {
   constants,
   log,
   handleError,
+  buildUri,
   validateArgs,
   createPromisedApi,
-  createAbstractApi,
-  buildUri
+  createAbstractApi
 } = require('./_base')
 
 /**
