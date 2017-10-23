@@ -8,8 +8,6 @@ module.exports = {
     'getAll': method
   },
   fluids: [
-    'forProject',
-    'forProjectNode',
-    'forComment'
+    'forProject'
   ]
 }

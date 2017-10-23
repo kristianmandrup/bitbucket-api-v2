@@ -1,6 +1,7 @@
 import {
   method,
   prjConcat,
+  projMethod,
   createConcat,
 } from './_base'
 
@@ -12,15 +13,7 @@ const attachment = {
   file
 }
 
-const issueMethod = {
-  args: prjConcat(issueId)
-}
-const attachmentMethod = {
-  args: prjConcat(issueId, path)
-}
-const commentMethod = {
-  args: prjConcat(issueId, commentId)
-}
+const issueMethod = projMethod(issueId)
 
 module.exports = {
   apiName: 'issues',
@@ -30,12 +23,10 @@ module.exports = {
     'get': issueMethod,
     'remove': issueMethod,
     'getAttachments': issueMethod,
-    'getAttachment': attachmentMethod,
-    'uploadAttachments': {
-      args: prjConcat(issueId, attachment)
-    },
+    'getAttachment': projMethod(issueId, path),
+    'uploadAttachments': projMethod(issueId, attachment),
     'getComments': issueMethod,
-    'getComment': commentMethod,
+    'getComment': projMethod(issueId, commentId),
     'hasVoted': issueMethod,
     'vote': issueMethod,
     'retractVote': issueMethod,

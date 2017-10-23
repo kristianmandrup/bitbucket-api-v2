@@ -2,6 +2,7 @@ import {
   singleRepo,
   concat,
   prjConcat,
+  projMethod,
   user,
   repo,
   args,
@@ -26,60 +27,35 @@ const response = {
   }
 }
 
-args.commit = prjConcat({
+const commitId = '123'
+const commit = {
   author: 'unknown@gmail.com',
   message: 'first commit',
   files: [{
     'Readme.md': 'hello world'
   }]
-})
+}
+
+const commitMethod = projMethod(commit)
+
+const pr = {
+  type: 'pull'
+}
 
 module.exports = {
   apiName: 'repositories',
   methods: {
     get: method,
     create: method,
-    createPullRequest: {
-      body: singleRepo,
-      args: prjConcat({
-        type: 'pull'
-      })
-    },
-    commit: {
-      body: singleRepo,
-      args: args.commit
-    },
+    createPullRequest: projMethod(pr),
+    commit: commitMethod,
     getBranches: method,
-    getCommit: {
-      body: singleRepo,
-      args: prjConcat('123')
-    },
-    getByUser: {
-      body: singleRepo,
-      args: [
-        user
-      ]
-    },
-    getByTeam: {
-      body: singleRepo,
-      args: [
-        team
-      ]
-    },
+    getCommit: projMethod(commit, commitId),
+    getByUser: projMethod(user),
+    getByTeam: projMethod(team),
     getForks: method,
-    getForksFromResponse: {
-      path: forkPath,
-      body: singleRepo,
-      args: [
-        response
-      ]
-    },
-    getParentFromResponse: {
-      body: singleRepo,
-      args: [
-        response
-      ]
-    },
+    getForksFromResponse: projMethod(response),
+    getParentFromResponse: projMethod(response)
   },
   fluids: [
     'forProject'
