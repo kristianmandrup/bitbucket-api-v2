@@ -8,6 +8,7 @@ const exprMap = {
     /^stop/,
     /^merge/,
     /^patch/,
+    /^upload/,
   ],
   put: [
     /^update/,
