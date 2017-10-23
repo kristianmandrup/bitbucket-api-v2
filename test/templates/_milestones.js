@@ -6,7 +6,7 @@ import {
 const milestoneId = '678'
 
 module.exports = {
-  apiName: 'components',
+  apiName: 'milestones',
   methods: {
     'getAll': method,
     'get': projMethod(milestoneId)

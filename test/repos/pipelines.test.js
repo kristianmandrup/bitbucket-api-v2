@@ -1,8 +1,8 @@
-import test from 'ava'
-import Pipelines from '../../src/repositories/pipelines'
+import {
+  createTestsGenerator
+} from '../helpers'
 
-test('Pipelines: create', t => {
-  t.truthy(Pipelines)
-})
-
-// more tests ...
+createTestsGenerator({
+  name: 'pipelines',
+  logging: true
+}).generate()

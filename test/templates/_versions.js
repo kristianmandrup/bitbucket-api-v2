@@ -1,16 +1,16 @@
 import {
   method,
-  projConcat,
   projMethod
 } from './_base'
 
-const file = 'hello world'
+const versionId = '27'
+const versionMeth = projMethod(versionId)
 
 module.exports = {
-  apiName: 'downloads',
+  apiName: 'versions',
   methods: {
     'getAll': method,
-    'upload': projMethod(file)
+    'get': versionMeth
   },
   fluids: [
     'forProject'

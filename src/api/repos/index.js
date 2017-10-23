@@ -1,17 +1,27 @@
-module.exports = {
-  repositories: require('./repositories'),
-  commit: require('./commit'),
-  commits: require('./commits'),
-  components: require('./components'),
-  issues: require('./issues'),
-  milestones: require('./milestones'),
-  pipelines: require('./pipelines'),
-  pullRequests: require('./pull-requests'),
-  refs: require('./refs'),
-  versions: require('./versions'),
-  hooks: require('./hooks'),
-  forks: require('./forks'),
-  downloads: require('./downloads'),
-  pipelinesConfig: require('./pipelines-config'),
-  branchRestrictions: require('./branch-restrictions')
-}
+const dasherize = require('underscore.string/dasherize')
+
+const apis = [
+  'repositories',
+  'branchRestrictions',
+  'commits',
+  'commit',
+  'downloads',
+  'forks',
+  'hooks',
+  'issues',
+  'milestones',
+  'pipelinesConfig',
+  'pipelines',
+  'pullRequests',
+  'refs',
+  'reviewers',
+  'versions',
+]
+
+const templates = apis.reduce((acc, name) => {
+  const template = dasherize(name)
+  acc[name] = require(`./${template}`)
+  return acc
+}, {})
+
+module.exports = templates

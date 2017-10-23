@@ -1,6 +1,6 @@
 import {
   method,
-  prjConcat,
+  projConcat,
   projMethod,
   createConcat,
 } from './_base'

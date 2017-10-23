@@ -25,7 +25,7 @@ function createMethodConcat(base) {
   }
 }
 
-const prjConcat = createConcat(args.project)
+const projConcat = createConcat(args.project)
 const projMethod = createMethodConcat(args.project)
 
 function concat(baseArgs, ...moreArgs) {
@@ -41,7 +41,7 @@ export {
   singleRepo,
   concat,
   createConcat,
-  prjConcat,
+  projConcat,
   projMethod,
   user,
   repo,

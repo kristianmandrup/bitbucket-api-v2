@@ -59,13 +59,13 @@ function createApi(api, opts = {}) {
      *
      * @param {String} repo owner
      * @param {String} slug (name) of the repo
-     * @param {String} pipeline (uuid) of the pipeline
+     * @param {String} pipelineId (uuid) of the pipeline
      *
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses
      */
-    get(username, repoSlug, pipeline, callback) {
+    get(username, repoSlug, pipelineId, callback) {
       validateArgs('get', arguments, 3)
-      const uri = buildUri(username, repoSlug, pipeline)
+      const uri = buildUri(username, repoSlug, pipelineId)
       api.get(
         uri,
         null, null,
@@ -79,13 +79,13 @@ function createApi(api, opts = {}) {
      *
      * @param {String} repo owner
      * @param {String} slug (name) of the repo
-     * @param {String} pipeline (uuid) of the pipeline
+     * @param {String} pipelineId (uuid) of the pipeline
      *
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses
      */
-    stop(username, repoSlug, pipeline, callback) {
+    stop(username, repoSlug, pipelineId, callback) {
       validateArgs('stop', arguments, 3)
-      const uri = buildUri(username, repoSlug, pipeline, 'stopPipeline')
+      const uri = buildUri(username, repoSlug, pipelineId, 'stopPipeline')
       api.post(
         uri,
         null, null,
@@ -98,13 +98,13 @@ function createApi(api, opts = {}) {
      *
      * @param {String} repo owner
      * @param {String} slug (name) of the repo
-     * @param {String} pipeline (uuid) of the pipeline
+     * @param {String} pipelineId (uuid) of the pipeline
      *
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses
      */
-    getSteps(username, repoSlug, pipeline, callback) {
+    getSteps(username, repoSlug, pipelineId, callback) {
       validateArgs('getSteps', arguments, 3)
-      const uri = buildUri(username, repoSlug, pipeline, 'steps')
+      const uri = buildUri(username, repoSlug, pipelineId, 'steps')
       api.get(
         uri,
         null, null,
@@ -118,15 +118,15 @@ function createApi(api, opts = {}) {
      *
      * @param {String} repo owner
      * @param {String} slug (name) of the repo
-     * @param {String} pipeline (uuid) of the pipeline
-     * @param {String} step (uuid) of the step to find
+     * @param {String} pipelineId (uuid) of the pipeline
+     * @param {String} stepId (uuid) of the step to find
      *
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
      * /repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines/%7Bpipeline_uuid%7D/steps/%7Bstep_uuid%7D
      */
-    getStep(username, repoSlug, pipeline, step, stepUuid, callback) {
+    getStep(username, repoSlug, pipelineId, stepId, callback) {
       validateArgs('getStep', arguments, 5)
-      const uri = buildUri(username, repoSlug, pipeline, 'steps', stepUuid)
+      const uri = buildUri(username, repoSlug, pipelineId, 'steps', stepId)
       api.get(
         uri,
         null, null,
@@ -139,15 +139,15 @@ function createApi(api, opts = {}) {
      *
      * @param {String} repo owner
      * @param {String} slug (name) of the repo
-     * @param {String} pipeline (uuid) of the pipeline
-     * @param {String} step (uuid) of the step to find
+     * @param {String} pipelineId (uuid) of the pipeline
+     * @param {String} stepId (uuid) of the step to find
      *
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
      * /repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines/%7Bpipeline_uuid%7D/steps/%7Bstep_uuid%7D/log
      */
-    getStepLog(username, repoSlug, pipeline, step, stepUuid, callback) {
-      validateArgs('getStepLog', arguments, 5)
-      const uri = buildUri(username, repoSlug, pipeline, 'steps', stepUuid, 'log')
+    getStepLog(username, repoSlug, pipelineId, stepId, callback) {
+      validateArgs('getStepLog', arguments, 4)
+      const uri = buildUri(username, repoSlug, pipelineId, 'steps', stepId, 'log')
       api.get(
         uri,
         null, null,
@@ -158,6 +158,7 @@ function createApi(api, opts = {}) {
 
   localApi.forProject = fluid(localApi, 2)
   localApi.forPipeline = fluid(localApi, 3)
+  localApi.forPipelineStep = fluid(localApi, 4)
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
 }
@@ -170,6 +171,7 @@ module.exports = {
     'create',
     'stop',
     'getSteps',
-    'getStep'
+    'getStep',
+    'getStepLog'
   ]
 }

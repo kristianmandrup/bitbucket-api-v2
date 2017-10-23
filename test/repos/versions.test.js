@@ -1,8 +1,8 @@
-import test from 'ava'
-import Versions from '../../src/repositories/versions'
+import {
+  createTestsGenerator
+} from '../helpers'
 
-test('Versions: create', t => {
-  t.truthy(Versions)
-})
-
-// more tests ...
+createTestsGenerator({
+  name: 'versions',
+  logging: true
+}).generate()

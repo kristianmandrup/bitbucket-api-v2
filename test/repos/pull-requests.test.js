@@ -1,8 +1,8 @@
-import test from 'ava'
-import PullRequests from '../../src/repositories/pull-requests'
+import {
+  createTestsGenerator
+} from '../helpers'
 
-test('PullRequests: create', t => {
-  t.truthy(PullRequests)
-})
-
-// more tests ...
+createTestsGenerator({
+  name: 'pullRequests',
+  logging: true
+}).generate()

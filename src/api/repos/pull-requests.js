@@ -72,7 +72,7 @@ function createApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/pullrequests
      */
     allActivity(username, repoSlug, callback) {
-      validateArgs('deleteSchedule', arguments, 3)
+      validateArgs('deleteSchedule', arguments, 2)
       const uri = buildUri(username, repoSlug, 'pullrequests/activity')
       api.get(
         uri, null, null,
@@ -293,6 +293,7 @@ function createApi(api, opts = {}) {
   }
 
   localApi.forProject = fluid(localApi, 2)
+  localApi.forPR = fluid(localApi, 3)
   localApi.promised = createPromisedApi(localApi, opts)
   return _.assign(result, localApi)
 }
