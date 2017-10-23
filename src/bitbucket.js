@@ -7,10 +7,6 @@ const {
   adapters
 } = require('./request')
 
-const {
-  getAccessToken
-} = require('./auth')
-
 const $api = require('./api')
 /**
  * Simple JavaScript Bitbucket API v2
@@ -19,6 +15,10 @@ const $api = require('./api')
  */
 
 async function createAuthenticatedAPI(opts = {}) {
+  getAccessToken = opts.getAccessToken
+  if (!getAccessToken) {
+    throw 'ERROR: Missing getAccessToken (function) option'
+  }
   const accessToken = await getAccessToken(opts)
   opts.accessToken = accessToken
   return createBitBucketAPI(opts)

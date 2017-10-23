@@ -1,4 +1,4 @@
-# Bitbucket v2
+# Bitbucket API v2
 
 [Node.js](nodejs.org) library to access the Bitbucket API v2
 
@@ -10,7 +10,14 @@ Check out [bitbucket-server-nodejs](https://github.com/sternba/bitbucket-server-
 
 ## Status
 
-WIP: Please take it for a spin or help add tests for the test suite
+Most of the bitbucket API is covered. The few remaining functions are easy to add if you have the need.
+
+Now has full test coverage of API. All tests pass :)
+
+We use macros to generate tests based on data templates.
+The tests use [nock](https://www.npmjs.com/package/nock) to mock each HTTP requests to the server.
+
+Take it for a spin :)
 
 ## Usage
 
@@ -25,7 +32,7 @@ Create a Callback URL such as: `http://localhost/bitbucket/authenticated`
 You will need to create an endpoint on your server to receive the access token from bitbucket and then proceed.
 
 ```js
-const { createBitbucketAPI } = require('bitbucket-v2')
+const { createBitbucketAPI } = require('bitbucket-api-v2')
 const bitbucketApi = createBitbucketAPI() //or: createBitbucketAPI({useXhr: true})
 bitbucketApi.authenticateOAuth2(someAccessToken)
 ```
@@ -44,11 +51,11 @@ The library by default uses [xhr](https://www.npmjs.com/package/xhr) to submit A
 
 Would be nice to switch to [xhr2](https://www.npmjs.com/package/xhr2) or a higher level, more feature rich API such as [request](https://www.npmjs.com/package/request)
 
-Please see [Request customization](https://github.com/kristianmandrup/node-bitbucket-v2/blob/master/Request-customization.md) for details on how to customize how requests to the server are being made
+Please see [Request customization](https://github.com/kristianmandrup/bitbucket-api-v2/blob/master/docs/Request-customization.md) for details on how to customize how requests to the server are being made
 
 ### Authentication
 
-Please see [Authentication](https://github.com/kristianmandrup/node-bitbucket-v2/blob/master/Request-customization.md) for how to authenticate and get an access token.
+Please see [Authentication](https://github.com/kristianmandrup/bitbucket-api-v2/blob/master/docs/Authentication.md) for how to authenticate and get an access token.
 
 ### Main api objects
 
@@ -78,7 +85,9 @@ APIs acting on a user repository
 
 ## Full API list
 
-Please see the [API document](https://github.com/kristianmandrup/node-bitbucket-v2/blob/master/Api.md) for a full list of implemented and available API methods
+Please see the [API overview](https://github.com/kristianmandrup/bitbucket-api-v2/blob/master/docs/Api.md) for a full list of available API methods.
+
+See [API usage](https://github.com/kristianmandrup/bitbucket-api-v2/blob/master/docs/Api-usage.md) for details on usage.
 
 ### API usage
 
@@ -94,26 +103,9 @@ api.commit.approve(username, repoSlug, commitId, (result) => {
 Promise API
 
 ```js
-let result = await api.commit.promised.approve(username, repoSlug, commitId)
+const commit = api.commit.promised
+let result = await commit.approve(username, repoSlug, commitId)
 ```
-
-## Request
-
-- `setOption(name, value)`
-- `getOption(name, _defaultValue)`
-- `get(apiPath, parameters, options, callback)`
-- `post(apiPath, parameters, options, callback)`
-- `send(apiPath, parameters, httpMethod = 'GET', __options, callback)`
-- `doPrebuiltSend(prebuiltURL, callback)`
-- `doSend(apiPath, parameters, _httpMethod, options, callback)`
-- `decodeResponse(response)`
-- `prepRequest(options)`
-- `sendHttpsRequest(httpsOptions, query, done)`
-- `sendXhrRequest(xhrOptions, done)`
-
-## Promise support async/await
-
-A promise based API has been using the [promisify utility function available in Node 8+](http://2ality.com/2017/05/util-promisify.html).
 
 ### Promised API usage
 
@@ -172,7 +164,7 @@ Tests will be written and run using [ava](https://github.com/avajs/ava) the "Fut
 
 Intial skeleton tests have been started. Please contribute!
 
-Please see [Testing](https://github.com/kristianmandrup/node-bitbucket-v2/blob/master/Api.md) for best practices when writing tests for the API.
+Please see [Testing](https://github.com/kristianmandrup/bitbucket-api-v2/blob/master/docs/Testing.md) for best practices when writing tests for the API.
 
 In short: use *test generators* via mocks made with `nock`!
 
@@ -184,6 +176,12 @@ $ npm install
 $ npm test
 // test output
 ```
+
+## Client bundling
+
+To use this library in the browser, see the `/dist` folder for `dev` and `prod` (ie. minified) pre-bundled versions.
+
+To create your own bundles, see [Testing](https://github.com/kristianmandrup/bitbucket-api-v2/blob/master/docs/Client-bundling.md)
 
 ## Docs
 

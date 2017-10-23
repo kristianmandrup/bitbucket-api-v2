@@ -26,13 +26,18 @@ This can be used for request authorization from the end user, by sending their b
 
 ## Access Token authentication
 
-To get the access token, use the `getAccessToken` function (by [@tpettersen](https://bitbucket.org/tpettersen/bitbucket-auth-token/))
+To get the access token, use the `getAccessToken` function (by [@tpettersen](https://bitbucket.org/tpettersen/bitbucket-auth-token/)).
+
+The function is available in `bitbucket-api-v2/auth`
 
 ```js
 import {
   createBitbucketAPI,
+} from 'bitbucket-api-v2'
+
+import {
   getAccessToken
-} from 'bitbucket-v2'
+} from 'bitbucket-api-v2/auth'
 
 const config = {
   appName: 'my-app',
@@ -64,10 +69,11 @@ We also expose a `createAuthenticatedAPI` function to encapsulate this commong p
 ```js
 import {
   createAuthenticatedAPI,
-} from 'bitbucket-v2'
+} from 'bitbucket-api-v2'
 
 // create API instance with accessToken set in header for each request
 const api = await createAuthenticatedAPI({
+  getAccessToken,
   appName: 'my-app'
 })
 ```

@@ -3,7 +3,6 @@
 The test are written using `async`/`await` and:
 
 - [ava](https://github.com/avajs/ava)
-- [supertest](https://github.com/visionmedia/supertest)
 - [nock](https://www.npmjs.com/package/nock)
 
 ## Nock
