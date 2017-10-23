@@ -1,5 +1,3 @@
-const homeDir = require('home-dir')
-const jsonfile = require('jsonfile')
 const request = require('superagent')
 let {
   errorHandler,
@@ -32,16 +30,12 @@ function getAccessToken(opts = {}) {
   opts = populateDefaults(opts)
   createValidator('getAccessToken')
     .validateOpts(opts)
-
-  // set default path for storing config
-  const configPath = homeDir('/.' + opts.appName)
+  const {
+    loadConfig
+  } = opts
   const logger = opts.logger || defaults.logger
-  let config
-  try {
-    config = jsonfile.readFileSync(configPath)
-  } catch (e) {
-    config = {}
-  }
+
+  let config = loadConfig ? loadConfig(opts) : {}
   opts = Object.assign({}, {
     configPath,
     config,
@@ -94,7 +88,8 @@ function getTokens(opts = {}) {
     domain,
     configPath,
     config,
-    logger
+    logger,
+    saveConfig
   } = opts
 
   if (username) {
@@ -127,14 +122,9 @@ function getTokens(opts = {}) {
           var newConfig = Object.assign(config, {
             refreshToken: res.body.refresh_token
           })
-          jsonfile.writeFile(configPath, newConfig, {
-            mode: 600
-          }, function () {
-            // log a message if we're using the password flow to retrieve a token
-            if (username) {
-              logger('storing auth token in ' + configPath)
-            }
-          })
+          if (saveConfig) {
+            saveConfig(newConfig, opts)
+          }
           resolve(res.body.access_token)
         } else {
           var errorMessage
