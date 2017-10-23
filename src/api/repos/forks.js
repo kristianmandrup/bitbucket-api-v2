@@ -26,6 +26,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits
      */
     getAll(username, repoSlug, callback) {
+      validateArgs('getAll', arguments, 2)
       const uri = buildUri(username, repoSlug, 'forks')
       api.get(
         uri,

@@ -5,18 +5,20 @@ const exprMap = {
     /^add/,
     /^commit/,
     /^approve/,
-    /^stop/,
+    /^stop$/,
     /^merge/,
     /^patch/,
     /^upload/,
   ],
   put: [
     /^update/,
-    /vote/,
+    /^vote/,
+    /^watch/,
   ],
   delete: [
     /^dis/,
     /^delete/,
+    /^stop/,
     /^remove/,
     /^decline/
   ]

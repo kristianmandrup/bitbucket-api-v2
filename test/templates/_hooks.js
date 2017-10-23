@@ -3,9 +3,10 @@ import {
 } from './_base'
 
 module.exports = {
-  apiName: 'commits',
+  apiName: 'hooks',
   methods: {
-    'getAll': method
+    'getAll': method,
+    create: method
   },
   fluids: [
     'forProject'

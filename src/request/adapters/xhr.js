@@ -113,7 +113,6 @@ module.exports = function XhrAdapter(_options) {
      * @see send
      */
     put(apiPath, parameters, options, callback) {
-      log('put', apiPath, parameters, options)
       let send = callback ? result.send : result.sendPromised
       return send(apiPath, parameters, 'PUT', options, callback)
     },

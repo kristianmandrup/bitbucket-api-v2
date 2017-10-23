@@ -5,7 +5,10 @@ const apis = [
   'branchRestrictions',
   'commits',
   'commit',
-  'downloads'
+  'downloads',
+  'forks',
+  'hooks',
+  'issues'
 ]
 
 const templates = apis.reduce((acc, name) => {

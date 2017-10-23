@@ -26,5 +26,8 @@ module.exports = {
     getComment: {
       args: prjConcat('sha:123', '456')
     }
-  }
+  },
+  fluids: [
+    'forProject'
+  ]
 }

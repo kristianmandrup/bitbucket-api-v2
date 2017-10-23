@@ -26,6 +26,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines/#post
      */
     create(username, repoSlug, callback) {
+      validateArgs('create', arguments, 2)
       const uri = buildUri(username, repoSlug, 'issues')
       api.post(
         uri,
@@ -43,6 +44,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses
      */
     getAll(username, repoSlug, callback) {
+      validateArgs('getAll', arguments, 2)
       const uri = buildUri(username, repoSlug, 'issues')
       api.get(
         uri,
@@ -61,6 +63,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses
      */
     get(username, repoSlug, issue_id, callback) {
+      validateArgs('get', arguments, 3)
       const uri = buildUri(username, repoSlug, issue_id)
       api.get(
         uri,
@@ -80,6 +83,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/attachments
      */
     remove(username, repoSlug, issue_id, callback) {
+      validateArgs('remove', arguments, 3)
       const uri = buildUri(username, repoSlug, issue_id)
       api.delete(
         uri,
@@ -98,6 +102,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses
      */
     getAttachments(username, repoSlug, issue_id, callback) {
+      validateArgs('getAttachments', arguments, 3)
       const uri = buildUri(username, repoSlug, issue_id, 'attachments')
       api.get(
         uri,
@@ -117,6 +122,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses
      */
     getAttachment(username, repoSlug, issue_id, path, callback) {
+      validateArgs('getAttachment', arguments, 4)
       const uri = buildUri(username, repoSlug, issue_id, 'attachments/${path}')
       api.get(
         uri,
@@ -134,18 +140,13 @@ function createApi(api, opts = {}) {
      *
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses
      */
-    uploadAttachments(username, repoSlug, issue_id, attachments, options, callback) {
+    uploadAttachments(username, repoSlug, issue_id, attachments, callback) {
+      validateArgs('uploadAttachments', arguments, 4)
       const uri = buildUri(username, repoSlug, issue_id, 'attachments')
-      if (typeof options === 'function') {
-        callback = options
-        options = null
-      }
-      const defaultOpts = {
-        contentType: 'multipart/form-data'
-      }
-      api.post(
+      api.postForm(
         uri,
-        attachments, options || defaultOpts,
+        attachments,
+        null,
         result.$createListener(callback)
       )
     },
@@ -160,6 +161,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses
      */
     getComments(username, repoSlug, issue_id, callback) {
+      validateArgs('getComments', arguments, 3)
       const uri = buildUri(username, repoSlug, issue_id, 'comments')
       api.get(
         uri,
@@ -179,6 +181,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses
      */
     getComment(username, repoSlug, issue_id, commentId, callback) {
+      validateArgs('getComment', arguments, 4)
       const uri = buildUri(username, repoSlug, issue_id, 'comments/${commentId}')
       api.get(
         uri,
@@ -197,6 +200,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/vote
      */
     hasVoted(username, repoSlug, issue_id, callback) {
+      validateArgs('hasVoted', arguments, 3)
       const uri = buildUri(username, repoSlug, issue_id, 'vote')
       api.get(
         uri,
@@ -215,6 +219,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/vote#put
      */
     vote(username, repoSlug, issue_id, callback) {
+      validateArgs('vote', arguments, 3)
       const uri = buildUri(username, repoSlug, issue_id, 'vote')
       api.put(
         uri,
@@ -233,6 +238,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/vote#put
      */
     retractVote(username, repoSlug, issue_id, callback) {
+      validateArgs('retractVote', arguments, 3)
       const uri = buildUri(username, repoSlug, issue_id, 'vote')
       api.delete(
         uri,
@@ -252,6 +258,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/vote
      */
     isWatched(username, repoSlug, issue_id, callback) {
+      validateArgs('isWatched', arguments, 3)
       const uri = buildUri(username, repoSlug, issue_id, 'watch')
       api.get(
         uri,
@@ -270,6 +277,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/vote#put
      */
     watch(username, repoSlug, issue_id, callback) {
+      validateArgs('watch', arguments, 3)
       const uri = buildUri(username, repoSlug, issue_id, 'watch')
       api.put(
         uri,
@@ -288,7 +296,8 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/vote#put
      */
     stopWatch(username, repoSlug, issue_id, callback) {
-      const uri = buildUri(username, repoSlug, issue_id, 'vote')
+      validateArgs('stopWatch', arguments, 3)
+      const uri = buildUri(username, repoSlug, issue_id, 'watch')
       api.delete(
         uri,
         null, null,
