@@ -1,2 +1,7 @@
 node_modules
 test/secret/access-tokens.json
+test
+TODO.md
+webpack
+server
+docs
