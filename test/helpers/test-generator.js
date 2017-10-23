@@ -140,7 +140,7 @@ class TestsGenerator extends Logger {
     const templates = config.templates || defaultTemplates
     let template = templates[name]
     if (!template) {
-      this.error(`resolveTemplate: could not resolve template ${name}`, {
+      this.error(`resolveTemplate: could not resolve template ${name} in templates`, {
         templates,
         name
       })

@@ -2,8 +2,9 @@ const {
   _,
   fluid,
   createPromisedApi,
-  createAbstractApi
-} = require('../_base')
+  createAbstractApi,
+  validateArgs
+} = require('./_base')
 
 /**
  * API doc: https://developer.atlassian.com/bitbucket/api/2/reference/
@@ -28,7 +29,8 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits
      */
     getAll(username, repoSlug, callback) {
-      const uri = buildUri(username, repoSlug, 'components')
+      validateArgs('getAll', [...arguments], 2)
+      const uri = buildUri(username, repoSlug)
       api.get(
         uri,
         null, null,
