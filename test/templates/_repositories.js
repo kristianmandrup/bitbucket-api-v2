@@ -1,7 +1,7 @@
 import {
   singleRepo,
   concat,
-  prjConcat,
+  projConcat,
   projMethod,
   user,
   repo,

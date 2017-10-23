@@ -24,6 +24,7 @@ function createApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     getAll(username, repoSlug, callback) {
+      validateArgs('getAll', arguments, 2)
       const uri = buildUri(username, repoSlug, 'versions')
       api.get(
         uri,
@@ -39,6 +40,7 @@ function createApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     get(username, repoSlug, version_id, callback) {
+      validateArgs('get', arguments, 3)
       const uri = buildUri(username, repoSlug, 'versions', version_id)
       api.get(
         uri,

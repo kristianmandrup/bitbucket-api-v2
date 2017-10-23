@@ -13,7 +13,7 @@ const {
  * API doc: https://developer.atlassian.com/bitbucket/api/2/reference/
  * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit
  */
-module.exports = function ReviewersApi(api, opts = {}) {
+function createApi(api, opts = {}) {
   const result = createAbstractApi(api, opts)
 
   const localApi = {
@@ -27,6 +27,7 @@ module.exports = function ReviewersApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commits
      */
     getAll(username, repoSlug, callback) {
+      validateArgs('getAll', arguments, 2)
       const uri = buildUri(username, repoSlug, 'default-reviewers')
       api.get(
         uri,
@@ -46,6 +47,7 @@ module.exports = function ReviewersApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/default-reviewers/%7Btarget_username%7D
      */
     get(username, repoSlug, reviewerName, callback) {
+      validateArgs('get', arguments, 3)
       const uri = buildUri(username, repoSlug, 'default-reviewers', reviewerName)
       api.get(
         uri,
@@ -63,11 +65,13 @@ module.exports = function ReviewersApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
      * repositories/%7Busername%7D/%7Brepo_slug%7D/default-reviewers/%7Btarget_username%7D
      */
-    addReviewer(username, repoSlug, reviewerName, callback) {
+    addReviewer(username, repoSlug, reviewerName, reviewer, callback) {
+      validateArgs('addReviewer', arguments, 4)
       const uri = buildUri(username, repoSlug, 'default-reviewers', reviewerName)
+      const data = reviewer
       api.put(
         uri,
-        null, null,
+        reviewer, null,
         result.$createListener(callback)
       )
     },
@@ -83,7 +87,8 @@ module.exports = function ReviewersApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/
      * repositories/%7Busername%7D/%7Brepo_slug%7D/default-reviewers/%7Btarget_username%7D
      */
-    removeReviewer(username, repoSlug, reviewerName, reviewer, callback) {
+    removeReviewer(username, repoSlug, reviewerName, callback) {
+      validateArgs('removeReviewer', arguments, 3)
       const uri = buildUri(username, repoSlug, 'default-reviewers', reviewerName)
       api.delete(
         uri,

@@ -1,13 +1,13 @@
 import {
   concat,
-  prjConcat,
+  projConcat,
   createConcat,
   args,
   method
 } from './_base'
 
 const commitMethod = {
-  args: prjConcat('123')
+  args: projConcat('123')
 }
 
 module.exports = {
@@ -18,13 +18,13 @@ module.exports = {
     getBuildStatuses: commitMethod,
     createBuild: commitMethod,
     getBuildStatus: {
-      args: prjConcat('123', 'key:678')
+      args: projConcat('123', 'key:678')
     },
     getComments: {
-      args: prjConcat('sha:123')
+      args: projConcat('sha:123')
     },
     getComment: {
-      args: prjConcat('sha:123', '456')
+      args: projConcat('sha:123', '456')
     }
   },
   fluids: [

@@ -14,6 +14,7 @@ const exprMap = {
     /^update/,
     /^vote/,
     /^watch/,
+    /^next/,
   ],
   delete: [
     /^dis/,

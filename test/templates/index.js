@@ -9,7 +9,13 @@ const apis = [
   'forks',
   'hooks',
   'issues',
-  'milestones'
+  'milestones',
+  'pipelinesConfig',
+  'pipelines',
+  'pullRequests',
+  'refs',
+  'reviewers',
+  'versions',
 ]
 
 const templates = apis.reduce((acc, name) => {
