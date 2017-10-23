@@ -1,5 +1,7 @@
 const {
   _,
+  buildUri,
+  validateArgs,
   createPromisedApi,
   createAbstractApi
 } = require('./_base')
@@ -10,11 +12,6 @@ const {
 function createApi(api, opts = {}) {
   const result = createAbstractApi(api, opts = {})
 
-  function buildUri(owner, action) {
-    const baseUri = `teams/${owner}`
-    return action ? [baseUri, action].join('/') : baseUri
-  }
-
   let localApi = {
     name: 'Addon',
 
@@ -24,7 +21,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/addon#delete
      */
     remove(callback) {
-      const uri = 'addon'
+      const uri = buildUri('addon')
       api.delete(
         uri,
         null,
@@ -39,7 +36,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/addon#delete
      */
     update(addon, callback) {
-      const uri = 'addon'
+      const uri = buildUri('addon')
       api.put(
         uri,
         addon,

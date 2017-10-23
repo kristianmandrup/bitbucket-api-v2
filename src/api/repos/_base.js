@@ -5,23 +5,20 @@ const {
   log,
   handleError,
   validateArgs,
+  uriBuilder,
+  join,
   createPromisedApi,
   createAbstractApi
 } = require('../_base')
 
-function buildUri(username, repoSlug, action) {
-  let baseUri = `repositories/${encodeURI(username)}`
-  if (repoSlug) {
-    baseUri = `${baseUri}/${encodeURI(repoSlug)}`
-  }
-  return action ? [baseUri, action].join('/') : baseUri
-}
+const buildUri = uriBuilder('repositories')
 
 module.exports = {
   _,
   fluid,
   constants,
   log,
+  join,
   handleError,
   validateArgs,
   createPromisedApi,

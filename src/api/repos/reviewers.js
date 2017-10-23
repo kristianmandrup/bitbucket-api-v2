@@ -46,7 +46,7 @@ module.exports = function ReviewersApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/default-reviewers/%7Btarget_username%7D
      */
     get(username, repoSlug, reviewerName, callback) {
-      const uri = buildUri(username, repoSlug, `default-reviewers/${reviewerName}`)
+      const uri = buildUri(username, repoSlug, 'default-reviewers', reviewerName)
       api.get(
         uri,
         null, null,
@@ -64,7 +64,7 @@ module.exports = function ReviewersApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/default-reviewers/%7Btarget_username%7D
      */
     addReviewer(username, repoSlug, reviewerName, callback) {
-      const uri = buildUri(username, repoSlug, `default-reviewers/${reviewerName}`)
+      const uri = buildUri(username, repoSlug, 'default-reviewers', reviewerName)
       api.put(
         uri,
         null, null,
@@ -84,7 +84,7 @@ module.exports = function ReviewersApi(api, opts = {}) {
      * repositories/%7Busername%7D/%7Brepo_slug%7D/default-reviewers/%7Btarget_username%7D
      */
     removeReviewer(username, repoSlug, reviewerName, reviewer, callback) {
-      const uri = buildUri(username, repoSlug, `default-reviewers/${reviewerName}`)
+      const uri = buildUri(username, repoSlug, 'default-reviewers', reviewerName)
       api.delete(
         uri,
         null, null,

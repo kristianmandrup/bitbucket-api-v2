@@ -50,7 +50,7 @@ function createApi(api, opts = {}) {
         .replace(/-$/, '')
         .toLowerCase()
 
-      validateArgs('create', [...arguments])
+      validateArgs('create', arguments)
       const uri = buildUri(username, repoSlug)
       api.post(
         uri,
@@ -67,8 +67,8 @@ function createApi(api, opts = {}) {
      * @param {Object} pullRequest The PR POST body as specified by Bitbucket's API documentation
      */
     createPullRequest(username, repoSlug, pullRequest, callback) {
-      validateArgs('createPullRequest', [...arguments], 3)
-      const uri = buildUri(username, repoSlug, `/pullrequests`)
+      validateArgs('createPullRequest', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'pullrequests')
       api.post(
         uri,
         pullRequest, null,
@@ -83,7 +83,7 @@ function createApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     get(username, repoSlug, callback) {
-      validateArgs('get', 2, [...arguments])
+      validateArgs('get', 2, arguments)
       const uri = buildUri(username, repoSlug)
       api.get(
         uri,
@@ -108,7 +108,7 @@ function createApi(api, opts = {}) {
      * resource/repositories/%7Busername%7D/%7Brepo_slug%7D/src#post
      */
     commit(username, repoSlug, params, callback) {
-      validateArgs('commit', [...arguments], 3)
+      validateArgs('commit', arguments, 3)
       const uri = buildUri(username, repoSlug, 'src')
       api.postForm(
         uri,
@@ -125,8 +125,8 @@ function createApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     getBranches(username, repoSlug, callback) {
-      validateArgs('getBranches', [...arguments])
-      const uri = buildUri(username, repoSlug, 'refs/branches')
+      validateArgs('getBranches', arguments)
+      const uri = buildUri(username, repoSlug, 'refs', 'branches')
       api.get(
         uri,
         null, null,
@@ -143,8 +143,8 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Brevision%7D
      */
     getCommit(username, repoSlug, revision, callback) {
-      validateArgs('getCommit', [...arguments], 3)
-      const uri = buildUri(username, repoSlug, `commit/${revision}`)
+      validateArgs('getCommit', arguments, 3)
+      const uri = buildUri(username, repoSlug, 'commit', revision)
       api.get(
         uri,
         null, null,
@@ -175,7 +175,7 @@ function createApi(api, opts = {}) {
       const apiParameters = {
         state: stateArray.join(',')
       }
-      validateArgs('getPullRequests', [...arguments], 3)
+      validateArgs('getPullRequests', arguments, 3)
       const uri = buildUri(username, repoSlug, 'pullrequests')
       api.get(
         uri,
@@ -190,7 +190,7 @@ function createApi(api, opts = {}) {
      * @param {String}  username
      */
     getByUser(username, callback) {
-      validateArgs('getByUser', [...arguments], 1)
+      validateArgs('getByUser', arguments, 1)
       const uri = buildUri(username)
       api.get(
         uri,
@@ -205,7 +205,7 @@ function createApi(api, opts = {}) {
      * @param {String}  teamname
      */
     getByTeam(teamname, callback) {
-      validateArgs('getByTeam', [...arguments], 1)
+      validateArgs('getByTeam', arguments, 1)
       const uri = buildUri(teamname)
       api.get(
         uri,
@@ -221,7 +221,7 @@ function createApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     getForks(username, repoSlug, callback) {
-      validateArgs('getForks', [...arguments])
+      validateArgs('getForks', arguments)
       const uri = buildUri(username, repoSlug, 'forks')
       api.get(
         uri,
@@ -241,7 +241,7 @@ function createApi(api, opts = {}) {
       if (!prebuiltURL) {
         throw new Error('getForksFromResponse: argument has no \'forks\' url.')
       }
-      validateArgs('getForksFromResponse', [...arguments], 1)
+      validateArgs('getForksFromResponse', arguments, 1)
       api.request.doPrebuiltSend(
         prebuiltURL,
         result.$createListener(callback)
@@ -262,7 +262,7 @@ function createApi(api, opts = {}) {
           'getForksFromResponse: argument has no \'parent\' info. Call hasParent first to guard this method call.'
         )
       }
-      validateArgs('getParentFromResponse', [...arguments], 1)
+      validateArgs('getParentFromResponse', arguments, 1)
       api.request.doPrebuiltSend(
         prebuiltURL,
         result.$createListener(callback)

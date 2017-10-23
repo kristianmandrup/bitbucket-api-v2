@@ -5,6 +5,9 @@ const exprMap = {
     /^add/,
     /^commit/,
     /pprove/, //approve
+    /^stop/,
+    /^merge/,
+    /^patch/,
   ],
   put: [
     /^update/,
@@ -13,7 +16,7 @@ const exprMap = {
   delete: [
     /^delete/,
     /^remove/,
-    /^decline/,
+    /^decline/
   ]
 }
 
