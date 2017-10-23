@@ -66,7 +66,7 @@ export class TestCase extends Logger {
         opts
       })
 
-      this.mockInstance = prepareMock(config, opts)
+      prepareMock(config, opts)
     } else {
       this.log('skip mock', {
         mock: prepareMock

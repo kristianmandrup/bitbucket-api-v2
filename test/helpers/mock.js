@@ -61,17 +61,17 @@ import {
 } from './logger'
 
 export function mock(config, opts = {}) {
-  return new Mock(config, opts).build()
+  return new Mock(config, opts).generate()
 }
 
 export class Mock extends Logger {
   constructor(config, opts) {
     super(opts || config)
     this.config = config
+    this.configure()
   }
 
-  // TODO: split up in smaller functions
-  build() {
+  configure() {
     let {
       config,
       opts
@@ -93,36 +93,74 @@ export class Mock extends Logger {
       data,
       query
     } = config
-    accessToken = accessToken || opts.accessToken
-    request = request || {}
     response = response || {}
-    let hostname = connection.hostname
-    let httpVerb = request.verb || guessRequestType(method) || 'get'
+    this.accessToken = accessToken || opts.accessToken
+    this.code = code || opts.code || response.code || 200
+    this.body = body || opts.body || response.body || {}
+    this.request = request || {}
+    this.response = response
+    this.method = method
 
-    let path = request.path || opts.path || acceptAny // ie. match any path
+    this
+      .configHostname()
+      .configPath()
+      .configVerb()
+  }
+
+  configHostname() {
+    this.hostname = `https://${connection.hostname}`
+    return this
+  }
+
+  configPath() {
+    const {
+      request
+    } = this
+    let path = request.path || acceptAny // ie. match any path
     // ensure we are using v.2 API
     if (typeof path === 'string') {
       path = new RegExp(`/2.0/${path}`)
     }
+    this.path = path
+    return this
+  }
 
-    hostname = `https://${hostname}`
-    code = code || opts.code || response.code || 200
-    body = body || opts.body || response.body || {}
+  configVerb() {
+    const {
+      request,
+      method
+    } = this
+    this.log('configVerb', {
+      request,
+      method
+    })
+    let httpVerb = request.verb || guessRequestType(method) || 'get'
+    this.log('httpVerb', httpVerb)
+    this.httpVerb = httpVerb
+    return this
+  }
 
+  generate() {
+    this
+      .createNock()
+      .createRequest()
+      .createReply()
+  }
+
+  createNock() {
+    const {
+      hostname,
+      request,
+      httpVerb,
+    } = this
     // options: can contain custom headers etc. via reqheaders:
     let nockInstance = nock(hostname, request.options || {})
     let verbMethod = nockInstance[httpVerb]
-    this.log('configure nock', {
-      method,
+    this.log('createNock', {
       hostname,
-      request: request.options,
-      path,
+      request,
       httpVerb,
-      verbMethod,
-      code,
-      body,
-      query,
-      data
+      verbMethod
     })
     if (!verbMethod) {
       this.error(`No .${httpVerb} method available on nock instance`, {
@@ -130,9 +168,27 @@ export class Mock extends Logger {
         nockInstance
       })
     }
+    this.nockInstance = nockInstance
     verbMethod = verbMethod.bind(nockInstance)
-    this.log('find verb method')
+    this.verbMethod = verbMethod
+    return this
+  }
 
+  createRequest() {
+    let {
+      nockInstance,
+      verbMethod,
+      path,
+      httpVerb,
+      data,
+      query
+    } = this
+    this.log('createRequest', {
+      path,
+      httpVerb,
+      data,
+      query
+    })
     let requestMethod
     data = data || acceptAny
     try {
@@ -141,41 +197,36 @@ export class Mock extends Logger {
           path,
           data
         })
-
         requestMethod = verbMethod(path, data)
       } else {
         requestMethod = verbMethod(path)
       }
+      // add query (url params) for .get
+      if (httpVerb === 'get') {
+        if (query) {
+          requestMethod.query(query)
+        }
+      }
+      this.requestMethod = requestMethod
     } catch (err) {
       this.error(err.message, {
         err
       })
     }
+    return this
+  }
 
-    this.log('happy', {
-      requestMethod
-    })
-    if (httpVerb === 'get') {
-      if (query) {
-        requestMethod.query(query)
-      }
-    }
-
-    if (!requestMethod) {
-      this.error('Invalid http verb request method', {
-        path,
-        verbMethod,
-        requestMethod
-      })
-    }
-
-    this.log('build: reply', {
+  createReply() {
+    const {
       requestMethod,
       code,
       body
+    } = this
+    this.log('createReply', {
+      code,
+      body
     })
-
     requestMethod.reply(code, body)
-    return nockInstance
+    return this
   }
 }

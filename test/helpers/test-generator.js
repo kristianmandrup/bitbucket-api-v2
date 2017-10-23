@@ -24,6 +24,7 @@ class TestsGenerator extends Logger {
   constructor(config, opts = {}) {
     super(opts)
     this.config = config
+    this.configure()
   }
 
   async asyncGenerate(...methods) {
@@ -32,20 +33,20 @@ class TestsGenerator extends Logger {
     this.createTest()
   }
 
+  configure() {
+    this.prepare()
+    this.createApi()
+  }
+
   generate(...methods) {
     if (Array.isArray(methods[0])) {
       methods = methods[0]
     }
-    this.prepare(methods)
-    this.createApi()
+    this.methods = methods
     this.createTest()
   }
 
-  prepare(methods) {
-    this.log('prepare', {
-      methods
-    })
-    this.methods = methods
+  prepare() {
     this.prepareForTests()
     this.resolveName()
   }
