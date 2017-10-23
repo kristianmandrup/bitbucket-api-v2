@@ -5,7 +5,8 @@ const createApiEnricher = require('./api-enricher')
 const createPromisedApi = require('./promised')
 const {
   handleError,
-  validateArgs
+  validateArgs,
+  createArgValidator
 } = require('./validator')
 
 const {
@@ -22,5 +23,6 @@ module.exports = {
   handleError,
   createApiEnricher,
   createPromisedApi,
-  validateArgs
+  validateArgs,
+  createArgValidator
 }

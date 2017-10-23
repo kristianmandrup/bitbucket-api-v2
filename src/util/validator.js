@@ -4,16 +4,16 @@ const {
 
 function handleError(msg, value) {
   error('ERROR:', msg, value)
-  throw msg
+  throw new Error(msg)
 }
 
 function createArgValidator(methodName) {
   if (typeof methodName !== 'string') {
-    throw `createArgValidator: must take a methodName (String) as argument`
+    throw new TypeError(`createArgValidator: must take a methodName (String) as argument`)
   }
   return function validateArg(arg) {
     if (!arg || typeof arg === 'function') {
-      throw `${methodName}: Invalid argument: ${arg}`
+      throw new TypeError(`${methodName}: Invalid argument: ${arg}`)
     }
   }
 }
@@ -24,7 +24,11 @@ function validateArgs(methodName, args, argsLength = 2) {
   if (args.length !== argsLength) {
     handleError(`${methodName}: Expected ${argsLength} arguments but received ${args.length}`)
   }
-  args.map(argValidator)
+  try {
+    args.map(argValidator)
+  } catch (err) {
+    handleError(`${methodName} - ${err.message}`, err)
+  }
 }
 module.exports = {
   handleError,
