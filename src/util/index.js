@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const constants = require('./constants')
 const fluid = require('./fluid')
-const createApiEnricher = require('./enrich')
+const createApiEnricher = require('./api-enricher')
 const createPromisedApi = require('./promised')
 const {
   handleError,

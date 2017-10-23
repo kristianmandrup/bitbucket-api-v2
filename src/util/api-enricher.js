@@ -14,6 +14,13 @@ module.exports = function createApiEnricher(apiModel, opts) {
   return apis => {
     // TODO: generate all instead
     let apiNames = Object.keys(apis)
+
+    // add .promised to main api
+    apiModel.promised = apiNames.reduce((acc, name) => {
+      acc[name] = apis[name].promised
+      return acc
+    }, {})
+
     apiNames.map(name => {
       let value = apis[name]
       if (name === 'methods' || typeof value !== 'object') return

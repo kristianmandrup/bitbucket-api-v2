@@ -1,7 +1,21 @@
 # API
 
 The following lists the methods available in the API.
-This list of API methods might not (always) be complete, so please help maintain it.
+This list of API methods might not be complete, so please help maintain it.
+
+## Promised
+
+You can get a promisified version of an API with the `.promised` method
+
+```js
+// use with callback
+const api = createBitbucketAPI()
+const repositories = api.repositories
+
+// use with Promise or async/await
+const $api = api.promised
+const $repositories = $api.repositories
+```
 
 ## User
 

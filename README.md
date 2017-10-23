@@ -26,8 +26,8 @@ You will need to create an endpoint on your server to receive the access token f
 
 ```js
 const { createBitbucketAPI } = require('bitbucket-v2')
-const bitbucketApi = createBitbucketAPI(); //or: createBitbucketAPI({useXhr: true})
-bitbucketApi.authenticateOAuth2(someAccessToken);
+const bitbucketApi = createBitbucketAPI() //or: createBitbucketAPI({useXhr: true})
+bitbucketApi.authenticateOAuth2(someAccessToken)
 ```
 
 Get the user info (of authenticated user)
