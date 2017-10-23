@@ -1,16 +1,15 @@
 import {
   method,
-  prjConcat,
   projMethod
 } from './_base'
 
-const file = 'hello world'
+const milestoneId = '678'
 
 module.exports = {
   apiName: 'components',
   methods: {
     'getAll': method,
-    'upload': projMethod(file)
+    'get': projMethod(milestoneId)
   },
   fluids: [
     'forProject'

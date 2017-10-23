@@ -16,7 +16,17 @@ function createConcat(baseArgs) {
   }
 }
 
+function createMethodConcat(base) {
+  const argConcat = typeof base === 'function' ? base : createConcat(base)
+  return function (...moreArgs) {
+    return {
+      args: argConcat(...moreArgs)
+    }
+  }
+}
+
 const prjConcat = createConcat(args.project)
+const projMethod = createMethodConcat(args.project)
 
 function concat(baseArgs, ...moreArgs) {
   return baseArgs.concat(...moreArgs)
@@ -32,6 +42,7 @@ export {
   concat,
   createConcat,
   prjConcat,
+  projMethod,
   user,
   repo,
   args,

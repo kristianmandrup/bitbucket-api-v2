@@ -8,7 +8,8 @@ const apis = [
   'downloads',
   'forks',
   'hooks',
-  'issues'
+  'issues',
+  'milestones'
 ]
 
 const templates = apis.reduce((acc, name) => {
