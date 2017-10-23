@@ -4,7 +4,7 @@ const exprMap = {
     /^create/,
     /^add/,
     /^commit/,
-    /pprove/, //approve
+    /^approve/,
     /^stop/,
     /^merge/,
     /^patch/,
@@ -14,6 +14,7 @@ const exprMap = {
     /vote/,
   ],
   delete: [
+    /^dis/,
     /^delete/,
     /^remove/,
     /^decline/

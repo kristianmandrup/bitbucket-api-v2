@@ -1,6 +1,7 @@
 import {
   singleRepo,
   concat,
+  prjConcat,
   user,
   repo,
   args,
@@ -25,7 +26,7 @@ const response = {
   }
 }
 
-args.commit = concat(args.project, {
+args.commit = prjConcat({
   author: 'unknown@gmail.com',
   message: 'first commit',
   files: [{
@@ -40,7 +41,7 @@ module.exports = {
     create: method,
     createPullRequest: {
       body: singleRepo,
-      args: concat(args.project, {
+      args: prjConcat({
         type: 'pull'
       })
     },
@@ -51,7 +52,7 @@ module.exports = {
     getBranches: method,
     getCommit: {
       body: singleRepo,
-      args: concat(args.project, '123')
+      args: prjConcat('123')
     },
     getByUser: {
       body: singleRepo,

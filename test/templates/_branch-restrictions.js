@@ -1,6 +1,8 @@
 import {
   singleRepo,
   concat,
+  createConcat,
+  prjConcat,
   user,
   repo,
   args,
@@ -9,23 +11,28 @@ import {
 
 const kind = 'push'
 const restrictionId = '123'
+
+const restrArgs = prjConcat(restrictionId)
 const restriction = {
-  args: concat(args.project, restrictionId)
+  args: restrArgs
 }
+restriction.concat = createConcat(restrArgs)
+
 restriction.method = {
   args: restriction.args
 }
+
 
 module.exports = {
   apiName: 'repositories',
   methods: {
     'get': method,
     'create': {
-      args: concat(args.project, kind)
+      args: prjConcat(kind)
     },
     'getRestriction': restriction.method,
     'updateRestriction': {
-      args: concat(restriction.args, {
+      args: restriction.concat({
         type: 'restriction'
       })
     },
