@@ -1,6 +1,7 @@
 const {
   _,
   fluid,
+  uriBuilder,
   createPromisedApi,
   createAbstractApi
 } = require('../_base')
@@ -11,10 +12,7 @@ const {
 function createApi(api, opts = {}) {
   const result = createAbstractApi(api, opts = {})
 
-  function buildUri(username, action) {
-    const baseUri = `snippets/${username}`
-    return action ? [baseUri, action].join('/') : baseUri
-  }
+  const buildUri = uriBuilder('snippets')
 
   let localApi = {
     name: 'Snippets',
@@ -32,7 +30,7 @@ function createApi(api, opts = {}) {
      *   - When no role is specified, all public snippets are returned, as well as all privately owned snippets watched or commented on.
      */
     get(callback) {
-      uri = 'snippets'
+      const uri = buildUri()
       api.get(
         uri,
         null,
@@ -50,8 +48,8 @@ function createApi(api, opts = {}) {
      * using multipart/form
      */
     create(files, callback) {
-      uri = 'snippets'
-      data = {
+      const uri = buildUri()
+      const data = {
         files
       }
       api.postForm(
@@ -71,7 +69,7 @@ function createApi(api, opts = {}) {
      * using multipart/related
      */
     createWithMeta(data, callback) {
-      uri = 'snippets'
+      const uri = buildUri()
       api.postRelated(
         uri,
         data,
@@ -86,9 +84,11 @@ function createApi(api, opts = {}) {
      * the snippet owner and only those that are owned by {username} are returned.
      *
      * @param {String} username of user
+     *
+     * See https://developer.atlassian.com/bitbucket/api/2/reference/resource/snippets/%7Busername%7D
      */
     getFor(username, callback) {
-      uri = buildUri(username)
+      const uri = buildUri(username)
       api.get(
         uri,
         null,
@@ -104,7 +104,7 @@ function createApi(api, opts = {}) {
      * @param {String} username of user
      */
     createSnippetFor(username, snippet, callback) {
-      uri = buildUri(username)
+      const uri = buildUri(username)
       api.get(
         uri,
         snippet,
@@ -120,7 +120,7 @@ function createApi(api, opts = {}) {
      * @param {String} snippetId (encoded) of snippet
      */
     getSnippetFor(username, snippetId, callback) {
-      uri = buildUri(username, snippetId)
+      const uri = buildUri(username, snippetId)
       api.get(
         uri,
         null,
@@ -137,7 +137,7 @@ function createApi(api, opts = {}) {
      * Uses multipart/form-data to manipulate file contents and meta data atomically.
      */
     updateSnippetFor(username, snippetId, snippet, callback) {
-      uri = buildUri(username, snippetId)
+      const uri = buildUri(username, snippetId)
       api.updateForm(
         uri,
         snippet,
@@ -152,8 +152,8 @@ function createApi(api, opts = {}) {
      * @param {String} username of user
      * @param {String} snippetId (encoded) of snippet
      */
-    removeSnippetFor(username, snippetId, snippet, callback) {
-      uri = buildUri(username, snippetId)
+    removeSnippetFor(username, snippetId, callback) {
+      const uri = buildUri(username, snippetId)
       api.delete(
         uri,
         null,
@@ -169,7 +169,7 @@ function createApi(api, opts = {}) {
      * @param {String} snippetId (encoded) of snippet
      */
     getSnippetCommentsFor(username, snippetId, callback) {
-      uri = buildUri(username, `${snippetId}/comments`)
+      const uri = buildUri(username, snippetId, 'comments')
       api.get(
         uri,
         null,
@@ -188,7 +188,7 @@ function createApi(api, opts = {}) {
      * To create a threaded reply to an existing comment, include parent.id.
      */
     addSnippetCommentFor(username, snippetId, comment, callback) {
-      uri = buildUri(username, `${snippetId}/comments`)
+      const uri = buildUri(username, snippetId, 'comments')
       api.post(
         uri,
         comment,
@@ -204,7 +204,7 @@ function createApi(api, opts = {}) {
      * @param {String} snippetId (encoded) of snippet
      */
     getSnippetCommitsFor(username, snippetId, callback) {
-      uri = buildUri(username, `${snippetId}/commits`)
+      const uri = buildUri(username, snippetId, 'commits')
       api.get(
         uri,
         null,
@@ -220,7 +220,7 @@ function createApi(api, opts = {}) {
      * @param {String} snippetId (encoded) of snippet
      */
     isSnippetWatchedFor(username, snippetId, callback) {
-      uri = buildUri(username, `${snippetId}/watch`)
+      const uri = buildUri(username, snippetId, 'watch')
       api.get(
         uri,
         null,
@@ -236,7 +236,7 @@ function createApi(api, opts = {}) {
      * @param {String} snippetId (encoded) of snippet
      */
     watchSnippetFor(username, snippetId, callback) {
-      uri = buildUri(username, `${snippetId}/watch`)
+      const uri = buildUri(username, snippetId, 'watch')
       api.put(
         uri,
         null,
@@ -252,7 +252,7 @@ function createApi(api, opts = {}) {
      * @param {String} snippetId (encoded) of snippet
      */
     stopWatchingSnippetFor(username, snippetId, callback) {
-      uri = buildUri(username, `${snippetId}/watch`)
+      const uri = buildUri(username, snippetId, 'watch')
       api.delete(
         uri,
         null,
@@ -268,7 +268,7 @@ function createApi(api, opts = {}) {
      * @param {String} snippetId (encoded) of snippet
      */
     getSnippetWatchersFor(username, snippetId, callback) {
-      uri = buildUri(username, `${snippetId}/watchers`)
+      const uri = buildUri(username, snippetId, 'watchers')
       api.get(
         uri,
         null,

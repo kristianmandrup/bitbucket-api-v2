@@ -38,6 +38,7 @@ function createApi(api, opts = {}) {
      * See: https://developer.atlassian.com/bitbucket/api/2/reference/resource/hook_events/%7Bsubject_type%7D
      */
     forSubject(subjectType, callback) {
+      validateArgs('forSubject', arguments, 1)
       const uri = buildUri(subjectType)
       api.get(
         uri,

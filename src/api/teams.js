@@ -22,6 +22,7 @@ function createApi(api, opts = {}) {
      * @param {String} role (default: member)
      */
     get(role = 'member', callback) {
+      validateArgs('get', arguments, 1)
       const uri = buildUri()
       api.get(
         uri, {
@@ -38,6 +39,7 @@ function createApi(api, opts = {}) {
      * @param {String} owner of team
      */
     getProjects(owner, callback) {
+      validateArgs('getProjects', arguments, 1)
       const uri = buildUri(owner, 'projects')
       api.get(
         uri,
@@ -54,6 +56,7 @@ function createApi(api, opts = {}) {
      * @param {Object} project to add
      */
     addProject(owner, project, callback) {
+      validateArgs('addProject', arguments, 2)
       const uri = buildUri(owner, 'projects')
       api.post(
         uri,
@@ -70,6 +73,7 @@ function createApi(api, opts = {}) {
      * @param {String} projectId (id) of project
      */
     getProject(owner, projectId, callback) {
+      validateArgs('getProject', arguments, 2)
       const uri = buildUri(owner, 'projects', projectId)
       api.get(
         uri,
@@ -90,6 +94,7 @@ function createApi(api, opts = {}) {
      * Data format expected: https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Bowner%7D/projects/#post
      */
     updateProject(owner, projectId, project, callback) {
+      validateArgs('updateProject', arguments, 3)
       const uri = buildUri(owner, 'projects', projectId)
       api.put(
         uri,
@@ -109,6 +114,7 @@ function createApi(api, opts = {}) {
      * Data format expected: https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Bowner%7D/projects/#post
      */
     removeProject(owner, projectId, callback) {
+      validateArgs('removeProject', arguments, 2)
       const uri = buildUri(owner, 'projects', projectId)
       api.delete(
         uri,
@@ -124,6 +130,7 @@ function createApi(api, opts = {}) {
      * @param {String} username of user
      */
     getUserInfo(username, callback) {
+      validateArgs('getUserInfo', arguments, 1)
       const uri = buildUri(username)
       api.get(
         uri,
