@@ -2,6 +2,7 @@ module.exports = {
   repositories: require('./repositories'),
   commit: require('./commit'),
   commits: require('./commits'),
+  components: require('./components'),
   issues: require('./issues'),
   milestones: require('./milestones'),
   pipelines: require('./pipelines'),

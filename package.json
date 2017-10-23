@@ -22,6 +22,7 @@
     "lodash": "^4.17.4",
     "oauth": "^0.9.15",
     "superagent": "^3.7.0",
+    "underscore.string": "^3.3.4",
     "xhr": "^2.4.0"
   },
   "devDependencies": {
