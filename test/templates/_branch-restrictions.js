@@ -37,5 +37,9 @@ module.exports = {
       })
     },
     'removeRestriction': restriction.method
-  }
+  },
+  fluids: [
+    'forProject',
+    'forRestriction'
+  ]
 }

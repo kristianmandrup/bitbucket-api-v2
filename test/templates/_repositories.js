@@ -80,6 +80,8 @@ module.exports = {
         response
       ]
     },
-  }
-  // ... more test data templates
+  },
+  fluids: [
+    'forProject'
+  ]
 }

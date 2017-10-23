@@ -3,7 +3,7 @@ import {
 } from './_base'
 
 module.exports = {
-  apiName: 'commits',
+  apiName: 'forks',
   methods: {
     'getAll': method
   },
