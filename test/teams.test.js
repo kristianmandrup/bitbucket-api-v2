@@ -1,6 +1,6 @@
 import {
   createTestsGenerator
-} from '../helpers'
+} from './helpers'
 
 createTestsGenerator({
   name: 'teams',
