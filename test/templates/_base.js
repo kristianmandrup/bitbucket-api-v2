@@ -10,12 +10,16 @@ const args = {
   ]
 }
 
-function concat(baseArgs, moreArgs) {
-  if (!moreArgs) {
-    moreArgs = [].concat(baseArgs)
-    baseArgs = args.project
+function createConcat(baseArgs) {
+  return function (...moreArgs) {
+    return baseArgs.concat(...moreArgs)
   }
-  return baseArgs.concat(moreArgs)
+}
+
+const prjConcat = createConcat(args.project)
+
+function concat(baseArgs, ...moreArgs) {
+  return baseArgs.concat(...moreArgs)
 }
 
 const method = {
@@ -26,6 +30,8 @@ const method = {
 export {
   singleRepo,
   concat,
+  createConcat,
+  prjConcat,
   user,
   repo,
   args,
