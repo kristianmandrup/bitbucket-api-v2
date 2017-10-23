@@ -132,7 +132,7 @@ module.exports = function XhrAdapter(_options) {
      * Send a PUT request using multipart/form
      * @see send
      */
-    updateForm(apiPath, parameters, options, callback) {
+    putForm(apiPath, parameters, options, callback) {
       options = options || {}
       options.contentType = 'multipart/form-data'
       let send = callback ? result.send : result.sendPromised

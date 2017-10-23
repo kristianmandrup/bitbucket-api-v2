@@ -1,19 +1,29 @@
 import {
-  createConcat,
-  createMethodConcat
+  createMethodConcat,
+  user
 } from './_base'
 
-const addon = {
-  name: 'my-addon'
+const role = 'admin'
+const owner = 'kris'
+const project = {
+  name: 'my-project'
 }
+const projectId = '124'
+
 const concat = createMethodConcat()
+const projConcat = createMethodConcat(owner)
+const projIdConcat = createMethodConcat(owner, projectId)
 
 module.exports = {
   apiName: 'teams',
   methods: {
-    'remove': concat(),
-    'update': concat(addon),
-
+    'get': concat(role),
+    'getProjects': concat(owner),
+    'addProject': projConcat(project),
+    'getProject': projIdConcat(),
+    'updateProject': projIdConcat(project),
+    'removeProject': projIdConcat(),
+    'getUserInfo': concat(user)
   },
   fluids: [
     'forProject'

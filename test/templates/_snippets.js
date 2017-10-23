@@ -1,6 +1,7 @@
 import {
   user,
   method,
+  noArgs,
   createConcat,
   createMethodConcat
 } from './_base'
@@ -29,9 +30,7 @@ const commentMeth = userConcat(snippetId, comment)
 module.exports = {
   apiName: 'snippets',
   methods: {
-    'get': {
-      args: []
-    },
+    'get': noArgs,
     'create': concat(files),
     'createWithMeta': concat(data),
     'getFor': userConcat(),

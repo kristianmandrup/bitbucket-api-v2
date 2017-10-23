@@ -10,8 +10,13 @@ const args = {
   ]
 }
 
+const noArgs = {
+  args: []
+}
+
 function concat(baseArgs, ...moreArgs) {
-  return [baseArgs].concat(...moreArgs)
+  baseArgs = Array.isArray(baseArgs) ? baseArgs : [baseArgs]
+  return baseArgs.concat(...moreArgs)
 }
 
 function createConcat(baseArgs = []) {
@@ -20,7 +25,8 @@ function createConcat(baseArgs = []) {
   }
 }
 
-function createMethodConcat(base) {
+function createMethodConcat(...base) {
+  base = Array.isArray(base) ? base : [base]
   const argConcat = typeof base === 'function' ? base : createConcat(base)
   return function (...moreArgs) {
     return {
@@ -48,4 +54,5 @@ export {
   repo,
   args,
   method,
+  noArgs
 }

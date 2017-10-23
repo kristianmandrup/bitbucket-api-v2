@@ -118,7 +118,7 @@ function createApi(api, opts = {}) {
       const uri = buildUri(owner, 'projects', projectId)
       api.delete(
         uri,
-        project,
+        null,
         null,
         result.$createListener(callback)
       )

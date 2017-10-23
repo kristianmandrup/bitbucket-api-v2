@@ -1,5 +1,6 @@
 const {
   _,
+  log,
   fluid,
   uriBuilder,
   createPromisedApi,
@@ -31,6 +32,7 @@ function createApi(api, opts = {}) {
      */
     get(callback) {
       const uri = buildUri()
+      log(uri)
       api.get(
         uri,
         null,
@@ -105,7 +107,7 @@ function createApi(api, opts = {}) {
      */
     createSnippetFor(username, snippet, callback) {
       const uri = buildUri(username)
-      api.get(
+      api.post(
         uri,
         snippet,
         null,
@@ -138,7 +140,7 @@ function createApi(api, opts = {}) {
      */
     updateSnippetFor(username, snippetId, snippet, callback) {
       const uri = buildUri(username, snippetId)
-      api.updateForm(
+      api.putForm(
         uri,
         snippet,
         null,

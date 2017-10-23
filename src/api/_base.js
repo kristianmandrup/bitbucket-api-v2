@@ -13,7 +13,7 @@ const createAbstractApi = require('./_abstract_api')
 // remove first / of any path argument to be joined, if present
 function prepareArg(arg) {
   if (typeof arg === 'object') {
-    handleError('Invalid URI argument', arg)
+    handleError(`Invalid URI argument: ${arg}`, arg)
   }
   return String(arg).replace(/^\//, '')
 }
