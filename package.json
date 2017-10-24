@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "author": "Kristian Mandrup <kmandrup@gmail.com",
   "scripts": {
-    "lint": "eslint ./bitbucket --quiet",
+    "lint": "eslint ./src --quiet",
     "test": "nyc ava",
     "build:prod": "webpack --progress --colors --display-error-details --env=prod",
     "build:dev": "webpack --progress --colors --display-error-details --env=dev"
@@ -19,13 +19,13 @@
     "node >=7.0.0"
   ],
   "dependencies": {
-    "home-dir": "^1.0.0",
-    "jsonfile": "^4.0.0",
     "lodash": "^4.17.4",
     "oauth": "^0.9.15",
     "superagent": "^3.7.0",
     "underscore.string": "^3.3.4",
-    "xhr": "^2.4.0"
+    "xhr": "^2.4.0",
+    "generic-test-generator": "github:kristianmandrup/generic-test-generator",
+    "bitbucket-auth": "github:kristianmandrup/bitbucket-auth"
   },
   "devDependencies": {
     "ava": "^0.22.0",
