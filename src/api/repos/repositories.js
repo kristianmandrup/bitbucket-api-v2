@@ -83,7 +83,7 @@ function createApi(api, opts = {}) {
      * @param {String} slug (name) of the repo.
      */
     get(username, repoSlug, callback) {
-      validateArgs('get', 2, arguments)
+      validateArgs('get', arguments, 2)
       const uri = buildUri(username, repoSlug)
       api.get(
         uri,
