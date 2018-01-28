@@ -362,7 +362,7 @@ if (typeof Object.create === 'function') {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _require = __webpack_require__(10),
+var _require = __webpack_require__(8),
     _ = _require._,
     constants = _require.constants,
     createPromisedApi = _require.createPromisedApi,
@@ -2251,7 +2251,7 @@ function isnan (val) {
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(8);
+var processNextTick = __webpack_require__(9);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -2465,6 +2465,41 @@ function objectToString(o) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+var _ = __webpack_require__(12);
+var constants = __webpack_require__(52);
+var fluid = __webpack_require__(53);
+var createApiEnricher = __webpack_require__(54);
+var createPromisedApi = __webpack_require__(55);
+
+var _require = __webpack_require__(58),
+    handleError = _require.handleError,
+    validateArgs = _require.validateArgs,
+    createArgValidator = _require.createArgValidator;
+
+var _require2 = __webpack_require__(15),
+    log = _require2.log,
+    error = _require2.error;
+
+module.exports = {
+  _: _,
+  constants: constants,
+  fluid: fluid,
+  log: log,
+  error: error,
+  handleError: handleError,
+  createApiEnricher: createApiEnricher,
+  createPromisedApi: createPromisedApi,
+  validateArgs: validateArgs,
+  createArgValidator: createArgValidator
+};
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (!process.version ||
@@ -2512,7 +2547,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2529,39 +2564,6 @@ var templates = apis.reduce(function (acc, name) {
 }, {});
 
 module.exports = templates;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ = __webpack_require__(12);
-var constants = __webpack_require__(52);
-var fluid = __webpack_require__(53);
-var createApiEnricher = __webpack_require__(54);
-var createPromisedApi = __webpack_require__(55);
-
-var _require = __webpack_require__(58),
-    handleError = _require.handleError,
-    validateArgs = _require.validateArgs;
-
-var _require2 = __webpack_require__(15),
-    log = _require2.log,
-    error = _require2.error;
-
-module.exports = {
-  _: _,
-  constants: constants,
-  fluid: fluid,
-  log: log,
-  error: error,
-  handleError: handleError,
-  createApiEnricher: createApiEnricher,
-  createPromisedApi: createPromisedApi,
-  validateArgs: validateArgs
-};
 
 /***/ }),
 /* 11 */
@@ -20520,7 +20522,7 @@ exports.PassThrough = __webpack_require__(72);
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(8);
+var processNextTick = __webpack_require__(9);
 /*</replacement>*/
 
 module.exports = Readable;
@@ -21828,7 +21830,7 @@ module.exports = __webpack_require__(21).EventEmitter;
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(8);
+var processNextTick = __webpack_require__(9);
 /*</replacement>*/
 
 // undocumented cb() API, needed for core, not for public API
@@ -21931,7 +21933,7 @@ module.exports = {
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(8);
+var processNextTick = __webpack_require__(9);
 /*</replacement>*/
 
 module.exports = Writable;
@@ -23832,7 +23834,7 @@ function switchEachFunctionContext(api, context) {
 var _require = __webpack_require__(14),
     promisify = _require.promisify;
 
-var _require2 = __webpack_require__(10),
+var _require2 = __webpack_require__(8),
     createPromisedApi = _require2.createPromisedApi;
 
 module.exports = {
@@ -23850,7 +23852,7 @@ module.exports = {
 
 
 module.exports = {
-  repos: __webpack_require__(9), // recursive api
+  repos: __webpack_require__(10), // recursive api
   teams: __webpack_require__(93),
   user: __webpack_require__(94),
   users: __webpack_require__(95),
@@ -25576,7 +25578,7 @@ function createApi(api) {
      * @param {String} slug (name) of the repo.
      */
     get: function get(username, repoSlug, callback) {
-      validateArgs('get', 2, arguments);
+      validateArgs('get', arguments, 2);
       var uri = buildUri(username, repoSlug);
       api.get(uri, null, null, result.$createListener(callback));
     },
@@ -25945,13 +25947,16 @@ var _require2 = __webpack_require__(16),
 
 var $api = __webpack_require__(32);
 
+var utils = __webpack_require__(8);
+
 module.exports = {
   Bitbucket: Bitbucket,
   createBitBucketAPI: createBitBucketAPI,
   createAuthenticatedAPI: createAuthenticatedAPI,
   createRequest: createRequest,
   adapters: adapters,
-  $api: $api
+  $api: $api,
+  utils: utils
 };
 
 /***/ }),
@@ -26009,7 +26014,7 @@ var createAuthenticatedAPI = function () {
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-var _require = __webpack_require__(10),
+var _require = __webpack_require__(8),
     Constants = _require.Constants,
     createApiEnricher = _require.createApiEnricher;
 
@@ -26404,16 +26409,16 @@ var _require = __webpack_require__(15),
 
 function handleError(msg, value) {
   error('ERROR:', msg, value);
-  throw msg;
+  throw new Error(msg);
 }
 
 function createArgValidator(methodName) {
   if (typeof methodName !== 'string') {
-    throw 'createArgValidator: must take a methodName (String) as argument';
+    throw new TypeError('createArgValidator: must take a methodName (String) as argument');
   }
   return function validateArg(arg) {
     if (!arg || typeof arg === 'function') {
-      throw methodName + ': Invalid argument: ' + arg;
+      throw new TypeError(methodName + ': Invalid argument: ' + arg);
     }
   };
 }
@@ -26421,12 +26426,16 @@ function createArgValidator(methodName) {
 function validateArgs(methodName, args) {
   var argsLength = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2;
 
-  args = [].slice.call(args, 0, -1);
+  args = Array.prototype.slice.call(args, 0, -1);
   var argValidator = createArgValidator(methodName);
   if (args.length !== argsLength) {
     handleError(methodName + ': Expected ' + argsLength + ' arguments but received ' + args.length);
   }
-  args.map(argValidator);
+  try {
+    args.map(argValidator);
+  } catch (err) {
+    handleError(methodName + ' - ' + err.message, err);
+  }
 }
 module.exports = {
   handleError: handleError,
@@ -27607,7 +27616,7 @@ var IncomingMessage = exports.IncomingMessage = function (xhr, response, mode) {
 		self.url = response.url
 		self.statusCode = response.status
 		self.statusMessage = response.statusText
-
+		
 		response.headers.forEach(function(header, key){
 			self.headers[key.toLowerCase()] = header
 			self.rawHeaders.push(key, header)
@@ -27695,7 +27704,7 @@ IncomingMessage.prototype._onXHRProgress = function () {
 				self.push(new Buffer(response))
 				break
 			}
-			// Falls through in IE8
+			// Falls through in IE8	
 		case 'text':
 			try { // This will fail when readyState = 3 in IE9. Switch mode and wait for readyState = 4
 				response = xhr.responseText
@@ -29412,7 +29421,7 @@ function forEach(list, iterator, context) {
     if (arguments.length < 3) {
         context = this
     }
-
+    
     if (toString.call(list) === '[object Array]')
         forEachArray(list, iterator, context)
     else if (typeof list === 'string')
@@ -29599,7 +29608,7 @@ module.exports = function escapeRegExp(str) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./": 9,
+	"./": 10,
 	"./_base": 0,
 	"./_base.js": 0,
 	"./branch-restrictions": 34,
@@ -29616,8 +29625,8 @@ var map = {
 	"./forks.js": 39,
 	"./hooks": 40,
 	"./hooks.js": 40,
-	"./index": 9,
-	"./index.js": 9,
+	"./index": 10,
+	"./index.js": 10,
 	"./issues": 41,
 	"./issues.js": 41,
 	"./milestones": 42,
@@ -30472,4 +30481,4 @@ module.exports = {
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=bundle.js.map
+//# sourceMappingURL=bitbucketApi.js.map

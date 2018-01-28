@@ -28,7 +28,7 @@ This can be used for request authorization from the end user, by sending their b
 
 To get the access token, use the `getAccessToken` function by [@tpettersen](https://bitbucket.org/tpettersen/bitbucket-auth-token/).
 
-The function is available in [bitbucket-auth](https://github.com/kristianmandrup/bitbucket-auth)
+A sample function `getAccessToken` is available in [bitbucket-auth](https://github.com/kristianmandrup/bitbucket-auth)
 
 ```js
 import {
