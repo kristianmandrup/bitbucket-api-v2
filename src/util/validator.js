@@ -19,7 +19,7 @@ function createArgValidator(methodName) {
 }
 
 function validateArgs(methodName, args, argsLength = 2) {
-  args = [].slice.call(args, 0, -1)
+  args = Array.prototype.slice.call(args, 0, -1)
   const argValidator = createArgValidator(methodName)
   if (args.length !== argsLength) {
     handleError(`${methodName}: Expected ${argsLength} arguments but received ${args.length}`)
