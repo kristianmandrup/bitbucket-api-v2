@@ -15,7 +15,7 @@ const $api = require('./api')
  */
 
 async function createAuthenticatedAPI(opts = {}) {
-  getAccessToken = opts.getAccessToken
+  const getAccessToken = opts.getAccessToken
   if (!getAccessToken) {
     throw 'ERROR: Missing getAccessToken (function) option'
   }
