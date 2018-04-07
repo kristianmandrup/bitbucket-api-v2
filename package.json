@@ -24,7 +24,6 @@
     "superagent": "^3.7.0",
     "underscore.string": "^3.3.4",
     "xhr": "^2.4.0",
-    "generic-test-generator": "github:kristianmandrup/generic-test-generator",
     "bitbucket-auth": "github:kristianmandrup/bitbucket-auth"
   },
   "devDependencies": {
@@ -37,6 +36,7 @@
     "babel-preset-es2017": "^6.24.1",
     "babel-register": "^6.26.0",
     "babili": "^0.1.4",
+    "generic-test-generator": "github:kristianmandrup/generic-test-generator",
     "babili-webpack-plugin": "^0.1.2",
     "eslint": "^4.9.0",
     "express": "^4.16.2",

@@ -37,6 +37,20 @@ const bitbucketApi = createBitbucketAPI() //or: createBitbucketAPI({useXhr: true
 bitbucketApi.authenticateOAuth2(someAccessToken)
 ```
 
+If you are unable to use ES 2015 modules directly, try using the pre-compiled `dist` bundles:
+
+```js
+const { createBitbucketAPI } = require('bitbucket-api-v2/dist/bitbucketAPI')
+```
+
+Minified:
+
+```js
+const { createBitbucketAPI } = require('bitbucket-api-v2/dist/bitbucketAPI.min')
+```
+
+## API usage
+
 Get the user info (of authenticated user)
 
 ```js
