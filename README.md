@@ -49,6 +49,8 @@ Minified:
 const { createBitbucketAPI } = require('bitbucket-api-v2/dist/bitbucketAPI.min')
 ```
 
+Note: You may also use `createBitBucketAPI` (deprecated)
+
 ## API usage
 
 Get the user info (of authenticated user)

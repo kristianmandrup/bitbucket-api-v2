@@ -1,6 +1,6 @@
 const {
   Bitbucket,
-  createBitBucketAPI,
+  createBitbucketAPI,
   createAuthenticatedAPI
 } = require('./bitbucket')
 const {
@@ -14,6 +14,7 @@ const utils = require('./util')
 module.exports = {
   Bitbucket,
   createBitBucketAPI,
+  createBitBucketAPI: createBitbucketAPI, // alias
   createAuthenticatedAPI,
   createRequest,
   adapters,

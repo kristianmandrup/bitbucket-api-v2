@@ -21,10 +21,10 @@ async function createAuthenticatedAPI(opts = {}) {
   }
   const accessToken = await getAccessToken(opts)
   opts.accessToken = accessToken
-  return createBitBucketAPI(opts)
+  return createBitbucketAPI(opts)
 }
 
-function createBitBucketAPI(opts = {}) {
+function createBitbucketAPI(opts = {}) {
   let bitbucketApi = new Bitbucket(opts)
   if (opts.accessToken) {
     bitbucketApi.authenticateOAuth2(opts.accessToken)
@@ -206,6 +206,6 @@ function Bitbucket(opts = {}) {
 
 module.exports = {
   Bitbucket,
-  createBitBucketAPI,
+  createBitbucketAPI,
   createAuthenticatedAPI
 }
