@@ -1,6 +1,6 @@
 {
   "name": "bitbucket-api-v2",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Wrapper for the BitBucket API v2, the version required to use OAuth2. Includes support for XHR requests.",
   "homepage": "https://github.com/kristianmandrup/bitbucket-api-v2.git",
   "main": "src/index.js",
