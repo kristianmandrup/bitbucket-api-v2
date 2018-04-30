@@ -80,7 +80,7 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
-var _require = __webpack_require__(4),
+var _require = __webpack_require__(5),
     _ = _require._,
     fluid = _require.fluid,
     constants = _require.constants,
@@ -326,101 +326,6 @@ process.umask = function() { return 0; };
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports) {
-
-if (typeof Object.create === 'function') {
-  // implementation from standard node.js 'util' module
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    ctor.prototype = Object.create(superCtor.prototype, {
-      constructor: {
-        value: ctor,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-  };
-} else {
-  // old school shim for old browsers
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    var TempCtor = function () {}
-    TempCtor.prototype = superCtor.prototype
-    ctor.prototype = new TempCtor()
-    ctor.prototype.constructor = ctor
-  }
-}
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _require = __webpack_require__(8),
-    _ = _require._,
-    constants = _require.constants,
-    createPromisedApi = _require.createPromisedApi,
-    fluid = _require.fluid,
-    log = _require.log,
-    handleError = _require.handleError,
-    validateArgs = _require.validateArgs;
-
-var createAbstractApi = __webpack_require__(92);
-
-// remove first / of any path argument to be joined, if present
-function prepareArg(arg) {
-  if ((typeof arg === 'undefined' ? 'undefined' : _typeof(arg)) === 'object') {
-    handleError('Invalid URI argument: ' + arg, arg);
-  }
-  return String(arg).replace(/^\//, '');
-}
-
-function join() {
-  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-    args[_key] = arguments[_key];
-  }
-
-  return args.filter(function (val) {
-    return val;
-  }).map(prepareArg).map(encodeURI).join('/');
-}
-
-function buildUri() {
-  return join.apply(undefined, arguments);
-}
-
-function uriBuilder(prefix) {
-  return function () {
-    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-
-    return join.apply(undefined, [prefix].concat(args));
-  };
-}
-
-module.exports = {
-  _: _,
-  constants: constants,
-  fluid: fluid,
-  createPromisedApi: createPromisedApi,
-  createAbstractApi: createAbstractApi,
-  log: log,
-  handleError: handleError,
-  validateArgs: validateArgs,
-  buildUri: buildUri,
-  uriBuilder: uriBuilder,
-  join: join
-};
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -434,8 +339,8 @@ module.exports = {
 
 
 
-var base64 = __webpack_require__(64)
-var ieee754 = __webpack_require__(65)
+var base64 = __webpack_require__(61)
+var ieee754 = __webpack_require__(62)
 var isArray = __webpack_require__(17)
 
 exports.Buffer = Buffer
@@ -2217,6 +2122,101 @@ function isnan (val) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    var TempCtor = function () {}
+    TempCtor.prototype = superCtor.prototype
+    ctor.prototype = new TempCtor()
+    ctor.prototype.constructor = ctor
+  }
+}
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _require = __webpack_require__(8),
+    _ = _require._,
+    constants = _require.constants,
+    createPromisedApi = _require.createPromisedApi,
+    fluid = _require.fluid,
+    log = _require.log,
+    handleError = _require.handleError,
+    validateArgs = _require.validateArgs;
+
+var createAbstractApi = __webpack_require__(92);
+
+// remove first / of any path argument to be joined, if present
+function prepareArg(arg) {
+  if ((typeof arg === 'undefined' ? 'undefined' : _typeof(arg)) === 'object') {
+    handleError('Invalid URI argument: ' + arg, arg);
+  }
+  return String(arg).replace(/^\//, '');
+}
+
+function join() {
+  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  return args.filter(function (val) {
+    return val;
+  }).map(prepareArg).map(encodeURI).join('/');
+}
+
+function buildUri() {
+  return join.apply(undefined, arguments);
+}
+
+function uriBuilder(prefix) {
+  return function () {
+    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+
+    return join.apply(undefined, [prefix].concat(args));
+  };
+}
+
+module.exports = {
+  _: _,
+  constants: constants,
+  fluid: fluid,
+  createPromisedApi: createPromisedApi,
+  createAbstractApi: createAbstractApi,
+  log: log,
+  handleError: handleError,
+  validateArgs: validateArgs,
+  buildUri: buildUri,
+  uriBuilder: uriBuilder,
+  join: join
+};
+
+/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2267,7 +2267,7 @@ module.exports = Duplex;
 
 /*<replacement>*/
 var util = __webpack_require__(7);
-util.inherits = __webpack_require__(3);
+util.inherits = __webpack_require__(4);
 /*</replacement>*/
 
 var Readable = __webpack_require__(20);
@@ -2458,7 +2458,7 @@ function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3).Buffer))
 
 /***/ }),
 /* 8 */
@@ -2570,7 +2570,7 @@ module.exports = templates;
 /***/ (function(module, exports, __webpack_require__) {
 
 /* eslint-disable node/no-deprecated-api */
-var buffer = __webpack_require__(5)
+var buffer = __webpack_require__(3)
 var Buffer = buffer.Buffer
 
 // alternative to using Object.keys for old browsers
@@ -20564,7 +20564,7 @@ function _isUint8Array(obj) {
 
 /*<replacement>*/
 var util = __webpack_require__(7);
-util.inherits = __webpack_require__(3);
+util.inherits = __webpack_require__(4);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -21971,7 +21971,7 @@ Writable.WritableState = WritableState;
 
 /*<replacement>*/
 var util = __webpack_require__(7);
-util.inherits = __webpack_require__(3);
+util.inherits = __webpack_require__(4);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -22595,7 +22595,7 @@ Writable.prototype._destroy = function (err, cb) {
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var Buffer = __webpack_require__(5).Buffer;
+var Buffer = __webpack_require__(3).Buffer;
 
 var isBufferEncoding = Buffer.isEncoding
   || function(encoding) {
@@ -22873,7 +22873,7 @@ var Duplex = __webpack_require__(6);
 
 /*<replacement>*/
 var util = __webpack_require__(7);
-util.inherits = __webpack_require__(3);
+util.inherits = __webpack_require__(4);
 /*</replacement>*/
 
 util.inherits(Transform, Duplex);
@@ -25938,7 +25938,7 @@ module.exports = {
 
 var _require = __webpack_require__(51),
     Bitbucket = _require.Bitbucket,
-    createBitBucketAPI = _require.createBitBucketAPI,
+    createBitbucketAPI = _require.createBitbucketAPI,
     createAuthenticatedAPI = _require.createAuthenticatedAPI;
 
 var _require2 = __webpack_require__(16),
@@ -25951,7 +25951,8 @@ var utils = __webpack_require__(8);
 
 module.exports = {
   Bitbucket: Bitbucket,
-  createBitBucketAPI: createBitBucketAPI,
+  createBitbucketAPI: createBitbucketAPI,
+  createBitBucketAPI: createBitbucketAPI, // alias
   createAuthenticatedAPI: createAuthenticatedAPI,
   createRequest: createRequest,
   adapters: adapters,
@@ -25975,7 +25976,7 @@ module.exports = {
 var createAuthenticatedAPI = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
     var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var accessToken;
+    var getAccessToken, accessToken;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -25997,7 +25998,7 @@ var createAuthenticatedAPI = function () {
             accessToken = _context.sent;
 
             opts.accessToken = accessToken;
-            return _context.abrupt('return', createBitBucketAPI(opts));
+            return _context.abrupt('return', createBitbucketAPI(opts));
 
           case 8:
           case 'end':
@@ -26024,12 +26025,14 @@ var _require2 = __webpack_require__(16),
 
 var $api = __webpack_require__(32);
 
-function createBitBucketAPI() {
+function createBitbucketAPI() {
   var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   var bitbucketApi = new Bitbucket(opts);
   if (opts.accessToken) {
     bitbucketApi.authenticateOAuth2(opts.accessToken);
+  } else if (opts.basicAuth) {
+    bitbucketApi.authenticateBasic(opts.basicAuth.username, opts.basicAuth.password);
   }
   return bitbucketApi;
 }
@@ -26083,6 +26086,12 @@ function Bitbucket() {
    */
   apiModel.authenticateOAuth2 = function (accessToken) {
     apiModel.request.setOption('login_type', 'oauth2').setOption('oauth_access_token', accessToken);
+
+    return apiModel;
+  };
+
+  apiModel.authenticateBasic = function (username, password) {
+    apiModel.request.setOption('login_type', 'basic').setOption('username', username).setOption('password', password);
 
     return apiModel;
   };
@@ -26213,7 +26222,7 @@ function Bitbucket() {
 
 module.exports = {
   Bitbucket: Bitbucket,
-  createBitBucketAPI: createBitBucketAPI,
+  createBitbucketAPI: createBitbucketAPI,
   createAuthenticatedAPI: createAuthenticatedAPI
 };
 
@@ -26461,12 +26470,12 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Buffer) {
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var _ = __webpack_require__(12);
-var https = __webpack_require__(61);
+var https = __webpack_require__(63);
 var querystring = __webpack_require__(29);
 var url = __webpack_require__(28);
 var xhr = __webpack_require__(79);
@@ -26833,6 +26842,8 @@ module.exports = function XhrAdapter(_options) {
           httpPort = options.http_port,
           oauthAccessToken = options.oauth_access_token,
           jwtAccessToken = options.jwt_access_token,
+          _user = options.username,
+          _pass = options.password,
           proxyHost = options.proxy_host,
           proxyPort = options.proxy_port,
           useXhr = options.use_xhr;
@@ -26841,12 +26852,15 @@ module.exports = function XhrAdapter(_options) {
       var port = !useXhr && proxyHost ? proxyPort || 3128 : httpPort || 443;
 
       // console.log('prepRequest', options)
-      var authBearerToken = oauthAccessToken || jwtAccessToken || '<none>';
+      var authBearerToken = oauthAccessToken || jwtAccessToken || null;
+      var basicAuthToken = _user && _pass ? Buffer.from(_user + ':' + _pass).toString('base64') : null;
 
       var headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: 'Bearer ' + authBearerToken
+        Authorization: '<none>'
       };
+
+      if (basicAuthToken) headers.Authorization = 'Basic ' + basicAuthToken;else if (authBearerToken) headers.Authorization = 'Bearer ' + authBearerToken;
 
       if (!useXhr) {
         headers['Host'] = 'api.bitbucket.org'; // eslint-disable-line dot-notation
@@ -26946,12 +26960,224 @@ module.exports = function XhrAdapter(_options) {
   localApi.promised = createPromisedApi(localApi, $options);
   return _.assign(result, localApi);
 };
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3).Buffer))
 
 /***/ }),
 /* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var http = __webpack_require__(62);
+"use strict";
+
+
+exports.byteLength = byteLength
+exports.toByteArray = toByteArray
+exports.fromByteArray = fromByteArray
+
+var lookup = []
+var revLookup = []
+var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
+
+var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+for (var i = 0, len = code.length; i < len; ++i) {
+  lookup[i] = code[i]
+  revLookup[code.charCodeAt(i)] = i
+}
+
+revLookup['-'.charCodeAt(0)] = 62
+revLookup['_'.charCodeAt(0)] = 63
+
+function placeHoldersCount (b64) {
+  var len = b64.length
+  if (len % 4 > 0) {
+    throw new Error('Invalid string. Length must be a multiple of 4')
+  }
+
+  // the number of equal signs (place holders)
+  // if there are two placeholders, than the two characters before it
+  // represent one byte
+  // if there is only one, then the three characters before it represent 2 bytes
+  // this is just a cheap hack to not do indexOf twice
+  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
+}
+
+function byteLength (b64) {
+  // base64 is 4/3 + up to two characters of the original data
+  return (b64.length * 3 / 4) - placeHoldersCount(b64)
+}
+
+function toByteArray (b64) {
+  var i, l, tmp, placeHolders, arr
+  var len = b64.length
+  placeHolders = placeHoldersCount(b64)
+
+  arr = new Arr((len * 3 / 4) - placeHolders)
+
+  // if there are placeholders, only get up to the last complete 4 chars
+  l = placeHolders > 0 ? len - 4 : len
+
+  var L = 0
+
+  for (i = 0; i < l; i += 4) {
+    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
+    arr[L++] = (tmp >> 16) & 0xFF
+    arr[L++] = (tmp >> 8) & 0xFF
+    arr[L++] = tmp & 0xFF
+  }
+
+  if (placeHolders === 2) {
+    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
+    arr[L++] = tmp & 0xFF
+  } else if (placeHolders === 1) {
+    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
+    arr[L++] = (tmp >> 8) & 0xFF
+    arr[L++] = tmp & 0xFF
+  }
+
+  return arr
+}
+
+function tripletToBase64 (num) {
+  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
+}
+
+function encodeChunk (uint8, start, end) {
+  var tmp
+  var output = []
+  for (var i = start; i < end; i += 3) {
+    tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
+    output.push(tripletToBase64(tmp))
+  }
+  return output.join('')
+}
+
+function fromByteArray (uint8) {
+  var tmp
+  var len = uint8.length
+  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+  var output = ''
+  var parts = []
+  var maxChunkLength = 16383 // must be multiple of 3
+
+  // go through the array every three bytes, we'll deal with trailing stuff later
+  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
+  }
+
+  // pad the end with zeros, but make sure to not forget the extra bytes
+  if (extraBytes === 1) {
+    tmp = uint8[len - 1]
+    output += lookup[tmp >> 2]
+    output += lookup[(tmp << 4) & 0x3F]
+    output += '=='
+  } else if (extraBytes === 2) {
+    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
+    output += lookup[tmp >> 10]
+    output += lookup[(tmp >> 4) & 0x3F]
+    output += lookup[(tmp << 2) & 0x3F]
+    output += '='
+  }
+
+  parts.push(output)
+
+  return parts.join('')
+}
+
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports) {
+
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = (value * c - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var http = __webpack_require__(64);
 
 var https = module.exports;
 
@@ -26968,10 +27194,10 @@ https.request = function (params, cb) {
 
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {var ClientRequest = __webpack_require__(63)
+/* WEBPACK VAR INJECTION */(function(global) {var ClientRequest = __webpack_require__(65)
 var extend = __webpack_require__(27)
 var statusCodes = __webpack_require__(74)
 var url = __webpack_require__(28)
@@ -27053,11 +27279,11 @@ http.METHODS = [
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer, global, process) {var capability = __webpack_require__(18)
-var inherits = __webpack_require__(3)
+var inherits = __webpack_require__(4)
 var response = __webpack_require__(66)
 var stream = __webpack_require__(19)
 var toArrayBuffer = __webpack_require__(73)
@@ -27363,225 +27589,14 @@ var unsafeHeaders = [
 	'via'
 ]
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer, __webpack_require__(1), __webpack_require__(2)))
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.byteLength = byteLength
-exports.toByteArray = toByteArray
-exports.fromByteArray = fromByteArray
-
-var lookup = []
-var revLookup = []
-var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
-
-var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-for (var i = 0, len = code.length; i < len; ++i) {
-  lookup[i] = code[i]
-  revLookup[code.charCodeAt(i)] = i
-}
-
-revLookup['-'.charCodeAt(0)] = 62
-revLookup['_'.charCodeAt(0)] = 63
-
-function placeHoldersCount (b64) {
-  var len = b64.length
-  if (len % 4 > 0) {
-    throw new Error('Invalid string. Length must be a multiple of 4')
-  }
-
-  // the number of equal signs (place holders)
-  // if there are two placeholders, than the two characters before it
-  // represent one byte
-  // if there is only one, then the three characters before it represent 2 bytes
-  // this is just a cheap hack to not do indexOf twice
-  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
-}
-
-function byteLength (b64) {
-  // base64 is 4/3 + up to two characters of the original data
-  return (b64.length * 3 / 4) - placeHoldersCount(b64)
-}
-
-function toByteArray (b64) {
-  var i, l, tmp, placeHolders, arr
-  var len = b64.length
-  placeHolders = placeHoldersCount(b64)
-
-  arr = new Arr((len * 3 / 4) - placeHolders)
-
-  // if there are placeholders, only get up to the last complete 4 chars
-  l = placeHolders > 0 ? len - 4 : len
-
-  var L = 0
-
-  for (i = 0; i < l; i += 4) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
-    arr[L++] = (tmp >> 16) & 0xFF
-    arr[L++] = (tmp >> 8) & 0xFF
-    arr[L++] = tmp & 0xFF
-  }
-
-  if (placeHolders === 2) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
-    arr[L++] = tmp & 0xFF
-  } else if (placeHolders === 1) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
-    arr[L++] = (tmp >> 8) & 0xFF
-    arr[L++] = tmp & 0xFF
-  }
-
-  return arr
-}
-
-function tripletToBase64 (num) {
-  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
-}
-
-function encodeChunk (uint8, start, end) {
-  var tmp
-  var output = []
-  for (var i = start; i < end; i += 3) {
-    tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
-    output.push(tripletToBase64(tmp))
-  }
-  return output.join('')
-}
-
-function fromByteArray (uint8) {
-  var tmp
-  var len = uint8.length
-  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
-  var output = ''
-  var parts = []
-  var maxChunkLength = 16383 // must be multiple of 3
-
-  // go through the array every three bytes, we'll deal with trailing stuff later
-  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
-  }
-
-  // pad the end with zeros, but make sure to not forget the extra bytes
-  if (extraBytes === 1) {
-    tmp = uint8[len - 1]
-    output += lookup[tmp >> 2]
-    output += lookup[(tmp << 4) & 0x3F]
-    output += '=='
-  } else if (extraBytes === 2) {
-    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
-    output += lookup[tmp >> 10]
-    output += lookup[(tmp >> 4) & 0x3F]
-    output += lookup[(tmp << 2) & 0x3F]
-    output += '='
-  }
-
-  parts.push(output)
-
-  return parts.join('')
-}
-
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports) {
-
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
-
-  i += d
-
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-}
-
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-
-  value = Math.abs(value)
-
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
-    }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
-    }
-    if (value * c >= 2) {
-      e++
-      c /= 2
-    }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = (value * c - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
-
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3).Buffer, __webpack_require__(1), __webpack_require__(2)))
 
 /***/ }),
 /* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, Buffer, global) {var capability = __webpack_require__(18)
-var inherits = __webpack_require__(3)
+var inherits = __webpack_require__(4)
 var stream = __webpack_require__(19)
 
 var rStates = exports.readyStates = {
@@ -27763,7 +27778,7 @@ IncomingMessage.prototype._onXHRProgress = function () {
 	}
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(5).Buffer, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(3).Buffer, __webpack_require__(1)))
 
 /***/ }),
 /* 67 */
@@ -28215,7 +28230,7 @@ var Transform = __webpack_require__(26);
 
 /*<replacement>*/
 var util = __webpack_require__(7);
-util.inherits = __webpack_require__(3);
+util.inherits = __webpack_require__(4);
 /*</replacement>*/
 
 util.inherits(PassThrough, Transform);
@@ -28234,7 +28249,7 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 /* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Buffer = __webpack_require__(5).Buffer
+var Buffer = __webpack_require__(3).Buffer
 
 module.exports = function (buf) {
 	// If the buffer is backed by a Uint8Array, a faster version will work
@@ -29705,7 +29720,7 @@ module.exports = function createAbstractApi($api) {
 "use strict";
 
 
-var _require = __webpack_require__(4),
+var _require = __webpack_require__(5),
     _ = _require._,
     uriBuilder = _require.uriBuilder,
     validateArgs = _require.validateArgs,
@@ -29843,7 +29858,7 @@ module.exports = {
 "use strict";
 
 
-var _require = __webpack_require__(4),
+var _require = __webpack_require__(5),
     _ = _require._,
     uriBuilder = _require.uriBuilder,
     validateArgs = _require.validateArgs,
@@ -29906,7 +29921,7 @@ module.exports = {
 "use strict";
 
 
-var _require = __webpack_require__(4),
+var _require = __webpack_require__(5),
     _ = _require._,
     uriBuilder = _require.uriBuilder,
     validateArgs = _require.validateArgs,
@@ -30125,7 +30140,7 @@ module.exports = {
 "use strict";
 
 
-var _require = __webpack_require__(4),
+var _require = __webpack_require__(5),
     _ = _require._,
     buildUri = _require.buildUri,
     validateArgs = _require.validateArgs,
@@ -30184,7 +30199,7 @@ module.exports = {
 "use strict";
 
 
-var _require = __webpack_require__(4),
+var _require = __webpack_require__(5),
     _ = _require._,
     uriBuilder = _require.uriBuilder,
     validateArgs = _require.validateArgs,
@@ -30245,7 +30260,7 @@ module.exports = {
 "use strict";
 
 
-var _require = __webpack_require__(4),
+var _require = __webpack_require__(5),
     _ = _require._,
     log = _require.log,
     fluid = _require.fluid,
