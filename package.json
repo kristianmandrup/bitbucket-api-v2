@@ -1,6 +1,6 @@
 {
   "name": "bitbucket-api-v2",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Wrapper for the BitBucket API v2, the version required to use OAuth2. Includes support for XHR requests.",
   "homepage": "https://github.com/kristianmandrup/bitbucket-api-v2.git",
   "main": "src/index.js",
@@ -36,15 +36,16 @@
     "babel-preset-es2017": "^6.24.1",
     "babel-register": "^6.26.0",
     "babili": "^0.1.4",
-    "generic-test-generator": "github:kristianmandrup/generic-test-generator",
     "babili-webpack-plugin": "^0.1.2",
     "eslint": "^4.9.0",
     "express": "^4.16.2",
+    "generic-test-generator": "github:kristianmandrup/generic-test-generator",
     "nock": "^9.0.22",
     "nyc": "^11.2.1",
     "sinon": "^4.0.1",
     "supertest": "^3.0.0",
     "webpack": "^3.8.1",
+    "webpack-cli": "^2.1.2",
     "webpack-merge": "^4.1.0"
   },
   "ava": {
