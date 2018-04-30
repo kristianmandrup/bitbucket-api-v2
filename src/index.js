@@ -13,7 +13,7 @@ const utils = require('./util')
 
 module.exports = {
   Bitbucket,
-  createBitBucketAPI,
+  createBitbucketAPI,
   createBitBucketAPI: createBitbucketAPI, // alias
   createAuthenticatedAPI,
   createRequest,

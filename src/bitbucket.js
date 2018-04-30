@@ -28,6 +28,11 @@ function createBitbucketAPI(opts = {}) {
   let bitbucketApi = new Bitbucket(opts)
   if (opts.accessToken) {
     bitbucketApi.authenticateOAuth2(opts.accessToken)
+  } else if (opts.basicAuth) {
+    bitbucketApi.authenticateBasic(
+      opts.basicAuth.username,
+      opts.basicAuth.password
+    )
   }
   return bitbucketApi
 }
@@ -84,6 +89,15 @@ function Bitbucket(opts = {}) {
     apiModel.request
       .setOption('login_type', 'oauth2')
       .setOption('oauth_access_token', accessToken)
+
+    return apiModel
+  }
+
+  apiModel.authenticateBasic = (username, password) => {
+    apiModel.request
+      .setOption('login_type', 'basic')
+      .setOption('username', username)
+      .setOption('password', password)
 
     return apiModel
   }

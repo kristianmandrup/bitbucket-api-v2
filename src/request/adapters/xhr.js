@@ -317,6 +317,8 @@ module.exports = function XhrAdapter(_options) {
         http_port: httpPort,
         oauth_access_token: oauthAccessToken,
         jwt_access_token: jwtAccessToken,
+        username: _user,
+        password: _pass,
         proxy_host: proxyHost,
         proxy_port: proxyPort,
         use_xhr: useXhr
@@ -325,12 +327,17 @@ module.exports = function XhrAdapter(_options) {
       const port = !useXhr && proxyHost ? proxyPort || 3128 : httpPort || 443
 
       // console.log('prepRequest', options)
-      const authBearerToken = oauthAccessToken || jwtAccessToken || '<none>'
+      const authBearerToken = oauthAccessToken || jwtAccessToken || null
+      const basicAuthToken = _user && _pass ?
+        Buffer.from(`${_user}:${_pass}`).toString('base64') : null
 
       const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Bearer ${authBearerToken}`
+        Authorization: '<none>'
       }
+
+      if (basicAuthToken) headers.Authorization = `Basic ${basicAuthToken}`
+      else if (authBearerToken) headers.Authorization = `Bearer ${authBearerToken}`
 
       if (!useXhr) {
         headers['Host'] = 'api.bitbucket.org' // eslint-disable-line dot-notation
