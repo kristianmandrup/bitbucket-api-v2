@@ -10,7 +10,7 @@ See [repo slug POST](https://developer.atlassian.com/bitbucket/api/2/reference/r
 Use `multipart/form-data` when we need to upload a file:
 
 ```html
-<form action="/update" method="post" encrypt="multipart/form-data>
+<form action="/update" method="post" encrypt="multipart/form-data">
   <input type="text" name="username" />
   <input type="file" name="avatar" />
   <button type="submit" />
